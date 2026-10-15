@@ -645,6 +645,8 @@ button:hover > .rw-stuck { transform: rotate(0deg) scale(1.06); }
 html.light .nav-item .mm-nav-clock[data-stage="soon"] { color: #b45309; } /* amber-700 */
 html.light .nav-item .mm-nav-clock[data-stage="last"] { color: #be123c; } /* rose-700 */
 
+/* A grid cell may shrink: a long formula then scrolls inside its .katex-display instead of widening the page */
+.mm-grid > * { min-width: 0; }
 .mm-rich p + p, .mm-rich p + .mm-list, .mm-rich .mm-list + p { margin-top: 0.375rem; }
 .mm-rich .mm-list { padding-left: 1.25rem; }
 .mm-rich ul.mm-list { list-style: disc; }

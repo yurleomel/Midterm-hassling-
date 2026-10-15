@@ -1118,7 +1118,7 @@ class MockMidterm {
           <div class="text-[11px] font-bold uppercase tracking-wider text-indigo-400">Midterm 2 · topics 4–6</div>
           <h2 class="text-2xl font-black text-slate-100 mt-0.5">Mock midterm</h2>
           <p class="text-sm text-slate-300 mt-1.5 leading-relaxed max-w-2xl">A full practice run of Midterm 2 against the clock. As at the real exam it is closed book: you write your solutions on paper and get only the formula sheet. When you hand in, you grade your work against worked solutions.</p>
-          <div class="grid sm:grid-cols-3 gap-2 mt-4">
+          <div class="mm-grid grid sm:grid-cols-3 gap-2 mt-4">
             ${block('1', '5 pts', 'Multiple choice & true/false', 'Answer here, in the app.')}
             ${block('2', '5 pts', 'Complete five definitions', 'Type them here or write them on paper.')}
             ${block('3–6', '10 pts each', 'Written problems', 'Solve on paper and show your work.')}
@@ -1129,7 +1129,7 @@ class MockMidterm {
         <div class="${C.card} space-y-5">
           <section>
             ${step(1, 'Choose a paper')}
-            <div class="grid sm:grid-cols-2 gap-2">
+            <div class="mm-grid grid sm:grid-cols-2 gap-2">
               ${paperCard('2017', 'file-text', 'Practice paper 2017', 'Verbatim', has2017 ? 'R.H., 22 March 2017: the real practice midterm, word for word.' : 'Not in the app yet: the paper is being transcribed.', has2017)}
               ${paperCard('new', 'shuffle', 'New mock paper', 'New each time', 'Put together now: 5 LMS self-test tasks, 5 of the 21 definitions and 4 exam problems, one per topic block.', true)}
             </div>
@@ -1189,8 +1189,8 @@ class MockMidterm {
               ${icon('timer')}<span data-mm-time class="tabular-nums">${this.L.formatClock(left)}</span></span>
             <span class="hidden md:inline text-xs text-slate-400">left of ${s.durationMin} min</span>
             <div class="ml-auto flex items-center gap-2">
-              ${this.hasSheet ? `<button type="button" data-mm-act="sheet" data-mode="exam" class="${C.secondarySm}" title="The distribution table exactly as handed out at the exam, without its labels">${icon('table')}<span class="hidden sm:inline">Formula sheet (as at the exam)</span><span class="sm:hidden">Formula sheet</span></button>` : ''}
-              <button type="button" data-mm-act="ask-finish" class="${C.primarySm}">${icon('flag')} Finish</button>
+              ${this.hasSheet ? `<button type="button" data-mm-act="sheet" data-mode="exam" class="${C.secondarySm}" title="The distribution table exactly as handed out at the exam, without its labels"><span class="hidden sm:inline-flex">${icon('table')}</span><span class="hidden sm:inline">Formula sheet (as at the exam)</span><span class="sm:hidden">Formula sheet</span></button>` : ''}
+              <button type="button" data-mm-act="ask-finish" class="${C.primarySm}"><span class="hidden sm:inline-flex">${icon('flag')}</span>Finish</button>
             </div>
           </div>
           <nav id="mm-chips" class="flex flex-wrap items-center gap-1.5 mt-2.5" aria-label="Problems">${this.chipsHtml(paper, s.answers)}</nav>
@@ -1337,7 +1337,7 @@ class MockMidterm {
         <span class="min-w-0 flex-1">${html}</span>
       </button>`;
     if (it.tf || task?.format === 'tf') {
-      return `<div class="grid grid-cols-2 gap-2 mt-2.5 sm:max-w-sm">${btn('true', 'T', 'True', pick === true)}${btn('false', 'F', 'False', pick === false)}</div>`;
+      return `<div class="mm-grid grid grid-cols-2 gap-2 mt-2.5 sm:max-w-sm">${btn('true', 'T', 'True', pick === true)}${btn('false', 'F', 'False', pick === false)}</div>`;
     }
     if (task?.format === 'numeric') {
       return `<label class="flex flex-wrap items-center gap-2 mt-2.5 text-sm text-slate-300">Answer:
@@ -1346,11 +1346,11 @@ class MockMidterm {
     if (task) {
       const multi = task.format === 'multi';
       const picked = multi ? (Array.isArray(pick) ? pick : []) : [pick];
-      return `<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2.5">${it.order.map((i, k) => btn(i, String.fromCharCode(97 + k), this.taskOption(task.options[i].text), picked.includes(i), multi)).join('')}</div>`;
+      return `<div class="mm-grid grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2.5">${it.order.map((i, k) => btn(i, String.fromCharCode(97 + k), this.taskOption(task.options[i].text), picked.includes(i), multi)).join('')}</div>`;
     }
     const opts = it.options.map((o, i) => btn(i, String.fromCharCode(97 + i), o, pick === i));
     if (it.other) opts.push(btn('other', 'd', '<span class="italic text-slate-300">your variant</span>', pick === 'other'));
-    return `<div class="grid grid-cols-2 lg:grid-cols-4 gap-2 mt-2.5">${opts.join('')}</div>
+    return `<div class="mm-grid grid grid-cols-2 lg:grid-cols-4 gap-2 mt-2.5">${opts.join('')}</div>
       ${pick === 'other' ? `<label class="block mt-2"><span class="sr-only">Your variant for ${this.esc(it.id)}</span>
         <input type="text" autocomplete="off" maxlength="200" data-mm-input="other" data-item="${it.id}" value="${this.esc(resp.other || '')}" placeholder="Your answer (d), e.g. N(0, 1/4)" class="${C.input}"></label>` : ''}`;
   }
@@ -1374,17 +1374,17 @@ class MockMidterm {
     };
     if (it.tf || task?.format === 'tf') {
       const answer = task ? task.answer : it.answer;
-      return `<ul class="grid grid-cols-2 gap-1.5 mt-2.5 sm:max-w-sm">${row('T', 'True', answer === true, pick === true)}${row('F', 'False', answer === false, pick === false)}</ul>`;
+      return `<ul class="mm-grid grid grid-cols-2 gap-1.5 mt-2.5 sm:max-w-sm">${row('T', 'True', answer === true, pick === true)}${row('F', 'False', answer === false, pick === false)}</ul>`;
     }
     if (task?.format === 'numeric') {
-      return `<div class="mt-2.5 grid sm:grid-cols-2 gap-1.5 text-sm">
+      return `<div class="mm-grid mt-2.5 grid sm:grid-cols-2 gap-1.5 text-sm">
         ${resp ? `<div class="p-2 rounded-xl border border-slate-800 bg-slate-950/40 text-slate-200">Your answer: <strong class="tabular-nums">${this.esc(String(pick ?? '').trim() || '—')}</strong></div>` : ''}
         ${showKey ? `<div class="p-2 rounded-xl border border-emerald-600 bg-emerald-950/40 text-slate-100">Correct: <strong class="tabular-nums">${this.esc(task.answer)}</strong></div>` : ''}</div>`;
     }
     if (task) {
       const multi = task.format === 'multi';
       const picked = multi ? (Array.isArray(pick) ? pick : []) : [pick];
-      return `<ul class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 mt-2.5">${it.order.map((i, k) => row(String.fromCharCode(97 + k), this.taskOption(task.options[i].text), !!task.options[i].correct, picked.includes(i), multi)).join('')}</ul>`;
+      return `<ul class="mm-grid grid grid-cols-1 sm:grid-cols-2 gap-1.5 mt-2.5">${it.order.map((i, k) => row(String.fromCharCode(97 + k), this.taskOption(task.options[i].text), !!task.options[i].correct, picked.includes(i), multi)).join('')}</ul>`;
     }
     const rows = it.options.map((o, i) => row(String.fromCharCode(97 + i), o, it.answer === i, pick === i));
     const right = it.answer === 'other';
@@ -1397,7 +1397,7 @@ class MockMidterm {
       rows.push(row('d', html, right, pick === 'other'));
     }
     const roomy = pick === 'other' || (resp && showKey && right);
-    return `<ul class="grid grid-cols-1 sm:grid-cols-2 ${rows.length <= 4 && !roomy ? 'lg:grid-cols-4' : ''} gap-1.5 mt-2.5">${rows.join('')}</ul>`;
+    return `<ul class="mm-grid grid grid-cols-1 sm:grid-cols-2 ${rows.length <= 4 && !roomy ? 'lg:grid-cols-4' : ''} gap-1.5 mt-2.5">${rows.join('')}</ul>`;
   }
 
   // Points of a problem-1 item, and the student's own check of a "(d) your variant" answer
@@ -1441,7 +1441,7 @@ class MockMidterm {
       </div>`;
     const ref = this.referenceHtml(it.reference || (it.defs?.[0] ? this.L.defReference(it.defs[0], this.data) : null));
     const ours = it.answer ? `<div class="p-3 rounded-xl bg-slate-950/50 border border-slate-800 text-sm text-slate-200">${this.caption('Our completion', 'lightbulb')}${it.answer}</div>` : '';
-    return `${top}<div class="grid ${yours ? 'sm:grid-cols-2' : ''} gap-2 mt-2.5">${yours}${ref}</div>${ours ? `<div class="mt-2">${ours}</div>` : ''}
+    return `${top}<div class="mm-grid grid ${yours ? 'sm:grid-cols-2' : ''} gap-2 mt-2.5">${yours}${ref}</div>${ours ? `<div class="mt-2">${ours}</div>` : ''}
       ${ctx.mode === 'paper' ? '' : `<div id="mm-g-${it.id}" class="mt-2.5">${this.gradeControl(it.id, it.points, ctx, 'chips')}</div>`}`;
   }
 
@@ -1559,14 +1559,15 @@ class MockMidterm {
           <h2 class="text-xl font-black text-slate-100 mt-0.5">${this.esc(this.paperLabel(info.paper, paper.title))}</h2>
           <p class="text-xs text-slate-400 mt-1">${this.when(info.finishedAt)} · ${this.minutes(info.usedMs)} of ${info.durationMin} min${info.timedOut ? ' · time ran out' : ''}</p>
         </div>
-        <div class="text-right shrink-0">
+        <div class="sm:text-right shrink-0">
           <div class="text-3xl font-black tabular-nums text-slate-100">${this.fmt(totals.score)}<span class="text-lg font-bold text-slate-400"> / ${totals.total}</span></div>
           <div class="text-sm font-bold tabular-nums ${pctTone}">${totals.percent}%${mode === 'review' && totals.pending ? ' <span class="text-amber-300">so far</span>' : ''}</div>
         </div>
       </div>
-      <div class="grid grid-cols-3 sm:grid-cols-6 gap-2 mt-4">${cells}</div>
+      <div class="mm-grid grid grid-cols-3 sm:grid-cols-6 gap-2 mt-4">${cells}</div>
       <div class="mt-4 flex flex-wrap items-center gap-2">
-        ${mode === 'review'
+        ${mode === 'review' && this.confirm === 'save' ? this.saveConfirmHtml(totals)
+          : mode === 'review'
           ? `<button type="button" data-mm-act="save" class="${C.primary}">${icon('save')} Save result</button>
              <span class="text-xs ${totals.pending ? 'text-amber-300 font-semibold' : 'text-slate-400'}">${totals.pending ? `${totals.pending} ${totals.pending === 1 ? 'grade' : 'grades'} to give: problem 1 is graded for you, the rest you grade below.` : 'Everything is graded.'}</span>`
           : `<button type="button" data-mm-act="home" class="${C.secondary}">${icon('arrow-left')} Mock midterm</button>
@@ -1596,13 +1597,17 @@ class MockMidterm {
     </div>`;
   }
 
+  // "Save result" with grades still missing: asked where the button was pressed (top summary or bottom bar)
+  saveConfirmHtml(totals) {
+    const C = MockMidterm.CLS;
+    return `<p class="flex-1 text-sm text-amber-200"><strong>${totals.pending} ${totals.pending === 1 ? 'grade is' : 'grades are'} missing.</strong> If you save now they count as 0.</p>
+      <div class="flex flex-wrap gap-2"><button type="button" data-mm-act="cancel" class="${C.secondary}">Grade them first</button>
+      <button type="button" data-mm-act="save-anyway" class="${C.primary}">${icon('save')} Save anyway</button></div>`;
+  }
+
   saveBarHtml(totals) {
     const C = MockMidterm.CLS;
-    if (this.confirm === 'save') {
-      return `<p class="flex-1 text-sm text-amber-200"><strong>${totals.pending} ${totals.pending === 1 ? 'grade is' : 'grades are'} missing.</strong> If you save now they count as 0.</p>
-        <div class="flex flex-wrap gap-2"><button type="button" data-mm-act="cancel" class="${C.secondary}">Grade them first</button>
-        <button type="button" data-mm-act="save-anyway" class="${C.primary}">${icon('save')} Save anyway</button></div>`;
-    }
+    if (this.confirm === 'save') return this.saveConfirmHtml(totals);
     return `<p class="flex-1 text-sm text-slate-300">Score: <strong class="tabular-nums text-slate-100">${this.fmt(totals.score)} / ${totals.total}</strong> (${totals.percent}%)${totals.pending ? ` · <span class="text-amber-300 font-semibold">${totals.pending} to grade</span>` : ''}</p>
       <div class="flex flex-wrap gap-2"><button type="button" data-mm-act="home" class="${C.secondary}">${icon('arrow-left')} Back to the start</button>
       <button type="button" data-mm-act="save" class="${C.primary}">${icon('save')} Save result</button></div>`;
