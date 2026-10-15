@@ -744,6 +744,8 @@ body.fs-lock { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .fs-panel { animation: none; }
 }
+
+/* ========================================================
    Mock midterm (js/mock-midterm.js): the timer's warning stages,
    the clock next to "Mock midterm" in the sidebar, and the rich
    text of the bank problems (paragraphs, lists, tables).
@@ -781,6 +783,8 @@ html.light .nav-item .mm-nav-clock[data-stage="last"] { color: #be123c; } /* ros
   white-space: nowrap;
 }
 .mm-table th { background-color: rgb(var(--surface-slate-800, 30 41 59) / 0.6); font-weight: 700; }
+
+/* ========================================================
    Get ready (js/get-ready.js): the Midterm 2 checklist.
    Colours mostly come from Tailwind utilities in the markup (remapped
    for the light theme above). This block holds the geometry and the
