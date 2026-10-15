@@ -1043,6 +1043,35 @@ const STATES = [
   { name: 'selftest-gaps-checked', vp: DESKTOP, roots: ['#tab-selftests'], shot: 'full',
     run: js(`__st.next(); __st.choose('.st-gap'); __st.check()`) },
   { name: 'selftest-results', vp: DESKTOP, roots: ['#tab-selftests'], shot: 'full', run: js(`__st.next()`) },
+  // Get ready (js/get-ready.js). Practice, review links and notes are still being filled in the data, so the
+  // audited item gets one entry of each kind (real ids) while its own lists are empty: their styles are checked
+  // too. Open: Poisson (quotes, an example, our note, a typo remark) and "recognise" (formula-sheet drill).
+  { name: 'getready', vp: DESKTOP, roots: ['#tab-getready', '#app-sidebar'], shot: 'full',
+    run: js(`(() => {
+      const item = window.MIDTERM_PREP.groups.flatMap(g => g.items).find(i => i.id === 'x-poisson');
+      if (!item.practice.length) item.practice.push(
+        { kind: 'selftest', id: window.SELFTEST_BANK.tasks[0].id },
+        { kind: 'problem', id: window.PS_DATA.PROBLEMS_BANK[0].id },
+        { kind: 'source', source: 'audit', sourceTitle: 'Problem set (audit sample)', label: 'Problem 1', text: 'A verbatim problem statement (sic: sample).' },
+        { kind: 'midterm2017', problem: 4, part: 'b' });
+      if (!item.defs.length) item.defs.push(window.PS_DATA.DEFINITIONS_21[5].id);
+      if (!item.notes.length) item.notes.push(window.PS_DATA.TOPICS_NOTES[0].id);
+      window.getReady.openItem('x-poisson');
+      window.getReady.setExpanded('c-recognise', true, { route: false });
+      window.scrollTo(0, 0);
+    })()`) },
+  // Every item on the sheet ticked (the closing line shows), then "only what I haven't ticked": Bernoulli, the
+  // extra, stays; the emptied groups offer "Show all items". Afterwards the filter is off and three are unticked.
+  { name: 'getready-ticked', vp: DESKTOP, roots: ['#tab-getready', '#app-sidebar'], shot: 'full',
+    run: js(`(() => {
+      document.querySelectorAll('#getready-container .gr-item:not(.is-ticked) .gr-check').forEach(b => { if (b.dataset.grCheck !== 'x-bernoulli') b.click(); });
+      document.querySelector('#getready-container [data-gr-filter]').click();
+      window.scrollTo(0, 0);
+    })()`),
+    after: js(`(() => {
+      document.querySelector('#getready-container [data-gr-filter]').click();
+      for (const id of ['n-joint', 'c-transform', 'c-problems']) document.querySelector('#gr-item-' + id + ' .gr-check').click();
+    })()`) },
   { name: 'topics', vp: DESKTOP, roots: ['#tab-topics'], shot: 'full', run: tab('topics') },
   { name: 'formulas', vp: DESKTOP, roots: ['#tab-formulas'], shot: 'full', run: tab('formulas') },
   { name: 'dashboard-progress', vp: DESKTOP, roots: ['#app-sidebar', '#tab-dashboard'], shot: 'full',
@@ -1093,6 +1122,9 @@ const STATES = [
     name: `phone-${name}`, vp: PHONE, roots: ['header', SECTION_ROOT(name)], shot: 'full',
     run: js(`window.app.switchTab(${JSON.stringify(name)}); window.scrollTo(0, 0)`)
   })),
+  // Get ready on a phone: ticked and unticked rows, two items still open from the desktop states
+  { name: 'phone-getready', vp: PHONE, roots: ['header', '#tab-getready'], shot: 'full',
+    run: js(`window.app.switchTab('getready'); window.scrollTo(0, 0)`) },
   { name: 'phone-rewards', vp: PHONE, roots: ['#user-profile-modal'], shot: 'viewport',
     run: js(`window.rewards.open('shop')`),
     after: js(`window.rewards.close()`) },
