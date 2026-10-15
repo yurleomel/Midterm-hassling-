@@ -366,6 +366,8 @@ class AppController {
         return this.scrollToTarget('mistakes-card');
       case 'selftests':
         return this.switchTab('selftests');
+      case 'mock':
+        return this.switchTab('mock');
       case 'formulas':
         return this.switchTab('formulas');
       case 'topic':

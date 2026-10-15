@@ -31,7 +31,7 @@ const StudyPlan = {
     'd5-t1': { kind: 'problems', ids: [28] },            // Gambler's ruin
     'd5-t2': { kind: 'problems', ids: [32, 33] },        // helicopter, traffic light
     'd5-t3': { kind: 'topic', topic: 'topic-12' },       // difference of exponentials (Laplace): theory only
-    'd5-t4': { kind: 'selftests' },                      // full midterm simulation → LMS self-tests, topics 4–6
+    'd5-t4': { kind: 'mock' },                           // full timed midterm simulation → Mock midterm
     'd5-t5': { kind: 'mistakes' },                       // review every missed question
     'd6-t1': { kind: 'formulas' },                       // distributions cheat sheet
     'd6-t2': { kind: 'formulas' },                       // golden traps (pitfalls column)
@@ -71,7 +71,7 @@ const StudyPlan = {
   },
 
   // ctx: { defScores, problemsMastered, topicTests, oralIds, selfTestPassed, selfTestTopics,
-  //        mistakesCount, grades, pomodoroByDate, planChecks }
+  //        mistakesCount, grades, pomodoroByDate, planChecks, mockFinished }
   // returns { done, have, need } — have/need are null when there is nothing to count
   status(task, ctx, dayKey = null) {
     const link = this.linkFor(task);
@@ -91,6 +91,7 @@ const StudyPlan = {
       case 'pomodoro': return count(Math.min(ctx.pomodoroByDate?.[dayKey] || 0, link.sessions), link.sessions);
       case 'mistakes': return { done: (ctx.mistakesCount || 0) === 0, have: null, need: null, left: ctx.mistakesCount || 0 };
       case 'selftests': return count(ctx.selfTestPassed || 0, ctx.selfTestTopics || 3);
+      case 'mock': return { done: (ctx.mockFinished || 0) > 0, have: null, need: null };
       default: return { done: false, have: null, need: null };
     }
   },
@@ -139,6 +140,7 @@ const StudyPlan = {
       case 'pomodoro': return 'Focus timer';
       case 'mistakes': return 'My mistakes';
       case 'selftests': return 'LMS self-tests';
+      case 'mock': return 'Mock midterm';
       case 'formulas': return 'Formulas';
       case 'topic': return `Theory: topic ${String(link.topic).replace('topic-', '')}`;
       default: return '';
@@ -163,7 +165,8 @@ const StudyPlan = {
       selfTestTopics: selfTest.length || 3,
       mistakesCount: Object.keys(profile.mistakesHistory || {}).length,
       grades: window.userProfile?.getExamGrades?.() || profile.examGrades || {},
-      pomodoroByDate: window.pomodoroTimer?.stats?.sessionsByDate || {}
+      pomodoroByDate: window.pomodoroTimer?.stats?.sessionsByDate || {},
+      mockFinished: Object.values(rs.mockAttempts || {}).filter(a => a && Number.isFinite(a.finishedAt)).length
     };
   },
 

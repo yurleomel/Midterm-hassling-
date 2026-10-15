@@ -12,6 +12,8 @@ const PS = (() => {
   return window.PS_DATA;
 })();
 const DAYS = PS.SCHEDULE_DAYS;
+// Sections a link can open: the tab panels of index.html (#tab-<name>)
+const sections = new Set([...fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8').matchAll(/id="tab-([a-z]+)"/g)].map(m => m[1]));
 const TASKS = DAYS.flatMap(d => d.tasks);
 const task = id => TASKS.find(t => t.id === id);
 
@@ -35,8 +37,26 @@ test('every plan link points at something that exists (no dead ends)', () => {
     if (link.kind === 'problems') link.ids.forEach(id => assert.ok(probIds.has(id), `${t.id}: problem ${id}`));
     if (link.kind === 'quiz') link.topics.forEach(id => assert.ok(topicIds.has(id), `${t.id}: topic test ${id}`));
     if (link.kind === 'topic') assert.ok(noteIds.has(link.topic), `${t.id}: notes ${link.topic}`);
+    if (link.kind === 'mock') assert.ok(sections.has('mock'), `${t.id}: the Mock midterm section`);
     assert.ok(P.linkLabel(link), `${t.id} has a label`);
   }
+});
+
+test('the full midterm simulation opens the Mock midterm and ticks off with a finished attempt', () => {
+  const t = task('d5-t4');
+  assert.deepEqual(P.linkFor(t), { kind: 'mock' });
+  assert.equal(P.linkLabel(P.linkFor(t)), 'Mock midterm');
+  assert.equal(P.isManual(P.linkFor(t)), false, 'it checks itself off from the saved attempts');
+  assert.deepEqual(P.status(t, {}), { done: false, have: null, need: null });
+  assert.equal(P.status(t, { mockFinished: 0 }).done, false);
+  assert.equal(P.status(t, { mockFinished: 1 }).done, true);
+});
+
+test('contextFromApp counts the finished mock attempts of the readiness state', () => {
+  global.window = global.window || {};
+  const ctx = P.contextFromApp({ mockAttempts: { a: { finishedAt: 5, score: 30 }, b: { startedAt: 1 }, c: null } });
+  assert.equal(ctx.mockFinished, 1);
+  assert.equal(P.contextFromApp({}).mockFinished, 0);
 });
 
 test('targets from the data become the right links', () => {
