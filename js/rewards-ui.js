@@ -2,7 +2,7 @@
 // Rewards UI: the dashboard card, the profile modal (Avatar · Shop · Stickers · Account),
 // toasts, and notify() — the hook the study features call after saving progress.
 // Logic: js/rewards.js · catalog: js/rewards-data.js · art: js/rewards-art.js
-// Public: window.rewards.open('avatar'|'shop'|'stickers'|'account'), .notify(kind, detail), .render()
+// Public: window.rewards.open('avatar'|'shop'|'stickers'|'exams'|'account'), .notify(kind, detail), .render()
 // Any element with data-rewards-open="<section>" opens the modal there.
 // ========================================================
 
@@ -146,10 +146,10 @@ class RewardsUI {
 
   isOpen() { return this.modal && !this.modal.classList.contains('hidden'); }
 
-  // section: 'avatar' | 'shop' | 'stickers' | 'account' (default: the last one); sticker: show its details
+  // section: 'avatar' | 'shop' | 'stickers' | 'exams' | 'account' (default: the last one); sticker: show its details
   open(section, sticker = null) {
     if (!this.modal) return;
-    if (section && ['avatar', 'shop', 'stickers', 'account'].includes(section)) this.tab = section;
+    if (section && ['avatar', 'shop', 'stickers', 'exams', 'account'].includes(section)) this.tab = section;
     this.detail = sticker || null;
     const nameInput = document.getElementById('profile-name-input');
     if (nameInput && this.profile) nameInput.value = this.profile.name || '';
@@ -197,6 +197,7 @@ class RewardsUI {
     if (this.tab === 'avatar') this.renderWardrobe();
     if (this.tab === 'shop') this.renderShop();
     if (this.tab === 'stickers') this.renderStickers();
+    if (this.tab === 'exams') window.userProfile?.renderExamScheduleAndGrades?.(); // badges follow the clock and the saved grades
   }
 
   chip(attr, value, label, on) {

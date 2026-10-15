@@ -190,9 +190,11 @@ class AppController {
       const midEl = document.getElementById('midterm-countdown-text');
 
       // Sidebar rows: label left, time / grade right
+      // value can be a grade the user typed: escaped, never parsed as HTML
+      const safe = v => String(v).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
       const row = (iconName, iconClass, label, value, valueClass) => `
         <span class="flex items-center gap-1.5 text-slate-300 font-medium whitespace-nowrap">${icon(iconName, iconClass)} ${label}</span>
-        <span class="font-bold tabular-nums whitespace-nowrap ${valueClass}">${value}</span>`;
+        <span class="font-bold tabular-nums whitespace-nowrap ${valueClass}">${safe(value)}</span>`;
       // A day after the exam the timer has nothing left to count: invite to enter the grade instead
       const pending = diff => (diff <= -DAY_MS ? ['Add grade', 'text-slate-400 font-semibold'] : [formatCountdown(diff), '']);
 
@@ -214,25 +216,21 @@ class AppController {
         }
       }
 
-      // Dashboard Card Countdown Displays
-      const colCardTimer = document.getElementById('colloquium-card-countdown');
-      const midCardTimer = document.getElementById('midterm-card-countdown');
-
-      if (colCardTimer) {
-        if (grades.colloquium?.grade) {
-          colCardTimer.innerHTML = `<span class="text-emerald-400 text-lg">${icon('party-popper')} Passed (${grades.colloquium.grade})</span>`;
+      // Countdowns in the profile window's Exams tab
+      // Inner spans carry their own colour: a second text-* class on the element would fight its amber/rose one
+      const cardTimer = (el, grade, diff) => {
+        if (!el) return;
+        if (grade) {
+          el.innerHTML = `<span class="text-emerald-400">${icon('party-popper')} Done · </span>`;
+          el.firstElementChild.append(grade); // user input: added as text, never as HTML
+        } else if (diff <= 0) {
+          el.innerHTML = '<span class="text-sm font-semibold text-slate-300">Finished · add your grade below</span>';
         } else {
-          colCardTimer.textContent = formatCountdown(colDiff);
+          el.textContent = formatCountdown(diff);
         }
-      }
-
-      if (midCardTimer) {
-        if (grades.midterm?.grade) {
-          midCardTimer.innerHTML = `<span class="text-emerald-400 text-lg">${icon('trophy')} Passed (${grades.midterm.grade})</span>`;
-        } else {
-          midCardTimer.textContent = formatCountdown(midDiff);
-        }
-      }
+      };
+      cardTimer(document.getElementById('colloquium-card-countdown'), grades.colloquium?.grade, colDiff);
+      cardTimer(document.getElementById('midterm-card-countdown'), grades.midterm?.grade, midDiff);
     };
 
     updateTimer();
@@ -351,9 +349,11 @@ class AppController {
         this.switchTab('colloquium');
         this.setColloquiumMode(link.kind);
         return this.scrollToTarget('colloquium-modes');
-      case 'exam':
-        this.switchTab('dashboard');
-        return this.scrollToTarget('exam-schedule-grades-card');
+      case 'exam': {
+        window.rewards?.open('exams');
+        const field = document.getElementById(`${link.exam}-grade-input`);
+        return field?.offsetParent ? field.focus() : document.getElementById(`edit-${link.exam}-grade-btn`)?.focus();
+      }
       case 'pomodoro':
         this.switchTab('dashboard');
         return this.scrollToTarget('pomodoro-card');

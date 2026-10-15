@@ -1424,75 +1424,49 @@ class UserProfileManager {
       midInput.value = schedule.midtermDate;
     }
 
-    // 3. Render Colloquium Grade
-    const colGradeForm = document.getElementById('colloquium-grade-form');
-    const colGradeDisplay = document.getElementById('colloquium-grade-display');
-    const colStatusBadge = document.getElementById('colloquium-status-badge');
-    const colDateLabel = document.getElementById('colloquium-grade-saved-date');
-
-    const colG = grades.colloquium;
-    if (colG && colG.grade) {
-      if (colGradeForm) colGradeForm.classList.add('hidden');
-      if (colGradeDisplay) {
-        colGradeDisplay.classList.remove('hidden');
-        const badgeVal = document.getElementById('colloquium-grade-badge-val');
-        const notesVal = document.getElementById('colloquium-grade-notes-val');
-        if (badgeVal) badgeVal.textContent = colG.grade;
-        if (notesVal) notesVal.textContent = colG.notes || 'No note';
+    // 3–4. Each exam shows its grade or the grade form, and a badge that follows the real state:
+    // graded → the grade; date passed without a grade → "Add your grade"; otherwise the saved date
+    const BADGE = {
+      done: 'bg-emerald-950 text-emerald-300 border-emerald-700',
+      due: 'bg-amber-950 text-amber-300 border-amber-800',
+      upcoming: 'bg-indigo-950 text-indigo-300 border-indigo-800'
+    };
+    const renderExam = (key, dateValue, doneIcon) => {
+      const g = grades[key];
+      const form = document.getElementById(`${key}-grade-form`);
+      const display = document.getElementById(`${key}-grade-display`);
+      const badge = document.getElementById(`${key}-status-badge`);
+      const savedLabel = document.getElementById(`${key}-grade-saved-date`);
+      const date = new Date(dateValue);
+      const setBadge = (look, html, text = '') => {
+        if (!badge) return;
+        badge.className = `px-2.5 py-1 rounded-full text-[11px] font-bold border shrink-0 whitespace-nowrap ${BADGE[look]}`;
+        badge.innerHTML = html;
+        if (text) badge.append(text); // user input: added as text, never as HTML
+      };
+      if (g?.grade) {
+        form?.classList.add('hidden');
+        display?.classList.remove('hidden');
+        const val = document.getElementById(`${key}-grade-badge-val`);
+        const notes = document.getElementById(`${key}-grade-notes-val`);
+        if (val) val.textContent = g.grade;
+        if (notes) notes.textContent = g.notes || 'No note';
+        setBadge('done', `${icon(doneIcon)} Grade: `, g.grade);
+        if (savedLabel && g.updatedAt) {
+          const d = new Date(g.updatedAt);
+          savedLabel.textContent = `Saved ${d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}, ${d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}`;
+        }
+      } else {
+        display?.classList.add('hidden');
+        form?.classList.remove('hidden');
+        if (Number.isNaN(date.getTime())) setBadge('upcoming', `${icon('calendar')} Upcoming`);
+        else if (date.getTime() <= Date.now()) setBadge('due', `${icon('pencil')} Add your grade`);
+        else setBadge('upcoming', `${icon('calendar')} `, date.toLocaleString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }));
+        if (savedLabel) savedLabel.textContent = '';
       }
-      if (colStatusBadge) {
-        colStatusBadge.className = 'px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-700 shrink-0';
-        colStatusBadge.innerHTML = `${icon('circle-check')} Passed: `;
-        colStatusBadge.append(colG.grade); // user input: added as text, never as HTML
-      }
-      if (colDateLabel && colG.updatedAt) {
-        const d = new Date(colG.updatedAt);
-        colDateLabel.textContent = `Saved: ${d.toLocaleDateString('en-GB')} ${d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}`;
-      }
-    } else {
-      if (colGradeDisplay) colGradeDisplay.classList.add('hidden');
-      if (colGradeForm) colGradeForm.classList.remove('hidden');
-      if (colStatusBadge) {
-        colStatusBadge.className = 'px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-950 text-amber-300 border border-amber-800 shrink-0';
-        colStatusBadge.innerHTML = `${icon('zap')} Upcoming`;
-      }
-      if (colDateLabel) colDateLabel.textContent = '';
-    }
-
-    // 4. Render Midterm Grade
-    const midGradeForm = document.getElementById('midterm-grade-form');
-    const midGradeDisplay = document.getElementById('midterm-grade-display');
-    const midStatusBadge = document.getElementById('midterm-status-badge');
-    const midDateLabel = document.getElementById('midterm-grade-saved-date');
-
-    const midG = grades.midterm;
-    if (midG && midG.grade) {
-      if (midGradeForm) midGradeForm.classList.add('hidden');
-      if (midGradeDisplay) {
-        midGradeDisplay.classList.remove('hidden');
-        const badgeVal = document.getElementById('midterm-grade-badge-val');
-        const notesVal = document.getElementById('midterm-grade-notes-val');
-        if (badgeVal) badgeVal.textContent = midG.grade;
-        if (notesVal) notesVal.textContent = midG.notes || 'No note';
-      }
-      if (midStatusBadge) {
-        midStatusBadge.className = 'px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-700 shrink-0';
-        midStatusBadge.innerHTML = `${icon('trophy')} Grade: `;
-        midStatusBadge.append(midG.grade); // user input: added as text, never as HTML
-      }
-      if (midDateLabel && midG.updatedAt) {
-        const d = new Date(midG.updatedAt);
-        midDateLabel.textContent = `Saved: ${d.toLocaleDateString('en-GB')} ${d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}`;
-      }
-    } else {
-      if (midGradeDisplay) midGradeDisplay.classList.add('hidden');
-      if (midGradeForm) midGradeForm.classList.remove('hidden');
-      if (midStatusBadge) {
-        midStatusBadge.className = 'px-2.5 py-1 rounded-full text-[11px] font-bold bg-indigo-950 text-indigo-300 border border-indigo-800 shrink-0';
-        midStatusBadge.innerHTML = `${icon('flame')} Fri, 08:30 Kyiv`;
-      }
-      if (midDateLabel) midDateLabel.textContent = '';
-    }
+    };
+    renderExam('colloquium', schedule.colloquiumDate, 'circle-check');
+    renderExam('midterm', schedule.midtermDate, 'trophy');
   }
 
   initExamScheduleControls() {
@@ -1595,28 +1569,20 @@ class UserProfileManager {
       document.getElementById('midterm-grade-form')?.classList.remove('hidden');
     });
 
-    // Make header countdowns jump to schedule card on click
+    // Sidebar countdowns open the Exams tab of the profile window (dates and grades live there)
+    const openExams = () => {
+      window.app?.setNavDrawer?.(false);
+      window.rewards?.open('exams');
+    };
     const colHeader = document.getElementById('colloquium-countdown-text');
     if (colHeader) {
-      colHeader.style.cursor = 'pointer';
       colHeader.setAttribute('title', 'Set the date or add your colloquium grade');
-      colHeader.onclick = () => {
-        window.app?.switchTab('dashboard');
-        setTimeout(() => {
-          document.getElementById('exam-schedule-grades-card')?.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-      };
+      colHeader.onclick = openExams;
     }
     const midHeader = document.getElementById('midterm-countdown-text');
     if (midHeader) {
-      midHeader.style.cursor = 'pointer';
       midHeader.setAttribute('title', 'See the schedule or add your midterm grade');
-      midHeader.onclick = () => {
-        window.app?.switchTab('dashboard');
-        setTimeout(() => {
-          document.getElementById('exam-schedule-grades-card')?.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-      };
+      midHeader.onclick = openExams;
     }
   }
 
