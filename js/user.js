@@ -1185,6 +1185,15 @@ class UserProfileManager {
     }
   }
 
+  // Name / photo from the profile modal (app.js setupProfileModal)
+  updateProfileDetails(name, photoUrl) {
+    if (!this.profile) return;
+    if (name) this.profile.name = name;
+    if (photoUrl) this.profile.photoUrl = photoUrl;
+    this.saveProfile();
+    this.updateUserUI();
+  }
+
   // --- MANDATORY AUTH & ONBOARDING GATE MODAL ---
   showAuthGate() {
     const modal = document.getElementById('auth-gate-modal');
