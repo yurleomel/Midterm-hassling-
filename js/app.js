@@ -30,6 +30,8 @@ class AppController {
     this.setupColloquiumModes();
     window.definitionDrill?.init();
     window.selfTestBank?.init();
+    window.getReady?.init();
+    window.mockMidterm?.init();
 
     // Trigger initial KaTeX rendering and readiness update
     window.quizManager?.updateReadinessUI();
@@ -130,6 +132,8 @@ class AppController {
       window.quizManager?.startQuiz(1);
     }
     if (tabId === 'selftests') window.selfTestBank?.show();
+    if (tabId === 'getready') window.getReady?.show();
+    if (tabId === 'mock') window.mockMidterm?.show();
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
     this.renderAllMath();
@@ -412,6 +416,7 @@ class AppController {
 
   // --- ROUTING: the address mirrors the section (and item), so back/forward, refresh and links work ---
   // #/dashboard · #/colloquium[/def/3] · #/problems[/7] · #/quizzes[/5] · #/selftests[/ST4-02] · #/topics[/topic-12] · #/formulas
+  // #/getready[/c-moments] · #/mock[/2017]
   setRoute(route, { replace = false } = {}) {
     const hash = `#/${route}`;
     if (location.hash === hash) return;
@@ -427,6 +432,8 @@ class AppController {
     else if (tab === 'quizzes' && a) this.openQuizTopic(a, opts);
     else if (tab === 'topics' && a) this.openTopic(a, opts);
     else if (tab === 'selftests' && a) window.selfTestBank?.startTask(a, opts);
+    else if (tab === 'getready' && a) window.getReady?.openItem(a, opts);
+    else if (tab === 'mock' && a) window.mockMidterm?.openPaper(a, opts);
     else this.switchTab(tab, opts);
     return true;
   }

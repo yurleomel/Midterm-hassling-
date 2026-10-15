@@ -27,6 +27,8 @@ class QuizManager {
       daysCompleted: {},       // dayNumber: bool -> bonus % per day
       selfTestStats: {},       // LMS self-test taskId: { attempts, correct, solved, ... } -> 1% per topic 80% solved
       planChecks: {},          // study-plan taskId: true — tasks with nothing to measure, ticked by hand
+      prepChecks: {},          // Midterm 2 checklist itemId: { on: bool, at: ms } — "I can do this" (js/get-ready.js)
+      mockAttempts: {},        // mock midterm attemptId: { paper, startedAt, finishedAt, ... } (js/mock-midterm.js)
       overallPercent: 0
     };
   }
@@ -61,6 +63,8 @@ class QuizManager {
       if (!this.readinessState.daysCompleted) this.readinessState.daysCompleted = {};
       if (!this.readinessState.selfTestStats) this.readinessState.selfTestStats = {};
       if (!this.readinessState.planChecks) this.readinessState.planChecks = {};
+      if (!this.readinessState.prepChecks) this.readinessState.prepChecks = {};
+      if (!this.readinessState.mockAttempts) this.readinessState.mockAttempts = {};
     } else {
       this.readinessState = defaultState;
     }

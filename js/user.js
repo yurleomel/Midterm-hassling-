@@ -449,6 +449,15 @@ class UserProfileManager {
     // Study-plan manual ticks: a task ticked on any device stays ticked
     merged.readinessState.planChecks = Object.assign({}, lR.planChecks || {}, cR.planChecks || {});
 
+    // Midterm 2 checklist: the latest tick or untick wins per item; mock attempts from both copies are kept
+    const latest = (a = {}, b = {}) => {
+      const out = { ...a };
+      for (const [k, v] of Object.entries(b)) if (!out[k] || (v?.at || 0) > (out[k]?.at || 0)) out[k] = v;
+      return out;
+    };
+    merged.readinessState.prepChecks = latest(lR.prepChecks, cR.prepChecks);
+    merged.readinessState.mockAttempts = Object.assign({}, lR.mockAttempts || {}, cR.mockAttempts || {});
+
     // LMS self-test progress: best of both per task
     merged.readinessState.selfTestStats = typeof SelfTestLogic !== 'undefined'
       ? SelfTestLogic.mergeStats(lR.selfTestStats, cR.selfTestStats)
