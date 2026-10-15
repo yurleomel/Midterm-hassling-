@@ -629,3 +629,118 @@ button:hover > .rw-stuck { transform: rotate(0deg) scale(1.06); }
   .rw-stuck, .rw-tile { transition: none; }
   button:hover > .rw-stuck { transform: rotate(var(--rw-tilt, 0deg)); }
 }
+
+/* ========================================================
+   Exam formula sheet (js/formula-sheet.js): .fs-*
+   A centred dialog on desktop, a bottom sheet on phones; either way only
+   the middle part scrolls. The sheet is a printed grid (formulas centred,
+   two-line cells). Below 640px every row becomes a card: Distribution on
+   top, p.m.f./p.d.f. and m.g.f. full width, mean and variance side by side.
+   Colours come from the palette variables, so one set of rules serves the
+   light theme (primary) and the dark one.
+   ======================================================== */
+.fs-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60; /* above the z-50 section modals: the mock midterm opens it over its exam screen */
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.fs-overlay[hidden], .fs-foot[hidden] { display: none; }
+.fs-backdrop { position: absolute; inset: 0; }
+.fs-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 92vh;
+  max-height: 92dvh;
+  border-bottom-width: 0;
+  border-radius: 1.25rem 1.25rem 0 0;
+  outline: none;
+  animation: fs-sheet-up .24s cubic-bezier(.2, .8, .3, 1);
+}
+.fs-head { flex-shrink: 0; padding: 1rem 1rem .75rem; }
+.fs-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 1rem; }
+.fs-foot { flex-shrink: 0; padding: .75rem 1rem calc(.75rem + env(safe-area-inset-bottom, 0px)); }
+body.fs-lock { overflow: hidden; }
+@keyframes fs-sheet-up { from { transform: translateY(2.5rem); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes fs-pop { from { transform: translateY(.5rem) scale(.985); opacity: 0; } to { transform: none; opacity: 1; } }
+
+@media (min-width: 640px) {
+  /* Anchored near the top, not centred: switching views changes the height, and the view switch must not jump */
+  .fs-overlay { align-items: flex-start; padding: 5vh 1.5rem; }
+  .fs-panel { max-width: 66rem; max-height: 90vh; border-bottom-width: 1px; border-radius: 1.25rem; animation-name: fs-pop; }
+  .fs-head { padding: 1.25rem 1.5rem 1rem; }
+  .fs-body { padding: 1.25rem 1.5rem 1.5rem; }
+  .fs-foot { padding: .875rem 1.5rem; }
+}
+
+/* The sheet */
+.fs-scroll { overflow-x: auto; }
+.fs-sheet { width: 100%; border-collapse: collapse; }
+.fs-sheet th, .fs-sheet td {
+  padding: .625rem .75rem;
+  border: 1px solid rgb(var(--line-slate-700, 51 65 85));
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+}
+.fs-sheet thead th {
+  font-size: .8125rem;
+  font-weight: 700;
+  white-space: nowrap;
+  color: rgb(var(--text-slate-300, 203 213 225));
+  background: rgb(var(--surface-slate-950, 2 6 23) / .55);
+}
+.fs-sheet .fs-dist { width: 14rem; min-width: 11rem; text-align: left; } /* fits the "Which distribution?" select */
+.fs-name { display: block; font-weight: 700; }
+.fs-main { display: block; white-space: nowrap; }
+.fs-sub { display: block; margin-top: .3rem; font-size: .8125rem; color: rgb(var(--text-slate-400, 148 163 184)); }
+.fs-cell-label { display: none; }
+.fs-blank { height: 3.25rem; }
+.fs-mark { display: flex; align-items: center; gap: .3rem; margin-bottom: .2rem; font-size: .75rem; font-weight: 700; }
+.fs-sheet tbody tr.fs-right > * { background: rgb(var(--surface-emerald-950, 2 44 34) / .55); }
+.fs-sheet tbody tr.fs-wrong > * { background: rgb(var(--surface-rose-950, 76 5 25) / .55); }
+.fs-footer { font-variant-numeric: tabular-nums; }
+/* "Also hide the column headers": the header row stays, blank, like a sheet printed without it */
+.fs-noheads .fs-th { visibility: hidden; }
+.fs-noheads .fs-cell-label { display: none !important; }
+
+/* Drill level 2: the one cell on screen */
+.fs-cell-big { font-size: 1.625rem; line-height: 1.35; overflow-x: auto; overflow-y: hidden; padding: .25rem 0; }
+.fs-cell-sub { font-size: 1rem; }
+
+/* Phones: one card per row */
+@media (max-width: 639.98px) {
+  .fs-scroll { overflow: visible; }
+  .fs-sheet, .fs-sheet tbody { display: block; }
+  .fs-sheet thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .fs-sheet tbody tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    margin-bottom: .75rem;
+    border: 1px solid rgb(var(--line-slate-700, 51 65 85));
+    border-radius: .875rem;
+    overflow: hidden;
+  }
+  .fs-sheet tbody th, .fs-sheet tbody td {
+    display: block;
+    min-width: 0;
+    border: 0;
+    border-top: 1px solid rgb(var(--line-slate-800, 30 41 59));
+    text-align: left;
+  }
+  .fs-sheet tbody .fs-dist { grid-column: 1 / -1; width: auto; min-width: 0; border-top: 0; background: rgb(var(--surface-slate-950, 2 6 23) / .55); }
+  .fs-sheet tbody .fs-c0, .fs-sheet tbody .fs-c1 { grid-column: 1 / -1; }
+  .fs-sheet tbody .fs-c3 { border-left: 1px solid rgb(var(--line-slate-800, 30 41 59)); }
+  .fs-blank { height: 2.5rem; }
+  .fs-cell-label { display: block; margin-bottom: .3rem; font-size: .75rem; font-weight: 700; color: rgb(var(--text-slate-400, 148 163 184)); }
+  .fs-main { overflow-x: auto; overflow-y: hidden; }
+  .fs-mode .lucide-icon { display: none; } /* "As handed out" fits on one line in a third of 390px */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fs-panel { animation: none; }
+}
