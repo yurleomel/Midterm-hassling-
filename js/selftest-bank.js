@@ -52,7 +52,7 @@ const SelfTestLogic = {
 
   // response by format: single -> option index | multi -> option indices | tf -> bool
   // numeric -> string | match / gaps -> array of chosen strings (null = left empty)
-  // returns { correct: bool, score: 0..1 }; partial score mirrors Moodle (right picks minus wrong picks)
+  // returns { correct: bool, score: 0..1 }; multi-select partial score = (right picks − wrong picks) / all right options
   grade(task, response) {
     switch (task.format) {
       case 'single':
@@ -178,17 +178,6 @@ class SelfTestBank {
     window.quizManager?.saveReadiness();
   }
 
-  // The first version kept progress in a browser-only key; fold it into the readiness state once
-  migrateLegacyStats() {
-    try {
-      const legacy = JSON.parse(localStorage.getItem(SelfTestBank.LEGACY_KEY) || 'null');
-      if (!legacy || !window.quizManager?.readinessState) return;
-      this.stats = SelfTestLogic.mergeStats(this.stats, legacy);
-      localStorage.removeItem(SelfTestBank.LEGACY_KEY);
-      this.saveStats();
-    } catch (e) {}
-  }
-
   topicProgress() {
     return SelfTestLogic.topicProgress(this.bank.tasks, this.bank.topics, this.stats);
   }
@@ -226,7 +215,6 @@ class SelfTestBank {
   }
 
   init() {
-    this.migrateLegacyStats();
     this.renderSetup();
   }
 
@@ -242,6 +230,7 @@ class SelfTestBank {
   renderMath(el) {
     if (el && typeof window.renderMathInElement === 'function') {
       window.renderMathInElement(el, {
+        macros: { '\\mbox': '\\text{#1}' },
         delimiters: [{ left: '\\[', right: '\\]', display: true }, { left: '\\(', right: '\\)', display: false }],
         throwOnError: false
       });
@@ -375,14 +364,14 @@ class SelfTestBank {
 
           <div class="pt-4 border-t border-slate-800 flex flex-col sm:flex-row sm:items-center gap-3">
             ${pool.length ? `
-              <div class="flex items-center gap-2 text-xs text-slate-300">
+              <div class="flex flex-wrap items-center gap-2 text-xs text-slate-300">
                 <span>Кількість:</span>
-                <input id="st-count" type="number" min="1" max="${pool.length}" value="${count}" class="w-20 px-2 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-slate-100 text-sm">
+                <input id="st-count" type="number" inputmode="numeric" min="1" max="${pool.length}" value="${count}" class="w-20 px-2 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-slate-100 text-base sm:text-sm">
                 ${[5, 10, 20].filter(n => n < pool.length).map(n => `<button class="st-count-btn px-2.5 py-1 rounded-lg border border-slate-700 bg-slate-950/50 hover:border-indigo-500 text-slate-300 cursor-pointer transition" data-count="${n}">${n}</button>`).join('')}
                 <button class="st-count-btn px-2.5 py-1 rounded-lg border border-slate-700 bg-slate-950/50 hover:border-indigo-500 text-slate-300 cursor-pointer transition" data-count="${pool.length}">усі ${pool.length}</button>
               </div>
               <button id="st-start" class="sm:ml-auto px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm cursor-pointer transition flex items-center justify-center gap-2">
-                ${icon('play')} Почати (${count} з ${pool.length})
+                ${icon('play')} <span id="st-start-label">Почати (${count} з ${pool.length})</span>
               </button>
             ` : `
               <div class="text-xs text-slate-400">Під ці фільтри задач немає${f.onlyUnsolved ? ' — схоже, все вже розв\'язано' : ''}.</div>
@@ -404,16 +393,19 @@ class SelfTestBank {
       this.renderSetup();
     });
     const countInput = host.querySelector('#st-count');
-    countInput?.addEventListener('change', () => {
-      this.count = Math.min(Math.max(1, parseInt(countInput.value, 10) || 1), pool.length);
-      this.renderSetup();
+    const clampCount = raw => Math.min(Math.max(1, parseInt(raw, 10) || 1), pool.length);
+    countInput?.addEventListener('input', () => {
+      this.count = clampCount(countInput.value);
+      const label = host.querySelector('#st-start-label');
+      if (label) label.textContent = `Почати (${this.count} з ${pool.length})`;
     });
+    countInput?.addEventListener('change', () => { countInput.value = this.count; });
     host.querySelectorAll('.st-count-btn').forEach(btn => btn.addEventListener('click', () => {
       this.count = Number(btn.getAttribute('data-count'));
       this.renderSetup();
     }));
     host.querySelector('#st-start')?.addEventListener('click', () => {
-      const n = Math.min(Math.max(1, parseInt(countInput?.value, 10) || count), pool.length);
+      const n = clampCount(countInput?.value ?? count);
       this.count = n;
       this.start(SelfTestLogic.pick(pool, n));
     });
@@ -482,7 +474,11 @@ class SelfTestBank {
     `;
 
     this.bindAnswer(task, order);
-    host.querySelector('#st-check').addEventListener('click', () => (s.checked ? this.next() : this.check()));
+    host.querySelector('#st-check').addEventListener('click', () => {
+      if (!s.checked) return this.check();
+      if (Date.now() - (s.checkedAt || 0) < 450) return; // second half of a double click / key repeat
+      this.next();
+    });
     host.querySelector('#st-exit').addEventListener('click', () => this.renderSetup());
     this.renderMath(host);
   }
@@ -492,7 +488,7 @@ class SelfTestBank {
     if (task.format === 'gaps') {
       text = text.replace(/\[\[(\d+)\]\]/g, (_, n) => {
         const i = Number(n) - 1;
-        return `<select class="st-gap mx-1 my-1 px-2 py-1 rounded-lg bg-slate-950 border border-slate-700 text-slate-100 text-sm cursor-pointer" data-i="${i}">
+        return `<select class="st-gap mx-1 my-1 px-2 py-1 rounded-lg bg-slate-950 border border-slate-700 text-slate-100 text-base sm:text-sm cursor-pointer" data-i="${i}">
           <option value="">— обрати —</option>${task.gaps[i].map(o => `<option value="${this.esc(o)}">${this.esc(o)}</option>`).join('')}
         </select>`;
       });
@@ -522,12 +518,12 @@ class SelfTestBank {
         return `<div class="grid grid-cols-2 gap-2.5">${optionBtn('Правда', 'T', 'true', false)}${optionBtn('Неправда', 'F', 'false', false)}</div>`;
       case 'numeric':
         return `<label class="flex items-center gap-3 text-sm text-slate-300">Відповідь:
-          <input id="st-numeric" type="text" inputmode="decimal" autocomplete="off" class="w-48 px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-slate-100" placeholder="число або дріб, напр. 3/4"></label>`;
+          <input id="st-numeric" type="text" inputmode="decimal" autocomplete="off" class="w-48 px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-slate-100 text-base sm:text-sm" placeholder="число або дріб, напр. 3/4"></label>`;
       case 'match':
         return `<div class="space-y-2.5">${task.stems.map((stem, i) => `
           <div class="flex flex-col sm:flex-row sm:items-center gap-2 p-3 rounded-xl border border-slate-800 bg-slate-950/70">
             <span class="flex-1 text-sm text-slate-200">${this.esc(stem)}</span>
-            <select class="st-match px-2 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-slate-100 text-sm cursor-pointer" data-i="${i}">
+            <select class="st-match px-2 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-slate-100 text-base sm:text-sm cursor-pointer" data-i="${i}">
               <option value="">— обрати —</option>${task.choices.map(c => `<option value="${this.esc(c)}">${this.esc(c)}</option>`).join('')}
             </select>
           </div>`).join('')}</div>`;
@@ -586,7 +582,7 @@ class SelfTestBank {
       e.preventDefault();
       if (!checkBtn.disabled) checkBtn.click();
     });
-    numeric?.focus();
+    if (window.matchMedia('(pointer: fine)').matches) numeric?.focus();
 
     host.querySelectorAll('.st-match, .st-gap').forEach(sel => sel.addEventListener('change', () => {
       s.response[Number(sel.getAttribute('data-i'))] = sel.value || null;
@@ -600,6 +596,7 @@ class SelfTestBank {
     const { task } = s.items[s.index];
     const res = SelfTestLogic.grade(task, s.response);
     s.checked = true;
+    s.checkedAt = Date.now();
     s.results.push({ task, correct: res.correct, score: res.score });
     this.stats = SelfTestLogic.recordResult(this.stats, task.id, res.correct);
     this.saveStats();
@@ -718,7 +715,6 @@ class SelfTestBank {
   }
 }
 
-SelfTestBank.LEGACY_KEY = 'stathustle_selftest_stats'; // browser-only progress of the first version
 SelfTestBank.MISTAKE_PREFIX = 'st_';                    // id prefix in the shared mistakes registry
 
 if (typeof module !== 'undefined' && module.exports) {

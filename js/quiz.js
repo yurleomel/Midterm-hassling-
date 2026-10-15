@@ -738,6 +738,7 @@ class QuizManager {
     const render = () => {
       if (typeof window.renderMathInElement === 'function') {
         window.renderMathInElement(elem, {
+          macros: { '\\mbox': '\\text{#1}' },
           delimiters: [
             { left: "$$", right: "$$", display: true },
             { left: "$", right: "$", display: false },

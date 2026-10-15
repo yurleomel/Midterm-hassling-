@@ -349,7 +349,7 @@ const SELFTEST_BANK = {
      "correct": true
     }
    ],
-   "explanation": "It is Bernoulli; since that is not listed the fully correct choice is 'other' (binomial earns only partial credit, as Bin(1,p))",
+   "explanation": "The indicator of success is a Bernoulli r.v. B(1, p). 'Bernoulli' is not among the options, so the right choice is 'other' (B(1, p) is formally the binomial with n = 1, but it is not the expected answer).",
    "seenInAttempts": 1
   },
   {

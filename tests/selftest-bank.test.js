@@ -91,7 +91,7 @@ test('single choice: only the correct option counts', () => {
   assert.equal(L.grade(t, (right + 1) % 4).correct, false);
 });
 
-test('multi select: all and only the correct options; partial score like Moodle', () => {
+test('multi select: all and only the correct options; partial score = (right − wrong) / all right', () => {
   const t = byId('ST4-02'); // three correct, "independent" is wrong
   const right = t.options.map((o, i) => (o.correct ? i : -1)).filter(i => i >= 0);
   const wrong = t.options.findIndex(o => !o.correct);
@@ -187,4 +187,23 @@ test('mergeStats keeps the best of local and cloud progress per task', () => {
   assert.deepEqual(m.c, cloud.c);
   assert.deepEqual(L.mergeStats(undefined, undefined), {});
   assert.equal(local.a.solved, false, 'inputs are not mutated');
+});
+
+test('every formula in the bank renders with the bundled KaTeX (with the app\'s \\mbox macro)', () => {
+  const katex = require('../vendor/katex/katex.min.js');
+  const macros = { '\\mbox': '\\text{#1}' };
+  const texts = bank.tasks.flatMap(t => [t.question, t.hint, ...(t.options || []).map(o => o.text), ...(t.stems || []), ...(t.choices || [])]).filter(Boolean);
+  const bad = [];
+  for (const s of texts) {
+    for (const m of s.matchAll(/\\\(([\s\S]*?)\\\)|\\\[([\s\S]*?)\\\]/g)) {
+      try { katex.renderToString(m[1] ?? m[2], { throwOnError: true, displayMode: !!m[2], macros: { ...macros } }); }
+      catch (e) { bad.push(`${(m[1] ?? m[2]).slice(0, 40)} → ${e.message.slice(0, 60)}`); }
+    }
+  }
+  assert.deepEqual(bad, []);
+});
+
+test('no explanation promises partial credit for a single-choice task', () => {
+  const offenders = bank.tasks.filter(t => t.format === 'single' && /partial credit/i.test(t.explanation)).map(t => t.id);
+  assert.deepEqual(offenders, []);
 });
