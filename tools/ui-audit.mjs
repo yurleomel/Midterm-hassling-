@@ -13,7 +13,8 @@
 //   2. serves the copy on 127.0.0.1 and starts its own headless Chrome with a fresh profile;
 //   3. lets only local + CDN GET requests out (everything else is failed in the browser) and
 //      exits with an error if anything ever tries to reach amazonaws;
-//   4. logs in as guest and walks every section and key state (see STATES) in both themes at
+//   4. logs in as guest and walks every section and key state (see STATES; the mock midterm uses the 2017 paper
+//      fixture from tests/fixtures until js/midterm-papers.js has it) in both themes at
 //      1440px, plus every section and the drawer at 390px, and checks:
 //        text-contrast   every visible text node, input value and placeholder vs its composited
 //                        background (4.5:1; 3:1 for large text and for unavailable controls, i.e.
@@ -34,6 +35,7 @@
 import { spawn } from 'node:child_process';
 import { createServer } from 'node:http';
 import fs from 'node:fs';
+import { createRequire } from 'node:module';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -941,6 +943,26 @@ const tab = name => js(`window.app.switchTab(${JSON.stringify(name)})`);
 const SECTION_ROOT = name => `#tab-${name}`;
 const SECTIONS = ['dashboard', 'colloquium', 'problems', 'quizzes', 'selftests', 'topics', 'formulas'];
 
+// Mock midterm (js/mock-midterm.js). Until the content team fills js/midterm-papers.js, the 2017 paper comes from the
+// test fixture, so every screen is audited with its real content; the page's own data wins once it is there.
+const PAPER_2017_FIXTURE = createRequire(import.meta.url)(path.join(ROOT, 'tests', 'fixtures', 'midterm-paper-2017.js')).PAPER_2017;
+const MM = js(`
+  window.MIDTERM_PAPERS = window.MIDTERM_PAPERS || {};
+  if (!window.MIDTERM_PAPERS['2017']) window.MIDTERM_PAPERS['2017'] = ${JSON.stringify(PAPER_2017_FIXTURE)};
+  window.__mm = {
+    m: window.mockMidterm,
+    click: sel => document.querySelector(sel)?.click(),
+    pick(item, value) { this.click('[data-mm-act="pick"][data-item="' + item + '"][data-value="' + value + '"]'); },
+    type(sel, text) { const el = document.querySelector(sel); if (el) { el.value = text; el.dispatchEvent(new Event('input', { bubbles: true })); } },
+    // problem 1 of a new mock: answer its first item whatever the task format
+    answerFirst() {
+      const item = document.getElementById('mm-i-1.1');
+      const field = item?.querySelector('[data-mm-input]');
+      if (field) { field.value = '0.5'; field.dispatchEvent(new Event('input', { bubbles: true })); }
+      else item?.querySelector('[data-mm-act="pick"]')?.click();
+    }
+  };`);
+
 // Self-test helpers (run inside the page)
 const ST = js(`
   window.__st = {
@@ -1045,6 +1067,28 @@ const STATES = [
   { name: 'selftest-results', vp: DESKTOP, roots: ['#tab-selftests'], shot: 'full', run: js(`__st.next()`) },
   { name: 'topics', vp: DESKTOP, roots: ['#tab-topics'], shot: 'full', run: tab('topics') },
   { name: 'formulas', vp: DESKTOP, roots: ['#tab-formulas'], shot: 'full', run: tab('formulas') },
+  // Mock midterm: start → exam (problem 1 answered, the hand-in question open) → grading → history, attempt, paper
+  { name: 'mock-start', vp: DESKTOP, roots: ['#tab-mock'], shot: 'full',
+    run: js(`${MM}; __mm.m.pick.paper = '2017'; window.app.switchTab('mock'); window.scrollTo(0, 0)`) },
+  { name: 'mock-exam', vp: DESKTOP, roots: ['#tab-mock'], shot: 'full',
+    run: js(`(() => { const m = __mm.m; m.pick.paper = '2017'; m.pick.duration = 80; m.start();
+      __mm.pick('1.1', '2'); __mm.pick('1.2', '0'); __mm.pick('1.3', 'other'); __mm.type('[data-mm-input="other"][data-item="1.3"]', 'N(0, 1/4)');
+      __mm.pick('1.4', 'false'); __mm.type('[data-mm-input="def"][data-item="2.1"]', 'its c.d.f. is differentiable');
+      __mm.click('[data-mm-act="done"][data-n="3"]'); __mm.click('[data-mm-act="ask-finish"]'); window.scrollTo(0, 0); })()`) },
+  { name: 'mock-review', vp: DESKTOP, roots: ['#tab-mock'], shot: 'full',
+    run: js(`(() => { const m = __mm.m; m.finish();
+      m.setMark('1.3', 1); m.setMark('2.1', 1); m.setMark('2.2', 0.5); m.setMark('3a', 3); m.stepMark('3b', 0.5); m.setMark('4a', 0);
+      m.saveResult(); window.scrollTo(0, 0); })()`) },
+  { name: 'mock-history', vp: DESKTOP, roots: ['#tab-mock'], shot: 'full',
+    run: js(`(() => { const m = __mm.m; m.saveResult({ force: true });
+      m.goStart(); m.pick.paper = 'new'; m.start(); m.finish(); // a second attempt, fully graded: the best one
+      for (const [k, g] of Object.entries(m.gradeIndex(m.sessionPaper))) m.setMark(k, g.max);
+      m.saveResult(); m.goStart(); window.scrollTo(0, 0); })()`) },
+  { name: 'mock-attempt', vp: DESKTOP, roots: ['#tab-mock'], shot: 'full',
+    run: js(`(() => { const m = __mm.m; m.openAttempt(MockMidtermLogic.history(m.attempts).find(a => a.paper === '2017').id); window.scrollTo(0, 0); })()`) },
+  { name: 'mock-paper', vp: DESKTOP, roots: ['#tab-mock'], shot: 'full',
+    run: js(`(() => { __mm.m.openPaper('2017'); ['1', '2', '3'].forEach(n => __mm.click('[data-mm-act="solution"][data-n="' + n + '"]')); window.scrollTo(0, 0); })()`),
+    after: js(`__mm.m.goStart()`) },
   { name: 'dashboard-progress', vp: DESKTOP, roots: ['#app-sidebar', '#tab-dashboard'], shot: 'full',
     run: js(`(() => {
       const up = window.userProfile;
@@ -1093,6 +1137,10 @@ const STATES = [
     name: `phone-${name}`, vp: PHONE, roots: ['header', SECTION_ROOT(name)], shot: 'full',
     run: js(`window.app.switchTab(${JSON.stringify(name)}); window.scrollTo(0, 0)`)
   })),
+  { name: 'phone-mock-exam', vp: PHONE, roots: ['header', '#tab-mock'], shot: 'full',
+    run: js(`(() => { const m = __mm.m; window.app.switchTab('mock'); m.pick.paper = 'new'; m.pick.duration = 60; m.start(); __mm.answerFirst();
+      m.session.startedAt = Date.now() - (m.session.durationMin - 9) * 60000; m.persist(); m.tick(); window.scrollTo(0, 0); })()`), // in its 10-minute warning
+    after: js(`__mm.m.discard()`) },
   { name: 'phone-rewards', vp: PHONE, roots: ['#user-profile-modal'], shot: 'viewport',
     run: js(`window.rewards.open('shop')`),
     after: js(`window.rewards.close()`) },
