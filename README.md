@@ -24,7 +24,7 @@ python3 server.py
 Open **`http://localhost:8080`**.
 
 ### Tests
-Pure logic (drill queue, ticket picker, self-test grading, rewards points/stickers/shop/merge) and the self-test bank data are covered by Node's built-in test runner — no dependencies:
+Pure logic (drill queue, ticket picker, self-test grading, rewards points/stickers/shop/merge, the Get ready checklist) and the self-test bank data are covered by Node's built-in test runner — no dependencies:
 ```bash
 node --test tests/*.test.js
 ```
@@ -35,7 +35,7 @@ node tools/ui-audit.mjs                  # both themes, every section and key st
 node tools/ui-audit.mjs --themes light --only quiz,selftest   # quick partial run
 ```
 * It serves a temporary copy of the site with the cloud-sync URL (`CLOUD_SYNC_ENDPOINT` in `js/user.js`) rewritten to an unroutable local port, runs its own headless Chrome with a fresh profile, lets only local + CDN GET requests out, and fails if anything ever tries to reach `amazonaws`. It never touches the real backend.
-* Logs in as guest and walks every sidebar section plus the key states (flashcard, definition drill, exam ticket, hints, filtered problems, quiz feedback, self-test type window and checks of every task format, running Pomodoro, Gemini drawer/key modal, mistakes panel, every tab of the profile & rewards modal and a reward toast, phone drawer).
+* Logs in as guest and walks every sidebar section plus the key states (flashcard, definition drill, exam ticket, hints, filtered problems, quiz feedback, self-test type window and checks of every task format, the Get ready checklist (an open item with every kind of practice, everything ticked with only what is left shown, phone), running Pomodoro, Gemini drawer/key modal, mistakes panel, every tab of the profile & rewards modal and a reward toast, phone drawer).
 * Checks every visible text node against its composited background (WCAG AA 4.5:1, 3:1 for large text and for unavailable `disabled` + `cursor-not-allowed` controls, also while hovered), icon-only buttons and form-field outlines (3:1), `cursor: pointer`, a visible hover change, a visible focus indicator, filled buttons that blend into the surface behind them, labels touching/spilling out of buttons, mismatched button heights in a row and horizontal scrolling.
 * Writes `ui-audit-out/report.txt`, `report.json` and screenshots (`ui-audit-out/shots/<theme>/`). Exit code 1 when something is not covered by `tools/ui-audit-allowlist.json` — keep that list short, every entry needs a `reason`.
 
@@ -101,6 +101,12 @@ Tracks your real progress across 4 weighted pillars:
 * **Progress & gamification (kept small):** progress per task lives in the readiness state (`readinessState.selfTestStats`, merged task-by-task with the cloud copy). A topic whose self-test tasks are ≥80% solved adds **+1% Readiness** (3% max, shown as "LMS Self-tests" on the dashboard Mastery Meter; Exam Problems went from 57% to 54% so the total stays 100%). Wrong answers go to the dashboard mistakes panel ("Прорішати помилки з self-тестів LMS"), a correct answer clears them; time spent in the tab shows up in the focus-time analytics. The setup screen shows each topic's progress towards its +1% and a "Мої помилки" shortcut; the summary announces a newly counted topic.
 * `js/selftest-data.js` is generated from a local extraction of the LMS review pages (kept out of the repo); edit the generator, not the file.
 
+### 4c. ✅ Get ready for Midterm 2 — tab "Get ready"
+* The teacher's checklist **"I am ready for Midterm 2 if"** (R.H., Spring 2018) for module 2, in the sheet's own wording (its typos fixed and noted). Tick "I can do this" per item: the header counts **N of 28** and shows the sheet's closing line once all are ticked; the sidebar shows `ticked/28`. Bernoulli is our extra and never counts. Ticks are `readinessState.prepChecks[item] = { on, at }`, so the latest tick or untick wins in the cloud merge.
+* Each item opens what the lecture slides say, **word for word**, cited "Lecture 4 · slide 10" (lecture title on hover), then the lecture examples, practice from the course materials (LMS self-tests, exam problems, problem-set quotes, the 2017 paper), review links (colloquium definitions, topic notes) and **our notes**, styled apart from the quotes. Editorial marks inside quotes ("(sic: …)", slide pointers like "L6 p13") keep their text but show in amber as ours.
+* The exam formula sheet comes without labels: the header, the distributions group and "recognise … distributions" open its drill (`window.formulaSheet`).
+* Jump row for the four groups, "Only what I haven't ticked", "Next item", deep links `#/getready/<item>`. An item with no practice yet points to Exam problems and LMS self-tests. Data: `js/midterm-prep-data.js` (generated); logic: `GetReadyLogic` in `js/get-ready.js`, tested in `tests/get-ready.test.js`.
+
 ### 5. 🤖 Gemini AI Mentor Integration
 * Dedicated slide-over AI tutor drawer available on every page.
 * Integrated with Google Gemini 2.0 Flash / 1.5 Flash.
@@ -162,6 +168,8 @@ midterm2/
 │   ├── exam-ticket.js    # Colloquium ticket: random oral question + 2 definitions + stopwatch
 │   ├── selftest-data.js  # Generated: 69 unique LMS self-test tasks (topic, type, difficulty)
 │   ├── selftest-bank.js  # Self-test drill: filters, random sets, grading for every Moodle format
+│   ├── midterm-prep-data.js # Generated: the Midterm 2 checklist with lecture quotes, examples and practice
+│   ├── get-ready.js      # Get ready: the checklist, ticks, verbatim quotes, practice links (GetReadyLogic is DOM-free)
 │   ├── icons.js          # icon('name') helper + <i data-icon> hydration (Lucide inline SVG)
 │   ├── rewards-data.js   # Rewards catalog: points rules, stickers, shop items, tier art (data only)
 │   ├── rewards-art.js    # Avatar, item and sticker inline SVG from shared shapes (DOM-free)
