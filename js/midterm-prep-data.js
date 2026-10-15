@@ -27,7 +27,7 @@ const MIDTERM_PREP = {
        "kind": "Definition",
        "lecture": "L4",
        "page": 10,
-       "text": "A <b>random variable</b> (rv) \\(\\xi\\) on a probability space \\((\\Omega,\\mathscr F,\\mathsf P)\\) is any function \\(\\xi:\\Omega\\to\\mathbb R\\). <br><i>Footnote:</i> \\(\\xi\\) must be <i>measurable</i>, ie., sets like \\(\\{\\xi\\le t\\}\\) should be events (from \\(\\mathscr F\\))"
+       "text": "A <b>random variable</b> (<b>rv</b>) \\(\\xi\\) on a probability space \\((\\Omega,\\mathscr F,\\mathsf P)\\) is any\\({}^a\\) function \\(\\xi:\\ \\Omega\\to\\mathbb R\\)<br>\\({}^a\\xi\\) must be <i>measurable</i>, ie., sets like \\(\\{\\xi\\le t\\}\\) should be events (from \\(\\mathscr F\\))"
       },
       {
        "kind": "Definition",
@@ -39,14 +39,51 @@ const MIDTERM_PREP = {
        "kind": "Remark",
        "lecture": "L4",
        "page": 11,
-       "text": "Notation: \\(X\\) — random variable, \\(x\\) — numerical value"
+       "text": "<i>Notation</i><br>\\(X\\) random variable \\(\\qquad\\) \\(x\\) numerical value"
       }
      ],
      "lectureExamples": [],
      "tips": [],
-     "practice": [],
-     "defs": [],
-     "notes": []
+     "practice": [
+      {
+       "kind": "source",
+       "source": "defs-s5",
+       "label": "Random variable",
+       "text": "A random variable \\(X\\) is a measurable function that maps the sample space \\(\\Omega\\) into the real numbers \\(\\mathbb R\\): \\[X:\\Omega\\to\\mathbb R,\\quad\\text{such that }\\forall a\\in\\mathbb R,\\{\\omega\\in\\Omega:X(\\omega)\\le a\\}\\in\\mathcal F\\]",
+       "sourceTitle": "Definitions for seminar 5"
+      },
+      {
+       "kind": "source",
+       "source": "defs-s5",
+       "label": "Discrete random variable",
+       "text": "A random variable \\(X\\) is called discrete if its range \\(S_X\\subset\\mathbb R\\) is finite or countably infinite, i.e., \\(S_X=\\{x_1,x_2,\\dots\\}\\).",
+       "sourceTitle": "Definitions for seminar 5"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST4-28"
+      },
+      {
+       "kind": "source",
+       "source": "ps4-2026",
+       "label": "Problem 9",
+       "text": "Two balls are chosen randomly from an urn containing 8 white, 4 black, and 2 orange balls. Suppose that we win 2 for each black ball selected and we lose 1 for each white ball selected. Let \\(X\\) denote our winnings. What are the possible values of \\(X\\), and what are the probabilities associated with each value?",
+       "sourceTitle": "Problem set 4 (seminar 4, 2026)"
+      },
+      {
+       "kind": "source",
+       "source": "ps4-2026",
+       "label": "Problem 12",
+       "text": "Five distinct numbers are randomly distributed to players numbered 1 through 5. Whenever two players compare their numbers, the one with the higher one is declared the winner. Initially, players 1 and 2 compare their numbers; the winner then compares her number with that of player 3, and so on. Let \\(X\\) denote the number of times player 1 is a winner. Find \\(\\mathbb P\\{X=i\\}, i=0,1,2,3,4\\).",
+       "sourceTitle": "Problem set 4 (seminar 4, 2026)"
+      }
+     ],
+     "defs": [
+      1
+     ],
+     "notes": [
+      "topic-1"
+     ]
     },
     {
      "id": "d-pmf",
@@ -56,38 +93,72 @@ const MIDTERM_PREP = {
        "kind": "Definition",
        "lecture": "L4",
        "page": 14,
-       "text": "For a discrete <b>r.v.</b> \\(X\\) its <b>probability mass function</b> (pmf) \\(p_X\\) is given by \\[p_X(a)=\\mathsf P(X=a),\\qquad a\\in\\mathbb R.\\]"
+       "text": "For a discrete <b>r.v.</b> \\(X\\) its <b>probability mass function</b> (<b>pmf</b>) \\(p_X\\) is given by \\[p_X(a)=\\mathsf P(X=a),\\qquad a\\in\\mathbb R.\\]"
       },
       {
        "kind": "Property",
        "lecture": "L4",
        "page": 14,
-       "text": "If \\(X\\) assumes values \\(x_1,x_2,\\dots\\), then \\(p_X(a)\\ge0\\) for \\(a=x_k\\) and \\(p_X(a)=0\\) otherwise; <br>\\(\\sum_{k\\ge0}p_X(x_k)=1\\) (sic: \\(k\\ge1\\)) since \\(\\{X=x_k\\}_{k>0}\\) form a partition of \\(\\Omega\\)"
+       "text": "• If \\(X\\) assumes values \\(x_1,x_2,\\dots\\), then \\(p_X(a)\\ge0\\) for \\(a=x_k\\) and \\(p_X(a)=0\\) otherwise;<br>• \\(\\sum_{k\\ge0}p_X(x_k)=1\\) since \\(\\{X=x_k\\}_{k>0}\\) form a partition of \\(\\Omega\\)"
       },
       {
        "kind": "Remark",
        "lecture": "L4",
        "page": 16,
-       "text": "<i>Warning:</i> different rv may posses (sic: possess) the same pmf (e.g. no. of Heads in 5 tosses with \\(p=.4\\); no. of white balls in 5 draws with replacement from 4 white + 6 black; no. of 5 random numbers from \\([0,1]\\) that are \\(\\le .4\\))"
+       "text": "<i>Warning: different <b>rv</b> may posses the same <b>pmf</b></i><br>• total number \\(X\\) of Heads in 5 tosses of biased coin with \\(p=.4\\): \\[p_X(k)=\\mathsf P(X=k)=\\binom{5}{k}p^kq^{5-k},\\qquad k=0,1,\\dots,5\\]• an urn contains 4 white balls and 6 black ones. A ball is drawn at random, its colour marked, and then returned in the urn. The number \\(Y\\) of white balls in 5 draws is a <b>rv</b> with \\[p_Y(k)=\\mathsf P(Y=k)=\\binom{5}{k}\\bigl(\\tfrac{4}{10}\\bigr)^k\\bigl(\\tfrac{6}{10}\\bigr)^{5-k},\\qquad k=0,1,\\dots,5\\]• generate 5 random numbers from \\([0,1]\\) and count the no. \\(Z\\) of those \\(\\le.4\\); then \\[\\mathsf P(Z=k)=\\mathsf P(Y=k)=\\mathsf P(X=k)\\]"
       },
       {
        "kind": "Remark",
        "lecture": "L4",
        "page": 17,
-       "text": "For many purposes, it does not matter how a rv \\(X\\) was defined; it suffices to know its pmf \\(p_X\\): then we know the <b>values</b> of \\(X\\) and the <b>probabilities</b>"
+       "text": "For many purposes, it does not matter how a <b>rv</b> \\(X\\) was defined;<br>it suffices to know its <b>pmf</b> \\(p_X\\):<br>then we know the <b>values</b> of \\(X\\) and the <b>probabilities</b>"
       },
       {
        "kind": "Formula",
        "lecture": "L4",
        "page": 20,
-       "text": "pmf vs cdf: \\(F_X(t)=\\sum_{x_j\\le t}p_X(x_j)\\);&nbsp; \\(p_X(x_j)=F_X(x_j)-F_X(x_j-0)\\)"
+       "text": "<b>pmf</b> vs <b>cdf</b>:<br>• Clearly, \\(F_X(t)=\\sum_{x_j\\le t}p_X(x_j)\\)<br>• on the other hand, \\(p_X(x_j)=F_X(x_j)-F_X(x_j-0)\\)"
       }
      ],
      "lectureExamples": [],
      "tips": [],
-     "practice": [],
-     "defs": [],
-     "notes": []
+     "practice": [
+      {
+       "kind": "source",
+       "source": "defs-s5",
+       "label": "Probability mass function (pmf)",
+       "text": "The probability mass function \\(p_X(x)\\) for a discrete random variable \\(X\\) is a function \\(p_X:\\mathbb R\\to\\mathbb R\\) such that : \\[p_X(a)=P(X=a)\\]",
+       "sourceTitle": "Definitions for seminar 5"
+      },
+      {
+       "kind": "source",
+       "source": "ps4-2026",
+       "label": "Problem 1 (a)–(b)",
+       "text": "Suppose that a fair die is rolled twice. What is the probability mass function of the following random variables:<br>(a) \\(X=\\) “the maximum value to appear in the two rolls”;<br>(b) \\(Y=\\) “the minimum value to appear in the two rolls”. Give a short explanation why \\(p_X(j)=p_Y(7-j)\\) for \\(j=1,2,\\dots,6\\).",
+       "sourceTitle": "Problem set 4 (seminar 4, 2026)"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST4-16"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST4-05"
+      },
+      {
+       "kind": "source",
+       "source": "ps4-2026",
+       "label": "Problem 5 (a)",
+       "text": "Five men and five women are ranked according to their scores on an examination. Assume that no two scores are alike and all \\(10!\\) possible rankings are equally likely. Let \\(X\\) denote the highest ranking achieved by a woman and let \\(Y\\) denote their lowest ranking. (For instance, \\(X=1\\) if the top-ranked person is a female.)<br>(a) Find the probability mass function (p.m.f.) of a random variable \\(X\\);",
+       "sourceTitle": "Problem set 4 (seminar 4, 2026)"
+      }
+     ],
+     "defs": [
+      2
+     ],
+     "notes": [
+      "topic-1"
+     ]
     },
     {
      "id": "d-cdf",
@@ -97,32 +168,69 @@ const MIDTERM_PREP = {
        "kind": "Definition",
        "lecture": "L4",
        "page": 19,
-       "text": "The <b>cumulative distribution function</b> \\(F_X\\) of a rv \\(X\\) is a function on \\(\\mathbb R\\) given by \\[F_X(t):=\\mathsf P(X\\le t)\\]"
+       "text": "The <b>cumulative distribution function</b> \\(F_X\\) of a <b>rv</b> \\(X\\) is a function on \\(\\mathbb R\\) given by \\[\\boxed{F_X(t):=\\mathsf P(X\\le t)}\\]"
       },
       {
        "kind": "Property",
        "lecture": "L4",
        "page": 20,
-       "text": "Properties of cdf: <br>• \\(0\\le F_X(t)\\le1\\); <br>• \\(F_X\\) is non-decreasing, with \\(\\lim_{t\\to-\\infty}F_X(t)=0\\), \\(\\lim_{t\\to+\\infty}F_X(t)=1\\) <br>• \\(F_X\\) is right-continuous: \\(F_X(t)=F_X(t+0):=\\lim_{\\varepsilon\\to0}F_X(t+\\varepsilon)\\); however, \\(F_X(t-0):=\\lim_{\\varepsilon\\to0}F_X(t-\\varepsilon)\\) need not be equal to \\(F_X(t)\\)"
+       "text": "Properties of <b>cdf</b>:<br>• \\(0\\le F_X(t)\\le1\\);<br>• \\(F_X\\) is non-decreasing, with \\(\\lim_{t\\to-\\infty}F_X(t)=0\\), \\(\\lim_{t\\to+\\infty}F_X(t)=1\\)<br>• \\(F_X\\) is right-continuous: \\(F_X(t)=F_X(t+0):=\\lim_{\\varepsilon\\to0}F_X(t+\\varepsilon)\\);<br>however, \\(F_X(t-0):=\\lim_{\\varepsilon\\to0}F_X(t-\\varepsilon)\\) need not be equal to \\(F_X(t)\\)"
       },
       {
        "kind": "Definition",
        "lecture": "L4",
        "page": 21,
-       "text": "We say a rv \\(X\\) has distribution \\(F\\) (written \\(X\\sim F\\)) if \\(F_X=F\\)"
+       "text": "We say a <b>rv</b> \\(X\\) has distribution \\(F\\) (written \\(X\\sim F\\)) if \\(F_X=F\\)"
       },
       {
        "kind": "Formula",
        "lecture": "L6",
        "page": 6,
-       "text": "\\(\\mathsf P(a<X\\le b)=F_X(b)-F_X(a)\\)"
+       "text": "\\(\\mathsf P(a < X\\le b)=F_X(b)-F_X(a)\\)"
       }
      ],
      "lectureExamples": [],
      "tips": [],
-     "practice": [],
-     "defs": [],
-     "notes": [],
+     "practice": [
+      {
+       "kind": "source",
+       "source": "defs-s5",
+       "label": "Cumulative distribution function (cdf)",
+       "text": "<b>Cumulative distribution function (cdf)</b> for a random variable \\(X\\) is a function \\(F_X:\\mathbb R\\to\\mathbb R\\) such that : \\[F_X(a)=P(X\\le a)\\]",
+       "sourceTitle": "Definitions for seminar 5"
+      },
+      {
+       "kind": "midterm2017",
+       "problem": 2,
+       "part": "5"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST4-27"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST4-21"
+      },
+      {
+       "kind": "midterm2017",
+       "problem": 3,
+       "part": "a"
+      },
+      {
+       "kind": "source",
+       "source": "col2-2022",
+       "label": "New problems: Problem 8 (a)",
+       "text": "The field hospital is located at the centre of a circle of radius 100 km. If an accident occurs within this circle, then the hospital sends out an ambulance helicopter. Assuming that an accident occurs at a point that is uniformly distributed in the circle,<br>(a) find the distribution of the travel distance \\(D\\) to the accident point, its expected value and variance;<br>Hint: in (a), start with finding the c.d.f. of \\(D\\)",
+       "sourceTitle": "Colloquium 2 problem list (2022)"
+      }
+     ],
+     "defs": [
+      3
+     ],
+     "notes": [
+      "topic-2"
+     ],
      "typo": "the sheet says “c.m.f.”"
     },
     {
@@ -133,26 +241,50 @@ const MIDTERM_PREP = {
        "kind": "Definition",
        "lecture": "L6",
        "page": 6,
-       "text": "If the <b>c.d.f.</b> \\(F_X\\) is differentiable (save finitely many pts), \\(X\\) is called <b>continuous</b>. Derivative \\(F_X'(x)\\) is called the probability density function (<b>p.d.f.</b>) of the r.v. \\(X\\) and is denoted \\(f_X(x)\\)"
+       "text": "If the <b>c.d.f.</b> \\(F_X\\) is differentiable (save finitely many pts), \\(X\\) is called <b>continuous</b>. Derivative \\(F_X'(x)\\) is called the <b>probability density function</b> (<b>p.d.f.</b>) of the <b>r.v.</b> \\(X\\) and is denoted \\(f_X(x)\\)"
       },
       {
        "kind": "Property",
        "lecture": "L6",
        "page": 6,
-       "text": "The c.d.f. of a continuous \\(X\\) is continuous; \\(\\mathsf P(a<X\\le b)=F_X(b)-F_X(a)\\); \\(\\mathsf P(\\{X=a\\})=0\\)"
+       "text": "• The <b>c.d.f.</b> of \\(X\\) is continuous!<br>• \\(F_X(x)=0\\) for \\(x\\le0\\)<br>\\(F_X(x)=1\\) for \\(x\\ge h\\)<br>• \\(\\mathsf P(a < X\\le b)=F_X(b)-F_X(a)\\)<br>• \\(\\mathsf P(\\{X=a\\})=0\\)"
       },
       {
        "kind": "Property",
        "lecture": "L6",
        "page": 8,
-       "text": "For any \\(a\\in\\mathbb R\\), \\(\\mathsf P(\\{X=a\\})=0\\): \\(\\mathsf P(\\{a-\\varepsilon<X\\le a+\\varepsilon\\})=F_X(a+\\varepsilon)-F_X(a-\\varepsilon)\\to0\\) as \\(\\varepsilon\\to0\\), since \\(F_X\\) is continuous at \\(x=a\\)"
+       "text": "For any \\(a\\in\\mathbb R\\), \\(\\mathsf P(\\{X=a\\})=0\\):<br>◦ \\(\\mathsf P(\\{a-\\varepsilon < X\\le a+\\varepsilon\\})=F_X(a+\\varepsilon)-F_X(a-\\varepsilon)\\to0\\quad\\text{as}\\quad\\varepsilon\\to0\\) since \\(F_X\\) is continuous at \\(x=a\\)<br>◦ Therefore, the inclusion \\(\\{X=a\\}\\subset\\{a-\\varepsilon < X\\le a+\\varepsilon\\}\\) implies \\[\\mathsf P(\\{X=a\\})\\le\\mathsf P(\\{a-\\varepsilon < X\\le a+\\varepsilon\\})\\to0\\quad\\text{as}\\quad\\varepsilon\\to0\\]"
       }
      ],
      "lectureExamples": [],
      "tips": [],
-     "practice": [],
-     "defs": [],
-     "notes": []
+     "practice": [
+      {
+       "kind": "midterm2017",
+       "problem": 2,
+       "part": "1"
+      },
+      {
+       "kind": "source",
+       "source": "col2-2022",
+       "label": "New problems: Problem 9 (a)–(b)",
+       "text": "Suppose stop lights at an intersection alternately show green for one minute, red for one minute (ignore yellow). Suppose a car arrives at the lights at a time distributed uniformly at random relative to this cycle. Let \\(X\\) be the delay of the car at the lights, neglecting any delay due to traffic congestion.<br>(a) Find a formula for the <b>c.d.f.</b> of \\(X\\) and sketch its graph.<br>(b) Is \\(X\\) discrete, continuous, or neither?",
+       "sourceTitle": "Colloquium 2 problem list (2022)"
+      },
+      {
+       "kind": "source",
+       "source": "ps6-2026",
+       "label": "Problem 9",
+       "text": "The metro train arrives at the station near your home every quarter hour starting at 6:00 a.m. You walk into the station every morning between 7:10 and 7:30 a.m., with the time in this interval being a random variable with given PDF. Let \\(X\\) be the elapsed time, in minutes, between 7:10 and the time of your arrival. Let \\(Y\\) be the time that you have to wait until you board a train. Calculate the <b>c.d.f.</b> of Y in terms of the <b>c.d.f.</b> of \\(X\\) and differentiate to obtain a formula for the <b>p.d.f.</b> of \\(Y\\).",
+       "sourceTitle": "Problem set 6 (seminar 6, 2026)"
+      }
+     ],
+     "defs": [
+      7
+     ],
+     "notes": [
+      "topic-7"
+     ]
     },
     {
      "id": "d-pdf",
@@ -162,13 +294,13 @@ const MIDTERM_PREP = {
        "kind": "Definition",
        "lecture": "L6",
        "page": 6,
-       "text": "Derivative \\(F_X'(x)\\) of the c.d.f. of a continuous r.v. \\(X\\) is called the <b>probability density function</b> (p.d.f.) of \\(X\\) and is denoted \\(f_X(x)\\)"
+       "text": "If the <b>c.d.f.</b> \\(F_X\\) is differentiable (save finitely many pts), \\(X\\) is called <b>continuous</b>. Derivative \\(F_X'(x)\\) is called the <b>probability density function</b> (<b>p.d.f.</b>) of the <b>r.v.</b> \\(X\\) and is denoted \\(f_X(x)\\)"
       },
       {
        "kind": "Property",
        "lecture": "L6",
        "page": 6,
-       "text": "Properties of p.d.f.: \\(f_X(x)\\ge0\\);&nbsp; \\(\\mathsf P(a<X\\le b)=\\int_a^b f_X(t)\\,dt\\);&nbsp; in particular, \\(\\int_{\\mathbb R}f_X(t)\\,dt=1\\)"
+       "text": "Properties of <b>p.d.f.</b>:<br>• \\(f_X(x)\\ge0\\);<br>• \\(\\mathsf P(a < X\\le b)=\\int_a^bf_X(t)\\,dt\\)<br>• in particular, \\(\\int_{\\mathbb R}f_X(t)\\,dt=1\\)"
       },
       {
        "kind": "Property",
@@ -180,20 +312,45 @@ const MIDTERM_PREP = {
        "kind": "Formula",
        "lecture": "L6",
        "page": 8,
-       "text": "If \\(Y=aX+b\\) with \\(a>0\\): \\(F_Y(y)=F_X\\big((y-b)/a\\big)\\ \\Longrightarrow\\ f_Y(y)=F_Y'(y)=\\tfrac1a f_X(\\tfrac{y-b}{a})\\)"
+       "text": "If \\(Y=aX+b\\) with \\(a>0\\), then \\[\\begin{gathered}F_Y(y)=\\mathsf P(Y\\le y)=\\mathsf P(X\\le(y-b)/a)=F_X\\big((y-b)/a\\big)\\Longrightarrow\\\\f_Y(y)=F_Y'(y)=\\tfrac1af_X(\\tfrac{y-b}a)\\end{gathered}\\]"
       }
      ],
      "lectureExamples": [
       {
        "lecture": "L6",
        "page": 8,
-       "text": "\\(f_X(x)=0\\) for \\(x\\le a\\) and \\(f_X(x)=c/x^2\\) for \\(x\\ge a\\): as \\(\\int_{\\mathbb R}f_X=1\\), \\(c=a\\)"
+       "text": "Assume that \\(f_X(x)=0\\) for \\(x\\le a\\) and \\(f_X(x)=c/x^2\\) for \\(x\\ge a\\). What is \\(c\\)? As \\(\\int_{\\mathbb R}f_X=1\\), we find that \\(c=a\\)"
       }
      ],
      "tips": [],
-     "practice": [],
-     "defs": [],
-     "notes": [],
+     "practice": [
+      {
+       "kind": "selftest",
+       "id": "ST6-05"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST6-04"
+      },
+      {
+       "kind": "midterm2017",
+       "problem": 3,
+       "part": "b"
+      },
+      {
+       "kind": "source",
+       "source": "ps6-2026",
+       "label": "Problem 1 (e)–(f)",
+       "text": "Assume that \\(Z\\) is a standard normal <b>r.v.</b> Find the <b>p.d.f.</b> of the following <b>r.v.</b>’s:<br>(e) \\(|Z|\\); (f) \\(Z^2\\).",
+       "sourceTitle": "Problem set 6 (seminar 6, 2026)"
+      }
+     ],
+     "defs": [
+      8
+     ],
+     "notes": [
+      "topic-7"
+     ],
      "typo": "the sheet says “p.m.f.”"
     },
     {
@@ -204,109 +361,186 @@ const MIDTERM_PREP = {
        "kind": "Definition",
        "lecture": "L5",
        "page": 6,
-       "text": "Assume that \\(X\\) is a random variable with values \\(x_1,x_2,\\dots\\). If \\(\\sum_k|x_k|p_X(x_k)<\\infty\\), then the <b>expected value</b> \\(\\mathsf E(X)\\) of \\(X\\) is \\[\\mathsf E(X)=\\sum_k x_kp_X(x_k)\\] <i>also called the expectation, mean value, average, or first moment of \\(X\\)</i>"
+       "text": "Assume that \\(X\\) is a random variable with values \\(x_1,x_2,\\dots\\). If \\(\\sum_k|x_k|p_X(x_k) < \\infty\\), then the <b>expected value</b>\\({}^a\\) \\(\\mathsf E(X)\\) of \\(X\\) is \\[\\mathsf E(X)=\\sum_kx_kp_X(x_k)\\]\\({}^a\\)also called the <i>expectation, mean value, average, or first moment</i> of \\(X\\)"
       },
       {
        "kind": "Definition",
        "lecture": "L6",
        "page": 10,
-       "text": "For a continuous r.v., \\[\\mathsf E(X):=\\int_{\\mathbb R}x\\,f_X(x)\\,dx\\] provided \\(\\int_{\\mathbb R}|x|\\,f_X(x)\\,dx<\\infty\\)"
+       "text": "• For a discrete <b>r.v.</b>, \\(\\mathsf E(X)=\\sum_kx_kp_X(x_k)\\)<br>• For a continuous <b>r.v.</b>, \\[\\mathsf E(X):=\\int_{\\mathbb R}x\\,f_X(x)\\,dx\\]provided \\(\\int_{\\mathbb R}|x|\\,f_X(x)\\,dx < \\infty\\)."
       },
       {
        "kind": "Theorem",
        "lecture": "L5",
        "page": 10,
-       "text": "<b>Expectation of \\(g(X)\\):</b> \\(\\mathsf E(g(X))=\\sum_k g(x_k)p_X(x_k)\\). Continuous (L6 p13): \\(\\mathsf E(g(X)):=\\int_{\\mathbb R}g(x)f_X(x)\\,dx\\)"
+       "text": "<b>Theorem (Expectation of \\(g(X)\\))</b>\\[\\mathsf E(g(X))=\\sum_kg(x_k)p_X(x_k)\\]"
       },
       {
        "kind": "Theorem",
        "lecture": "L5",
        "page": 12,
-       "text": "<b>Linearity:</b> if \\(X\\) and \\(Y\\) are r.v. with joint p.m.f. \\(p_{X,Y}\\), then \\(\\mathsf E(aX+bY)=a\\mathsf E(X)+b\\mathsf E(Y)\\). Analogue: \\(\\mathsf E(g(X,Y))=\\sum_{k,j}g(x_k,y_j)p_{X,Y}(x_k,y_j)\\). Continuous (L6 p13): \\(\\mathsf E(aX+b)=a\\mathsf E(X)+b\\)"
+       "text": "<b>Linearity of expectation</b><br><b>Theorem:</b> Assume \\(X\\) and \\(Y\\) are <b>r.v.</b> with joint <b>p.m.f.</b> \\(p_{X,Y}\\); then \\[\\mathsf E(aX+bY)=a\\mathsf E(X)+b\\mathsf E(Y)\\]<b>Remark:</b> An analogue of the previous thm reads \\[\\mathsf E(g(X,Y))=\\sum_{k,j}g(x_k,y_j)p_{X,Y}(x_k,y_j)\\]"
       },
       {
        "kind": "Property",
        "lecture": "L6",
        "page": 13,
-       "text": "In general, \\(\\mathsf E(g(X))\\ne g(\\mathsf E(X))\\); for convex \\(g\\), Jensen’s inequality gives the “\\(\\ge\\)” sign: \\(\\mathsf E(|X|)\\ge|\\mathsf E(X)|\\), \\(\\mathsf E(X^2)\\ge\\mathsf E^2(X)\\) etc"
+       "text": "In general, \\(\\mathsf E((g(X))\\ne g(\\mathsf E(X))\\);<br>for <b>convex</b> \\(g\\), Jensen’s inequality gives the “\\(\\ge\\)” sign:<br>◦ \\(\\mathsf E(|X|)\\ge|\\mathsf E(X)|\\)<br>◦ \\(\\mathsf E(X^2)\\ge\\mathsf E^2(X)\\) etc"
       },
       {
        "kind": "Formula",
        "lecture": "L5",
        "page": 8,
-       "text": "<b>Useful formula:</b> if \\(X\\ge0\\) and assumes integer values, then \\(\\mathsf E(X)=\\sum_{k\\ge1}\\mathsf P(X\\ge k)\\)"
+       "text": "<b>Useful formula</b><br>If \\(X\\ge0\\) and assumes integer values, then \\[\\mathsf E(X)=\\sum_{k\\ge1}\\mathsf P(X\\ge k)\\]"
       },
       {
        "kind": "Theorem",
        "lecture": "L5",
        "page": 16,
-       "text": "<b>Total probability rule for expectations:</b> if \\(B_1,\\dots,B_n\\) is a partition of the sample space, then \\(\\mathsf E(X)=\\mathsf E(X\\mid B_1)\\mathsf P(B_1)+\\dots+\\mathsf E(X\\mid B_n)\\mathsf P(B_n)\\)"
+       "text": "<b>Total probability rule for expectations</b><br>If \\(B_1,\\dots,B_n\\) is a partition of the sample space, then \\[\\mathsf E(X)=\\mathsf E(X\\mid B_1)\\mathsf P(B_1)+\\cdots+\\mathsf E(X\\mid B_n)\\mathsf P(B_n)\\]<b>Reason:</b> for every \\(x\\), \\(p_x(x)=\\mathsf P(X=x)=\\sum_j\\mathsf P(X=x\\mid B_j)\\mathsf P(B_j)\\)"
       },
       {
        "kind": "Definition",
        "lecture": "L5",
        "page": 18,
-       "text": "<b>Variance and moments.</b> Assume the p.m.f. \\(p_X\\) of a r.v. \\(X\\) satisfies \\(\\sum|x|^kp_X(x)<\\infty\\). Then <br>• the \\(k^{\\text{th}}\\) <b>moment</b> of \\(X\\) is \\(\\mu_k=\\mathsf E(X^k)\\); <br>• the \\(k^{\\text{th}}\\) <b>central moment</b> of \\(X\\) is \\(\\sigma_k=\\mathsf E\\big((X-\\mathsf E(X))^k\\big)\\); <br>• the \\(k^{\\text{th}}\\) <b>factorial moment</b> of \\(X\\) is \\(\\mu^{(k)}=\\mathsf E\\big(X(X-1)\\cdots(X-k+1)\\big)\\) <br>• \\(\\sigma_2\\) is called the <b>variance</b> of \\(X\\) and is denoted \\(\\sigma^2\\) or \\(\\mathrm{Var}(X)\\): \\(\\mathrm{Var}(X)=\\mathsf E\\big((X-\\mathsf E(X))^2\\big)\\). Variance is a measure of dispersion, or spread around the mean <br>• The <b>standard deviation</b> of \\(X\\) is \\(\\sigma_X=\\sqrt{\\mathrm{Var}(X)}\\)"
+       "text": "Assume the <b>p.m.f.</b> \\(p_X\\) of a <b>r.v.</b> \\(X\\) satisfies \\(\\sum|x|^kp_X(x) < \\infty\\). Then<br>• the \\(k^{\\text{th}}\\) <b>moment</b> of \\(X\\) is \\(\\mu_k=\\mathsf E(X^k)\\);<br>• the \\(k^{\\text{th}}\\) <b>central moment</b> of \\(X\\) is \\(\\sigma_k=\\mathsf E\\big((X-\\mathsf E(X))^k\\big)\\);<br>• the \\(k^{\\text{th}}\\) <b>factorial moment</b> of \\(X\\) is \\(\\mu^{(k)}=\\mathsf E(X(X-1)\\cdots(X-k+1))\\)<br>• \\(\\sigma_2\\) is called the <b>variance</b> of \\(X\\) and is denoted \\(\\sigma^2\\) or \\(\\mathrm{Var}(X)\\): \\[\\mathrm{Var}(X)=\\mathsf E\\big((X-\\mathsf E(X))^2\\big)\\]Variance is a measure of <b>dispersion</b>, or <b>spread</b> around the mean<br>• The <b>standard deviation</b> of \\(X\\) is \\(\\sigma_X=\\sqrt{\\mathrm{Var}(X)}\\)"
       },
       {
        "kind": "Formula",
        "lecture": "L5",
        "page": 19,
-       "text": "Properties of variance: \\(\\mathsf E\\big((X-\\mathsf E(X))^2\\big)=\\mathsf E(X^2)-\\mathsf E(X)^2\\);&nbsp; \\(\\mathrm{Var}(aX)=a^2\\mathrm{Var}(X)\\). Also (L6 p34): \\(\\mathrm{Var}\\,X:=\\mathsf E\\big((X-\\mathsf EX)^2\\big)=\\mathsf E(X^2)-(\\mathsf EX)^2\\)"
+       "text": "<b>Properties of variance: alternative formula and scaling</b>\\[\\begin{aligned}\\mathsf E\\big((X-\\mathsf E(X))^2\\big)&=\\mathsf E(X^2-2\\mathsf E(X)X+\\mathsf E(X)^2)\\\\&=\\mathsf E(X^2)-2\\mathsf E(X)\\mathsf E(X)+\\mathsf E(X)^2=\\mathsf E(X^2)-\\mathsf E(X)^2\\\\\\mathrm{Var}(aX)&=\\mathsf E\\big((aX-\\mathsf E(aX))^2\\big)=\\mathsf E\\big(a^2(X-\\mathsf E(X))^2\\big)\\\\&=a^2\\mathsf E\\big((X-\\mathsf E(X))^2\\big)=a^2\\mathrm{Var}(X)\\end{aligned}\\]"
       },
       {
        "kind": "Formula",
        "lecture": "L5",
        "page": 20,
-       "text": "Via the factorial moment: \\(\\mathrm{Var}(X)=\\mathsf E(X^2-X+X)-\\mathsf E(X)^2=\\mu^{(2)}(X)+\\mathsf E(X)-\\mathsf E(X)^2\\)"
+       "text": "\\[\\mathrm{Var}(X)=\\sigma_X^2=\\mathsf E(X^2-X+X)-\\mathsf E(X)^2=\\mu^{(2)}(X)+\\mathsf E(X)-\\mathsf E(X)^2\\]"
       },
       {
        "kind": "Theorem",
        "lecture": "L5",
        "page": 22,
-       "text": "<b>Expectation of the product:</b> if \\(X\\) and \\(Y\\) are independent, then \\(\\mathsf E(X\\cdot Y)=\\mathsf E(X)\\cdot\\mathsf E(Y)\\). More generally (L6 p35): \\(\\mathsf E\\big(g(X)h(Y)\\big)=\\mathsf E\\big(g(X)\\big)\\mathsf E\\big(h(Y)\\big)\\) for any continuous \\(g,h\\)"
+       "text": "<b>Expectation of the product</b><br><b>Theorem:</b> If \\(X\\) and \\(Y\\) are independent, then \\[\\mathsf E(X\\cdot Y)=\\mathsf E(X)\\cdot\\mathsf E(Y)\\]"
       },
       {
        "kind": "Definition",
        "lecture": "L5",
        "page": 24,
-       "text": "The <b>covariance</b> of r.v. \\(X\\) and \\(Y\\) is \\[\\mathrm{Cov}(X,Y)=\\mathsf E(X-\\mathsf E(X))(Y-\\mathsf E(Y))=\\mathsf E(XY)-\\mathsf E(X)\\mathsf E(Y)\\] Corollary: if \\(X\\) and \\(Y\\) are independent, then \\(\\mathrm{Cov}(X,Y)=0\\). Corollary: \\(\\mathrm{Var}(X+Y)=\\mathrm{Var}(X)+2\\mathrm{Cov}(X,Y)+\\mathrm{Var}(Y)\\)"
+       "text": "The <b>covariance</b> of <b>r.v.</b> \\(X\\) and \\(Y\\) is \\[\\mathrm{Cov}(X,Y)=\\mathsf E(X-\\mathsf E(X))(Y-\\mathsf E(Y))=\\mathsf E(XY)-\\mathsf E(X)\\mathsf E(Y)\\]<b>Corollary</b><br><i>If \\(X\\) and \\(Y\\) are independent, then</i> \\(\\mathrm{Cov}(X,Y)=0\\).<br><b>Corollary</b>\\[\\mathrm{Var}(X+Y)=\\mathrm{Var}(X)+2\\mathrm{Cov}(X,Y)+\\mathrm{Var}(Y)\\]"
       },
       {
        "kind": "Theorem",
        "lecture": "L5",
        "page": 25,
-       "text": "If \\(X\\) and \\(Y\\) are <b>independent</b>, then \\(\\mathrm{Var}(aX+bY)=a^2\\mathrm{Var}(X)+b^2\\mathrm{Var}(Y)\\) &nbsp;(by the above, \\(\\mathrm{Var}(aX+bY)=\\mathrm{Var}(aX)+2ab\\,\\mathrm{Cov}(X,Y)+\\mathrm{Var}(bY)\\))"
+       "text": "<b>Variance of the sum</b><br><b>Theorem:</b> If \\(X\\) and \\(Y\\) are <b>independent</b>, then \\[\\mathrm{Var}(aX+bY)=a^2\\mathrm{Var}(X)+b^2\\mathrm{Var}(Y)\\]<b>Proof.</b> By the above, \\[\\mathrm{Var}(aX+bY)=\\mathrm{Var}(aX)+2ab\\mathrm{Cov}(X,Y)+\\mathrm{Var}(bY)\\]"
       },
       {
        "kind": "Remark",
        "lecture": "L6",
        "page": 34,
-       "text": "Additivity \\(\\mathrm{Var}(X+Y)=\\mathrm{Var}\\,X+\\mathrm{Var}\\,Y\\) cannot hold for all r.v.’s (take \\(Y=-X\\) for a nonconstant \\(X\\)), but it holds for independent r.v.’s. (L6 p35) The equality does not imply that \\(X\\) and \\(Y\\) are independent; it extends to any number of pairwise independent summands: \\(\\mathrm{Var}(X_1+\\dots+X_n)=\\mathrm{Var}X_1+\\dots+\\mathrm{Var}X_n\\)"
+       "text": "Additivity of variances \\[\\mathrm{Var}(X+Y)=\\mathrm{Var}\\,X+\\mathrm{Var}\\,Y\\tag{1}\\]cannot hold for all <b>r.v.</b>’s (take \\(Y=-X\\) for a nonconstant \\(X\\)), but it holds for <b>independent</b> <b>r.v.</b>’s."
       },
       {
        "kind": "Property",
        "lecture": "L6",
        "page": 34,
-       "text": "For any r.v.’s \\(X\\) and \\(Y\\), \\(\\mathsf E(X+Y)=\\mathsf EX+\\mathsf EY\\). For independent \\(X,Y\\): \\(\\mathsf E\\big((X+Y)^2\\big)=\\mathsf E(X^2+2XY+Y^2)=\\mathsf E(X^2)+2\\mathsf EX\\cdot\\mathsf EY+\\mathsf E(Y^2)\\), therefore \\(\\mathrm{Var}(X+Y)=\\mathsf E\\big((X+Y)^2\\big)-\\big(\\mathsf E(X+Y)\\big)^2=\\mathrm{Var}X+\\mathrm{Var}Y\\)"
+       "text": "• \\(X\\) and \\(Y\\) independent \\(\\Longrightarrow\\) \\[\\mathsf E(XY)=\\mathsf E\\,X\\cdot\\mathsf E\\,Y\\]and thus \\[\\mathsf E\\big((X+Y)^2\\big)=\\mathsf E(X^2+2XY+Y^2)=\\mathsf E(X^2)+2\\mathsf EX\\cdot\\mathsf EY+\\mathsf E(Y^2),\\]• therefore, for independent \\(X\\) and \\(Y\\) \\[\\begin{aligned}\\mathrm{Var}(X+Y)&=\\mathsf E\\big((X+Y)^2\\big)-\\big(\\mathsf E(X+Y)\\big)^2\\\\&=\\mathsf E(X^2)-(\\mathsf EX)^2+\\mathsf E(Y^2)-(\\mathsf EY)^2=\\mathrm{Var}\\,X+\\mathrm{Var}\\,Y.\\end{aligned}\\]"
+      },
+      {
+       "kind": "Property",
+       "lecture": "L6",
+       "page": 13,
+       "text": "• Expectation of transformed <b>r.v.</b>: For a function \\(g:\\mathbb R\\to\\mathbb R\\), \\[\\mathsf E(g(X)):=\\int_{\\mathbb R}g(x)\\,f_X(x)\\,dx\\]• Linearity: \\(\\mathsf E(aX+b)=a\\mathsf E(X)+b\\): \\[\\mathsf E(aX+b)=\\int_{\\mathbb R}(ax+b)f_X(x)\\,dx=\\int_{\\mathbb R}ax\\,f_X(x)+\\int_{\\mathbb R}bf_X(x)=a\\mathsf E(X)+b\\]"
+      },
+      {
+       "kind": "Definition",
+       "lecture": "L6",
+       "page": 34,
+       "text": "• For any <b>r.v.</b>’s \\(X\\) and \\(Y\\), \\(\\mathsf E(X+Y)=\\mathsf E\\,X+\\mathsf E\\,Y\\)<br>• <b>Variance</b> of a <b>r.v.</b> \\(X\\): \\[\\mathrm{Var}\\,X:=\\mathsf E\\big((X-\\mathsf EX)^2\\big)=\\mathsf E(X^2)-(\\mathsf EX)^2\\]"
+      },
+      {
+       "kind": "Remark",
+       "lecture": "L6",
+       "page": 35,
+       "text": "• <i>The equality</i> \\(\\mathrm{Var}(X+Y)=\\mathrm{Var}\\,X+\\mathrm{Var}\\,Y\\) <i>does not imply that \\(X\\) and \\(Y\\) are independent</i><br>• <i>Also, the above equality extends to any number of pairwise independent summands \\(X_1,X_2,\\dots,X_n\\), i.e.,</i>\\[\\mathrm{Var}(X_1+X_2+\\cdots+X_n)=\\mathrm{Var}\\,X_1+\\mathrm{Var}\\,X_2+\\cdots+\\mathrm{Var}\\,X_n.\\]"
       }
      ],
      "lectureExamples": [
       {
        "lecture": "L5",
        "page": 6,
-       "text": "Indicator \\(I_A\\): \\(p_I(0)=1-\\mathsf P(A)\\), \\(p_I(1)=\\mathsf P(A)\\), \\(\\mathsf E(I_A)=\\mathsf P(A)\\)"
+       "text": "<b>Example (An indicator r.v.)</b><br>For any event \\(A\\in\\mathscr F\\), let \\(I_A\\) be the <i>indicator <b>r.v.</b> of the event \\(A\\)</i>: \\[I_A(\\omega)=\\begin{cases}0,&\\omega\\notin A\\\\1,&\\omega\\in A\\end{cases}\\]The p.m.f. of \\(I_A\\): \\(p_I(0)=1-\\mathsf P(A)\\), \\(p_I(1)=\\mathsf P(A)\\), and \\[\\mathsf E(I_A)=0\\cdot p_I(0)+1\\cdot p_I(1)=\\mathsf P(A)\\]In general, \\(X\\) is an <i>indicator <b>r.v.</b></i> if \\(\\mathsf P(X=0)+\\mathsf P(X=1)=1\\); then \\(X=I_A\\) for \\(A:=\\{X=1\\}\\)"
       },
       {
        "lecture": "L5",
        "page": 7,
-       "text": "Infinite expectation: \\(p_X(k)=1/[k(k+1)]\\), \\(k\\in\\mathbb N\\) \\(\\Rightarrow\\) \\(\\sum_{k\\ge1}\\frac1{k+1}\\) diverges, \\(\\mathsf E(X)=+\\infty\\). Continuous: \\(f_X(x)=a/x^2\\), \\(x\\ge a>0\\) \\(\\Rightarrow\\) \\(\\mathsf E(X)=\\infty\\) (L6 p11)"
+       "text": "<b>Example (Infinite expectation)</b><br>For \\(X\\) with <b>p.m.f.</b> \\(p_X(k)=1/[k(k+1)]\\), \\(k\\in\\mathbb N\\), the series \\[\\sum_{k\\ge1}\\frac k{k(k+1)}=\\sum_{k\\ge1}\\frac1{k+1}\\] does not converge, thus \\(\\mathsf E(X)=+\\infty\\)"
+      },
+      {
+       "lecture": "L6",
+       "page": 11,
+       "text": "If \\(f_X(x)=a/x^2\\) for \\(x\\ge a>0\\) and \\(f_X(x)=0\\) otherwise, then \\[\\begin{gathered}F_X(x)=\\int_a^xas^{-2}\\,ds=1-a/x\\quad\\text{for}\\quad x>a;\\\\\\mathsf E(X)=\\int_{\\mathbb R}x\\,f_X(x)\\,dx=\\int_a^\\infty\\frac{a\\,dx}x=\\infty\\end{gathered}\\]thus \\(X\\) does not have finite expectation"
       }
      ],
      "tips": [],
-     "practice": [],
-     "defs": [],
-     "notes": []
+     "practice": [
+      {
+       "kind": "source",
+       "source": "defs-s5",
+       "label": "Expected value",
+       "text": "The expected value (mean) of a discrete random variable \\(X\\) is defined as: \\[E[X]=\\mu_X=\\sum_{x\\in S_X}x\\cdot p_X(x)\\] (provided that \\(\\sum_x|x|p_X(x)<\\infty\\)).",
+       "sourceTitle": "Definitions for seminar 5"
+      },
+      {
+       "kind": "source",
+       "source": "defs-s5",
+       "label": "Variance",
+       "text": "The variance \\(\\mathrm{Var}(X)\\) of a random variable \\(X\\): \\[\\mathrm{Var}(X)=E\\left[(X-E[X])^2\\right]=E[X^2]-(E[X])^2\\]",
+       "sourceTitle": "Definitions for seminar 5"
+      },
+      {
+       "kind": "source",
+       "source": "defs-s5",
+       "label": "Covariance",
+       "text": "Covariance of \\(X\\) and \\(Y\\): \\[\\mathrm{Cov}(X,Y)=E\\left[(X-E[X])(Y-E[Y])\\right]=E[XY]-E[X]E[Y]\\]",
+       "sourceTitle": "Definitions for seminar 5"
+      },
+      {
+       "kind": "midterm2017",
+       "problem": 2,
+       "part": "3"
+      },
+      {
+       "kind": "midterm2017",
+       "problem": 1,
+       "part": "1"
+      },
+      {
+       "kind": "midterm2017",
+       "problem": 1,
+       "part": "4"
+      },
+      {
+       "kind": "source",
+       "source": "ps5-2025",
+       "label": "Problem 1",
+       "text": "If \\(\\mathsf E(X)=1\\), \\(\\mathsf E(Y)=-1\\), \\(\\mathsf{Var}(X)=4\\), and \\(\\mathsf{Var}(Y)=3\\), find<br>(a) \\(\\mathsf E\\big((X-1)\\ln 2\\big)\\); (b) \\(\\mathsf E(3X^2-5X)\\); (c) \\(\\mathsf E((-4-Y)Y)\\); (d) \\(\\mathsf{Var}((\\tfrac12-X)X)\\).<br>If \\(\\mathsf E(X)=2\\), \\(\\mathsf E(Y)=-1\\), \\(\\mathsf E(X^2)=5\\), and \\(\\mathsf E(Y^2)=4\\), find<br>(e) \\(\\mathsf E\\big(X-eY+e^2\\big)\\); (f) \\(\\mathsf{Var}(\\pi+\\sqrt3Y)\\); (g) \\(\\mathsf E((5-X)Y)\\); (h) \\(\\mathsf{Var}(\\tfrac12X+\\tfrac13Y)\\).",
+       "sourceTitle": "Problem set 5 (seminar 5, 2025)"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST5-03"
+      }
+     ],
+     "defs": [
+      12,
+      13
+     ],
+     "notes": [
+      "topic-4",
+      "topic-5"
+     ]
     },
     {
      "id": "d-pgf-mgf",
@@ -316,44 +550,97 @@ const MIDTERM_PREP = {
        "kind": "Definition",
        "lecture": "L5",
        "page": 28,
-       "text": "The <b>probability generating function</b> \\(G_X\\) of the integer valued r.v. \\(X\\) is defined by \\[G_X(s)=\\mathsf E(s^X)=\\sum_kp_X(k)s^k,\\qquad s\\in\\mathbb R\\] Example: for the indicator r.v. \\(I\\), \\(G_I(s)=(1-p)s^0+ps^1=1-p+ps\\)"
+       "text": "The <b>probability generating function</b> \\(G_X\\) of the integer valued <b>r.v.</b> \\(X\\) is defined by \\[G_X(s)=\\mathsf E(s^X)=\\sum_kp_X(k)s^k,\\qquad s\\in\\mathbb R\\]<b>Example</b><br>For the indicator <b>r.v.</b> \\(I\\), \\(G_I(s)=(1-p)s^0+ps^1=1-p+ps\\)"
       },
       {
        "kind": "Property",
        "lecture": "L5",
        "page": 28,
-       "text": "Properties of p.g.f.: <br>• \\(p_X(k)=G^{(k)}(0)/k!\\) (so \\(G\\) generates p.m.f.) <br>• \\(G_X^{(k)}(1)=\\mu^{(k)}\\) (the \\(k^{\\text{th}}\\) factorial moment of \\(X\\)) <br>• If \\(Y=X+a\\), then \\(G_Y(s)=s^aG_X(s)\\) <br>• If \\(X\\) and \\(Y\\) are independent, then \\(G_{X+Y}(s)=G_X(s)G_Y(s)\\) &nbsp;(since \\(s^X\\) and \\(s^Y\\) are independent: \\(G_{X+Y}(s)=\\mathsf E(s^Xs^Y)=\\mathsf E(s^X)\\mathsf E(s^Y)\\))"
+       "text": "<b>Properties of p.g.f:</b><br>• \\(p_X(k)=G^{(k)}(0)/k!\\) (so \\(G\\) generates <b>p.m.f.</b>)<br>• \\(G_X^{(k)}(1)=\\mu^{(k)}\\) (the \\(k^{\\text{th}}\\) factorial moment of \\(X\\))<br>• If \\(Y=X+a\\), then \\(G_Y(s)=s^aG_X(s)\\)<br>• If \\(X\\) and \\(Y\\) are independent, then \\(G_{X+Y}(s)=G_X(s)G_Y(s)\\)<br>The latter property follows from the fact that \\(s^X\\) and \\(s^Y\\) are independent <b>r.v.</b>, so that \\[G_{X+Y}(s)=\\mathsf E(s^Xs^Y)=\\mathsf E(s^X)\\mathsf E(s^Y)=G_X(s)G_Y(s)\\]"
       },
       {
        "kind": "Theorem",
        "lecture": "L5",
        "page": 32,
-       "text": "<b>Uniqueness:</b> let \\(X\\) and \\(Y\\) have generating functions \\(G_X(s)\\) and \\(G_Y(s)\\). If \\(G_X(s)=G_Y(s)\\) for \\(|s|<1\\), then \\(X\\) and \\(Y\\) have the same probability mass function. (Follows from uniqueness of the power series \\(\\sum_kp_X(k)s^k\\))"
+       "text": "<b>Theorem (Uniqueness)</b><br><i>Let \\(X\\) and \\(Y\\) have generating functions \\(G_X(s)\\) and \\(G_Y(s)\\). If</i> \\[G_X(s)=G_Y(s)\\quad\\textit{for}\\quad|s| < 1,\\]<i>then \\(X\\) and \\(Y\\) have the same probability mass function.</i><br><b>Proof.</b> Follows from uniqueness of the power series \\(\\sum_kp_X(k)s^k\\)"
       },
       {
        "kind": "Definition",
        "lecture": "L6",
        "page": 14,
-       "text": "For a continuous (or discrete) r.v. \\(X\\), its <b>moment generating function</b> (m.g.f.) \\(M_X(t)\\) is \\[M_X(t)=\\mathsf E(e^{tX})=\\int_{\\mathbb R}e^{tx}f_X(x)\\,dx\\]"
+       "text": "For a continuous (or discrete) <b>r.v.</b> \\(X\\), its <b>moment generating function</b> (<b>m.g.f.</b>) \\(M_X(t)\\) is \\[M_X(t)=\\mathsf E(e^{tX})=\\int_{\\mathbb R}e^{tx}f_X(x)\\,dx\\]"
       },
       {
        "kind": "Property",
        "lecture": "L6",
        "page": 15,
-       "text": "Why m.g.f.? \\(M_X'(t)=\\mathsf E(Xe^{tX})\\Rightarrow M_X'(0)=\\mathsf E(X)\\); \\(M_X''(0)=\\mathsf E(X^2)\\); \\(M_X^{(k)}(0)=\\mathsf E(X^k)\\). <br>Remark: M.g.f. is a contiunous (sic) analogue of the p.g.f., with similar properties. <br>Properties of m.g.f.: • \\(M_X^{(k)}(0)=\\mathsf E(X^k)\\) • If \\(X\\) and \\(Y\\) are independent, then \\(M_{X+Y}(s)=M_X(s)M_Y(s)\\) • Moment generating function uniquely determines the distribution."
+       "text": "<b>Why m.g.f.?</b>\\[\\begin{gathered}M_X'(t)=\\mathsf E(X\\,e^{tX})\\text{ so that }M_X'(0)=\\mathsf E(X);\\\\M_X''(t)=\\mathsf E(X^2\\,e^{tX})\\text{ so that }M_X''(0)=\\mathsf E(X^2)\\\\M_X^{(k)}(t)=\\mathsf E(X^k\\,e^{tX})\\text{ so that }M_X^{(k)}(0)=\\mathsf E(X^k)\\end{gathered}\\]<b>Remark</b><br><i>M.g.f. is a contiunous analogue of the p.g.f., with similar properties</i><br><b>Properties of m.g.f:</b><br>• \\(M_X^{(k)}(0)=\\mathsf E(X^k)\\)<br>• If \\(X\\) and \\(Y\\) are independent, then \\(M_{X+Y}(s)=M_X(s)M_Y(s)\\)<br>• Moment generating function uniquely determines the distribution."
       },
       {
        "kind": "Formula",
        "lecture": "L6",
        "page": 14,
-       "text": "Standard normal: \\(M_X(t)=\\frac1{\\sqrt{2\\pi}}\\int_{\\mathbb R}e^{tx}e^{-x^2/2}\\,dx=e^{t^2/2}\\) &nbsp;·&nbsp; exponential \\(\\mathscr E(\\lambda)\\) (L6 p28): \\(M_X(t)=\\frac{\\lambda}{\\lambda-t}\\)"
+       "text": "For \\(X\\) with the standard normal distribution, \\[M_X(t)=\\frac1{\\sqrt{2\\pi}}\\int_{\\mathbb R}e^{tx}e^{-x^2/2}\\,dx=e^{t^2/2}\\]"
       }
      ],
      "lectureExamples": [],
      "tips": [],
-     "practice": [],
-     "defs": [],
-     "notes": []
+     "practice": [
+      {
+       "kind": "source",
+       "source": "defs-s5",
+       "label": "Probability generating function (p.g.f.)",
+       "text": "The probability generating function \\(G_X(s)\\) for an integer-valued random variable \\(X\\) is the function of real variable defined by: \\[G_X(s)=E[s^X]=\\sum_kp_X(k)s^k,\\quad s\\in\\mathbb R\\]",
+       "sourceTitle": "Definitions for seminar 5"
+      },
+      {
+       "kind": "source",
+       "source": "defs-s5",
+       "label": "Properties of p.g.f.",
+       "text": "1. \\(p_X(k)=\\frac{G_X^{(k)}(0)}{k!}\\)<br>2. \\(\\mu^{(k)}=E[X(X-1)\\dots(X-k+1)]=G_X^{(k)}(1)\\)<br>3. Sum of independent variables: If \\(X\\) and \\(Y\\) are independent, then \\(G_{X+Y}(s)=G_X(s)\\cdot G_Y(s)\\)",
+       "sourceTitle": "Definitions for seminar 5"
+      },
+      {
+       "kind": "midterm2017",
+       "problem": 4,
+       "part": "b"
+      },
+      {
+       "kind": "midterm2017",
+       "problem": 4,
+       "part": "c"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST5-14"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST5-04"
+      },
+      {
+       "kind": "source",
+       "source": "ps5-2025",
+       "label": "Problem 5",
+       "text": "Assume that \\(X\\) is a <b>r.v.</b> with geometric distribution \\(\\mathscr G(p)\\).<br>(a) Calculate the <i>probability generating function</i> (p.g.f.) \\(G_X\\) of \\(X\\).<br>(b) Use \\(G_X\\) to find \\(\\mathsf E(X)\\), the second factorial moment \\(\\mu^{(2)}(X)\\) and \\(\\mathsf{Var}(X)\\)<br>Assume further that \\(X_1\\), \\(X_2\\), \\(\\dots\\) are r. v.’s with geometric distribution \\(\\mathscr G(p)\\) and \\(N\\) is a r. v. with Poisson distribution \\(\\mathscr P(\\lambda)\\). Assume that the r. v.’s \\(N,X_1,X_2,\\dots,\\) are independent and set \\(S:=X_1+\\cdots+X_N\\).<br>(c) Calculate the p.g.f. \\(G_S\\) of the r. v. \\(S\\).(Hint: condition on the event \\(\\{N=n\\}\\), \\(n\\in\\mathbb Z_+\\))",
+       "sourceTitle": "Problem set 5 (seminar 5, 2025)"
+      },
+      {
+       "kind": "source",
+       "source": "ps6-2026",
+       "label": "Problem 4",
+       "text": "Calculate the <i>moment generating function</i> (<b>m.g.f.</b>) \\(g_X(t):=\\mathsf E(e^{tX})\\) of a <b>r.v.</b> \\(X\\) with the<br>(a) uniform distribution \\(\\mathscr U(a,b)\\);<br>(b) exponential distribution \\(\\mathscr E(\\lambda)\\);<br>(c) normal distribution \\(\\mathscr N(\\mu,\\sigma^2)\\)",
+       "sourceTitle": "Problem set 6 (seminar 6, 2026)"
+      }
+     ],
+     "defs": [
+      20,
+      21
+     ],
+     "notes": [
+      "topic-6",
+      "topic-11"
+     ]
     }
    ]
   },
@@ -369,26 +656,64 @@ const MIDTERM_PREP = {
        "kind": "Definition",
        "lecture": "L4",
        "page": 23,
-       "text": "An experiment results in success with probability \\(p\\in(0,1)\\), or failure with probability \\(1-p\\); \\(A\\) — “success”; its indicator \\(\\chi_A(\\omega)=1\\) for \\(\\omega\\in A\\), \\(0\\) for \\(\\omega\\notin A\\). The indicator of success \\(\\chi_A\\) is a <b>Bernoulli</b> rv (written \\(\\chi_A\\sim\\mathscr B(1,p)\\))"
+       "text": "• Assume a given experiment can result in either<br>\\(\\quad\\)◦ <i>success</i> with probability \\(p\\in(0,1)\\), or<br>\\(\\quad\\)◦ <i>failure</i> with probability \\(1-p\\)<br>• Let event \\(A\\) denote the “success”<br>• its <b>indicator</b> \\(\\chi_A\\) is \\[\\chi_A(\\omega)=\\begin{cases}1 & \\omega\\in A;\\\\ 0 & \\omega\\notin A\\end{cases}\\]• the <b>indicator</b> of success \\(\\chi_A\\) is a <b>Bernoulli</b> <b>rv</b> (written \\(\\chi_A\\sim\\mathscr B(1,p)\\))"
       },
       {
        "kind": "Formula",
        "lecture": "L4",
        "page": 24,
-       "text": "\\(p_X(x)=\\begin{cases}p,&\\text{if }x=1;\\\\1-p,&\\text{if }x=0\\end{cases}\\). Vice versa, any rv \\(Y\\) assuming values 0 and 1 only is Bernoulli: \\(A:=\\{Y=1\\}\\), \\(Y=\\chi_A\\)"
+       "text": "If \\(X\\sim\\mathscr B(1,p)\\) is a Bernoulli <b>rv</b>, then its <b>pmf</b> is as follows: \\[p_X(x)=\\begin{cases}p, & \\text{if}\\quad x=1;\\\\ 1-p, & \\text{if}\\quad x=0\\end{cases}\\] Vice versa, any <b>rv</b> \\(Y\\) assuming values 0 and 1 only is Bernoulli:<br>with \\(A:=\\{\\omega\\mid Y(\\omega)=1\\}=\\{Y=1\\}\\), \\(Y=\\chi_A\\)"
       },
       {
        "kind": "Formula",
        "lecture": "L5",
        "page": 18,
-       "text": "\\(\\mathsf E(I)=p\\) (L5 p6), \\(\\sigma_I^2=(1-p)^2p+(-p)^2(1-p)=p(1-p)\\); \\(G_I(s)=1-p+ps\\) (L5 p28)"
+       "text": "For the indicator \\(I\\), \\(I-\\mathsf E(I)\\) assumes values \\(1-p\\) and \\(-p\\) with probabilities \\(p\\) and \\(1-p\\) respectively, thus \\[\\sigma_I^2=\\mathsf E\\big((I-\\mathsf E(I))^2\\big)=(1-p)^2p+(-p)^2(1-p)=p(1-p)\\]"
       }
      ],
-     "lectureExamples": [],
+     "lectureExamples": [
+      {
+       "lecture": "L5",
+       "page": 6,
+       "text": "<b>Example (An indicator r.v.)</b><br>For any event \\(A\\in\\mathscr F\\), let \\(I_A\\) be the <i>indicator <b>r.v.</b> of the event \\(A\\)</i>: \\[I_A(\\omega)=\\begin{cases}0,&\\omega\\notin A\\\\1,&\\omega\\in A\\end{cases}\\]The p.m.f. of \\(I_A\\): \\(p_I(0)=1-\\mathsf P(A)\\), \\(p_I(1)=\\mathsf P(A)\\), and \\[\\mathsf E(I_A)=0\\cdot p_I(0)+1\\cdot p_I(1)=\\mathsf P(A)\\]In general, \\(X\\) is an <i>indicator <b>r.v.</b></i> if \\(\\mathsf P(X=0)+\\mathsf P(X=1)=1\\); then \\(X=I_A\\) for \\(A:=\\{X=1\\}\\)"
+      },
+      {
+       "lecture": "L5",
+       "page": 28,
+       "text": "For the indicator <b>r.v.</b> \\(I\\), \\(G_I(s)=(1-p)s^0+ps^1=1-p+ps\\)"
+      }
+     ],
      "tips": [],
-     "practice": [],
-     "defs": [],
-     "notes": [],
+     "practice": [
+      {
+       "kind": "source",
+       "source": "defs-s5",
+       "label": "Bernoulli distribution",
+       "text": "\\(X\\sim\\mathscr B(1,p)\\) with \\(p\\in(0,1)\\) iff it’s pmf is : \\[p_X(k)=\\begin{cases}p,&k=1\\\\1-p,&k=0\\end{cases}\\]",
+       "sourceTitle": "Definitions for seminar 5"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST4-07"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST4-08"
+      },
+      {
+       "kind": "source",
+       "source": "ps5-2025",
+       "label": "Problem 6",
+       "text": "In the morning, the centipede put shoes on all \\(2m\\) of its legs. During the day, each shoe could be lost with probability \\(p\\) independently of the others. What is the expected number of pairs of legs in shoes in the evening if there are \\(n\\) shoes left? Hint: calculate the expectation of the indicator \\(I_k\\) that both shoes in the pair no. \\(k\\) are not lost,conditioned on the number of soes left \\(N=n\\).",
+       "sourceTitle": "Problem set 5 (seminar 5, 2025)"
+      }
+     ],
+     "defs": [
+      4
+     ],
+     "notes": [
+      "topic-1"
+     ],
      "typo": "not on the sheet: the binomial is built from it"
     },
     {
@@ -399,38 +724,99 @@ const MIDTERM_PREP = {
        "kind": "Definition",
        "lecture": "L4",
        "page": 25,
-       "text": "If a Bernoulli experiment is repeated \\(n\\) times, and the outcomes of the different experiments are independent, then the total number of successes is a <b>binomial</b> rv \\(X\\sim\\mathscr B(n,p)\\): \\[p_X(k)=\\binom nk p^k(1-p)^{n-k},\\qquad k=0,1,\\dots,n.\\] By binomial thm, \\(\\sum_{k=0}^n\\binom nkp^k(1-p)^{n-k}=(p+1-p)^n=1\\)"
+       "text": "If a Bernoulli experiment is repeated \\(n\\) times, and the outcomes of the different experiments are independent, then the total number of successes is a <b>binomial</b> <b>rv</b> \\(X\\sim\\mathscr B(n,p)\\): \\[p_X(k)=\\binom{n}{k}p^k(1-p)^{n-k},\\qquad k=0,1,\\dots,n.\\] By binomial thm, \\[\\sum_{k=0}^np_X(k)=\\sum_{k=0}^n\\binom{n}{k}p^k(1-p)^{n-k}=(p+1-p)^n=1\\]"
       },
       {
        "kind": "Formula",
        "lecture": "L5",
        "page": 19,
-       "text": "\\(X=I_1+I_2+\\dots+I_n\\) (success indicators) \\(\\Rightarrow\\) \\(\\mathsf E(X)=n\\mathsf E(I_1)=np\\) &nbsp;(direct calculation: L5 p7)"
+       "text": "<b>The binomial distribution</b><br>• Probabilistic meaning of \\(X\\sim\\mathscr B(n,p)\\): numbers of successes in the Bernoulli trials (e.g., number of Heads in \\(n\\) tossing of a biased coin)<br>• denote by \\(I_k\\) the <b>success indicator</b> of the \\(k^{\\text{th}}\\) trial: \\(I_k=1\\) if that trial was a success and \\(I_k=0\\) otherwise<br>• then \\(X=I_1+I_2+\\cdots+I_n\\)<br>• Therefore, \\(\\mathsf E(X)=\\mathsf E(I_1)+\\mathsf E(I_2)+\\cdots+\\mathsf E(I_n)=n\\mathsf E(I_1)=np\\)"
       },
       {
        "kind": "Formula",
        "lecture": "L5",
        "page": 20,
-       "text": "\\(\\mu^{(2)}(X)=\\mathsf E(X(X-1))=n(n-1)p^2\\);&nbsp; \\(\\mathrm{Var}(X)=\\mu^{(2)}(X)+\\mathsf E(X)-\\mathsf E(X)^2=n(n-1)p^2+np-n^2p^2=np(1-p)\\). Also via independence (L5 p25): \\(\\mathrm{Var}(X)=n\\mathrm{Var}(I_1)=np(1-p)\\)"
+       "text": "The 2\\(^{\\text{nd}}\\) factorial moment of \\(X\\sim\\mathscr B(n,p)\\) is \\[\\begin{aligned}\\mu^{(2)}(X)=\\mathsf E(X(X-1))&=\\sum_{k=0}^nk(k-1)p_X(k)\\\\&=n(n-1)p^2\\sum_{j=0}^{n-2}\\binom{n-2}jp^j(1-p)^{n-k}=n(n-1)p^2\\end{aligned}\\]Therefore, \\[\\begin{aligned}\\mathrm{Var}(X)=\\sigma_X^2&=\\mathsf E(X^2-X+X)-\\mathsf E(X)^2=\\mu^{(2)}(X)+\\mathsf E(X)-\\mathsf E(X)^2\\\\&=n(n-1)p^2+np-n^2p^2=np-np^2=np(1-p)\\end{aligned}\\]"
       },
       {
        "kind": "Formula",
        "lecture": "L5",
        "page": 30,
-       "text": "\\(G_X(s)=\\big(G_{I_1}(s)\\big)^n=(1-p+ps)^n\\); if \\(X\\sim\\mathscr B(n,p)\\), \\(Y\\sim\\mathscr B(m,p)\\) independent: \\(G_{X+Y}(s)=(1-p+ps)^{n+m}\\), hence (L5 p32) \\(X+Y\\sim\\mathscr B(n+m,p)\\)"
+       "text": "<b>Example (Binomial distribution)</b>\\[X=I_1+\\cdots+I_n\\Longrightarrow G_X(s)=G_{I_1}(s)\\cdots G_{I_n}(s)=\\big(G_{I_1}(s)\\big)^n=(1-p+ps)^n\\]<b>Example (Sum of independent binomial distributions)</b><br>If \\(X\\sim\\mathscr B(n,p)\\) and \\(Y\\sim\\mathscr B(m,p)\\) are independent, \\[G_{X+Y}(s)=G_X(s)G_Y(s)=(1-p+ps)^{n+m}\\]"
+      },
+      {
+       "kind": "Theorem",
+       "lecture": "L5",
+       "page": 32,
+       "text": "<b>Corollary</b><br><i>\\(X\\sim\\mathscr B(n,p)\\) and \\(Y\\sim\\mathscr B(m,p)\\) are independent, then \\(X+Y\\sim\\mathscr B(n+m,p)\\)</i>"
       }
      ],
      "lectureExamples": [
       {
        "lecture": "L5",
        "page": 22,
-       "text": "Second moment via indicators: \\(\\mathsf E(I_kI_j)=\\mathsf E(I_k)\\cdot\\mathsf E(I_j)=p^2\\) if \\(k\\ne j\\); thus for \\(X=I_1+\\dots+I_n\\sim\\mathscr B(n,p)\\): \\(\\mathsf E(X^2)=\\mathsf E((I_1+\\dots+I_n)^2)=\\sum\\mathsf E(I_k^2)+\\sum_{k\\ne j}\\mathsf E(I_kI_j)=np+n(n-1)p^2\\) and \\(\\mu^{(2)}(X)=\\mathsf E(X^2)-\\mathsf E(X)=n(n-1)p^2\\)"
+       "text": "<b>Example (Indicators \\(I_k\\) and \\(I_j\\) in the Bernoulli experiment)</b>\\[\\mathsf E(I_kI_j)=\\mathsf E(I_k)\\cdot\\mathsf E(I_j)=p^2\\qquad\\text{if}\\qquad k\\ne j;\\]thus for \\(X=I_1+\\cdots+I_n\\sim\\mathscr B(n,p)\\) we find that \\[\\mathsf E(X^2)=\\mathsf E((I_1+\\cdots+I_n)^2)=\\sum\\mathsf E(I_k^2)+\\sum_{k\\ne j}\\mathsf E(I_kI_j)=np+n(n-1)p^2\\]and \\(\\mu^{(2)}(X)=\\mathsf E(X^2)-\\mathsf E(X)=n(n-1)p^2\\) as found above"
+      },
+      {
+       "lecture": "L5",
+       "page": 7,
+       "text": "<b>Example (Binomial distribution)</b><br>For \\(X\\) with binomial distribution \\(\\mathscr B(n,p)\\): \\[\\begin{aligned}\\mathsf E(X)=\\sum_{k=0}^nk\\binom nkp^k(1-p)^{n-k}&=np\\sum_{k=1}^n\\binom{n-1}{k-1}p^{k-1}(1-p)^{n-k}\\\\&=np(p+1-p)^{n-1}=np\\end{aligned}\\]"
+      },
+      {
+       "lecture": "L5",
+       "page": 25,
+       "text": "<b>Example (Binomial distribution)</b><br>Recall that \\(X\\sim\\mathscr B(n,p)\\) is equal to \\(I_1+I_2+\\dots I_n\\), there \\(I_k\\) is the indicator of success in \\(k^{\\text{th}}\\) trial of the Bernoulli experiment. As the indicators are independent, \\[\\mathrm{Var}(X)=\\mathrm{Var}(I_1+\\cdots+I_n)=\\mathrm{Var}(I_1)+\\cdots+\\mathrm{Var}(I_n)=n\\mathrm{Var}(I_1)=np(1-p)\\]"
       }
      ],
      "tips": [],
-     "practice": [],
-     "defs": [],
-     "notes": []
+     "practice": [
+      {
+       "kind": "source",
+       "source": "defs-s5",
+       "label": "Binomial distribution",
+       "text": "\\(X\\sim\\mathscr B(n,p)\\) with \\(p\\in(0,1),n\\in\\mathbb N\\) iff it’s pmf is : \\[p_X(k)=\\binom{n}{k}p^k(1-p)^{n-k},\\quad k\\in\\{0,1,2,\\dots,n\\}\\]",
+       "sourceTitle": "Definitions for seminar 5"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST4-12"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST4-25"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST5-18"
+      },
+      {
+       "kind": "source",
+       "source": "ps4-2026",
+       "label": "Problem 4",
+       "text": "A communications channel transmits the digits 0 and 1. However, due to noise, the digit transmitted is incorrectly received with probability 0.2. Suppose that we want to transmit an important message consisting of \\(n\\) binary digits. To reduce the chance of error, we transmit 00000 instead of 0 and 11111 instead of 1. If the receiver of the message uses the “majority” rule for decoding, what is the probability that<br>(a) the message will be wrong when decoded?<br>(b) at most two binary digits of the original message will be wrongly decoded?<br>(c) what is the most probable number of correctly decoded binary digits?<br>What independence assumptions are you making?",
+       "sourceTitle": "Problem set 4 (seminar 4, 2026)"
+      },
+      {
+       "kind": "source",
+       "source": "ps4-2026",
+       "label": "Problem 6 (a)–(b)",
+       "text": "When coin \\(A\\) is flipped, it lands on Heads with probability 0.4; when coin \\(B\\) is flipped, it lands on Heads with probability 0.6. One of these coins is randomly chosen and flipped 10 times; let \\(X\\) denote the total number of Heads.<br>(a) Is it true that a r.v. \\(X\\) has a binomial distribution?<br>(b) Find the p.m.f. of the random variable \\(X\\).",
+       "sourceTitle": "Problem set 4 (seminar 4, 2026)"
+      },
+      {
+       "kind": "source",
+       "source": "ps5-2025",
+       "label": "Problem 4 (b)–(c)",
+       "text": "A die with 6 faces, numbered \\(1,\\dots,6\\), is rolled a fixed number of times \\(n\\). The probability that the \\(i^{th}\\) face comes up on each roll is denoted \\(p_i\\) and the results of different rolls are assumed independent. Let \\(X_i\\) be the number of times that the \\(i^{th}\\) face comes up.<br>(b) Find the expected value of \\(X_i\\).<br>(c) Find the variance of \\(X_i\\).",
+       "sourceTitle": "Problem set 5 (seminar 5, 2025)"
+      }
+     ],
+     "defs": [
+      4
+     ],
+     "notes": [
+      "topic-1"
+     ]
     },
     {
      "id": "x-poisson",
@@ -440,34 +826,78 @@ const MIDTERM_PREP = {
        "kind": "Definition",
        "lecture": "L4",
        "page": 30,
-       "text": "The <b>Poisson</b> rv \\(X\\sim\\mathscr P(\\lambda)\\) is the limit of binomial rv’s \\(X_n\\sim\\mathscr B(n,p_n)\\) when \\(n\\cdot p_n\\to\\lambda\\) as \\(n\\to\\infty\\); then \\[p_X(k)=\\frac{\\lambda^k}{k!}e^{-\\lambda},\\qquad k=0,1,\\dots\\] Again, \\(\\sum_{k\\ge0}p_X(k)=e^{-\\lambda}\\sum_{k\\ge0}\\frac{\\lambda^k}{k!}=e^{-\\lambda}e^{\\lambda}=1\\)"
+       "text": "The <b>Poisson</b> <b>rv</b> \\(X\\sim\\mathscr P(\\lambda)\\) is the limit of binomial <b>rv</b>’s \\(X_n\\sim\\mathscr B(n,p_n)\\) when \\(n\\cdot p_n\\to\\lambda\\) as \\(n\\to\\infty\\); then \\[p_X(k)=\\frac{\\lambda^k}{k!}e^{-\\lambda},\\qquad k=0,1,\\dots\\] Again, \\[\\sum_{k\\ge0}p_X(k)=e^{-\\lambda}\\sum_{k\\ge0}\\frac{\\lambda^k}{k!}=e^{-\\lambda}e^\\lambda=1\\]"
       },
       {
        "kind": "Formula",
        "lecture": "L5",
        "page": 30,
-       "text": "\\(G_X(s)=\\sum_{k\\ge0}\\frac{\\lambda^k}{k!}e^{-\\lambda}s^k=e^{\\lambda(s-1)}\\). Therefore, \\(\\mu_X^{(k)}=\\lambda^k\\)"
+       "text": "<b>Example (Poisson distribution \\(X\\sim\\mathscr P(\\lambda)\\))</b>\\[G_X(s)=\\sum_{k\\ge0}\\frac{\\lambda^k}{k!}e^{-\\lambda}s^k=e^{\\lambda(s-1)}\\]Therefore, \\(\\mu_X^{(k)}=\\lambda^k\\)"
       },
       {
        "kind": "Theorem",
        "lecture": "L5",
        "page": 32,
-       "text": "If \\(X\\sim\\mathscr P(\\lambda_1)\\) and \\(Y\\sim\\mathscr P(\\lambda_2)\\) are independent, then \\(X+Y\\sim\\mathscr P(\\lambda_1+\\lambda_2)\\) (p.g.f.: \\(G_{X+Y}(s)=e^{(\\lambda_1+\\lambda_2)(s-1)}\\), L5 p30; directly via pmf: L4 p43)"
+       "text": "<b>Corollary</b><br><i>If \\(X\\sim\\mathscr P(\\lambda_1)\\) and \\(Y\\sim\\mathscr P(\\lambda_2)\\) are independent, then \\(X+Y\\sim\\mathscr P(\\lambda_1+\\lambda_2)\\)</i>"
       }
      ],
      "lectureExamples": [
       {
        "lecture": "L4",
        "page": 43,
-       "text": "Independent \\(X\\sim\\mathscr P(\\lambda_1)\\), \\(Y\\sim\\mathscr P(\\lambda_2)\\), \\(Z=X+Y\\): \\(p_{X|Z}(k\\mid n)=\\binom nkp^k(1-p)^{n-k}\\) — a binomial distr. with parameters \\(n\\) and \\(p=\\lambda_1/(\\lambda_1+\\lambda_2)\\)"
+       "text": "<i>Problem</i><br>If \\(X\\) and \\(Y\\) are independent Poisson random variables with respective parameters \\(\\lambda_1\\) and \\(\\lambda_2\\), calculate the conditional distribution of \\(X\\) given that \\(X+Y=n\\).<br><i>Solution</i><br>Start with calculating the <b>pmf</b> of the <b>rv</b> \\(Z:=X+Y\\): \\[\\begin{aligned}p_Z(n)&=\\sum\\nolimits_{k=0}^np_{X,Y}(k,n-k)=\\sum\\nolimits_{k=0}^np_X(k)p_Y(n-k)\\\\ &=e^{-(\\lambda_1+\\lambda_2)}\\sum\\nolimits_{k=0}^n\\frac{\\lambda_1^k\\lambda_2^{n-k}}{k!(n-k)!}=\\frac{(\\lambda_1+\\lambda_2)^n}{n!}e^{-(\\lambda_1+\\lambda_2)}\\end{aligned}\\] Thus \\(Z\\) has a Poisson distribution with parameter \\(\\lambda_1+\\lambda_2\\), and \\[\\begin{aligned}p_{X|Z}(k\\mid n)&=\\frac{p_{X,Z}(k,n)}{p_Z(n)}=\\frac{p_{X,Y}(k,n-k)}{p_Z(n)}\\\\ &=\\frac{n!}{k!(n-k)!}\\frac{\\lambda_1^k\\lambda_2^{n-k}}{(\\lambda_1+\\lambda_2)^n}=\\binom{n}{k}p^k(1-p)^{n-k}\\end{aligned}\\] this is a binomial distr. with parameters \\(n\\) and \\(p=\\lambda_1/(\\lambda_1+\\lambda_2)\\)"
+      },
+      {
+       "lecture": "L5",
+       "page": 30,
+       "text": "<b>Example (Sum of independent Poisson distributions)</b><br>If \\(X\\sim\\mathscr P(\\lambda_1)\\) and \\(Y\\sim\\mathscr P(\\lambda_2)\\) are independent, \\[G_{X+Y}(s)=G_X(s)G_Y(s)=e^{(\\lambda_1+\\lambda_2)(s-1)}\\]"
       }
      ],
      "tips": [
       "The lectures do not write \\(\\mathsf E X\\) and \\(\\mathrm{Var}\\,X\\) for Poisson explicitly. They follow from \\(\\mu^{(k)}=\\lambda^k\\) and the L5 p20 formula: \\(\\mathsf E X=\\mu^{(1)}=\\lambda\\), \\(\\mathrm{Var}\\,X=\\mu^{(2)}+\\mathsf EX-(\\mathsf EX)^2=\\lambda\\)"
      ],
-     "practice": [],
-     "defs": [],
-     "notes": [],
+     "practice": [
+      {
+       "kind": "source",
+       "source": "defs-s5",
+       "label": "Poisson distribution",
+       "text": "\\(X\\sim\\mathscr P(\\lambda)\\) with parameter \\(\\lambda>0\\) iff it’s pmf is : \\[p_X(k)=\\frac{\\lambda^ke^{-\\lambda}}{k!},\\quad k\\in\\{0,1,2,\\dots\\}\\]",
+       "sourceTitle": "Definitions for seminar 5"
+      },
+      {
+       "kind": "midterm2017",
+       "problem": 4,
+       "part": "a"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST4-22"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST4-19"
+      },
+      {
+       "kind": "source",
+       "source": "ps4-2026",
+       "label": "Problem 11",
+       "text": "Suppose that the number of accidents occurring on a highway each day is a Poisson random variable with parameter \\(\\lambda=3\\).<br>(a) Find the probability that 3 or more accidents occur today.<br>(b) Repeat part (a) given the information that 1 accident has already occurred today.",
+       "sourceTitle": "Problem set 4 (seminar 4, 2026)"
+      },
+      {
+       "kind": "source",
+       "source": "ps4-2026",
+       "label": "Problem 3",
+       "text": "Suppose that the number of new COVID-19 positive tested patients in the city \\(A\\) on day \\(i\\) is a Poisson random variable \\(X_i\\) of parameter \\(\\lambda=10\\); assume also that the random variables \\(X_1,X_2,\\dots\\) are independent.<br>(a) Find the probability that the number of newly COVID-19 infected patients tomorrow will be larger than today’s count.<br>Assume that the number of new COVID-19 positive tested patients in the city \\(B\\) on day \\(i\\) is a Poisson random variable \\(Y_i\\) of parameter \\(\\mu=20\\); assume also that all random variables \\(X_i\\) and \\(Y_j\\), \\(i,j=1,2,\\dots\\) are independent.<br>(b) Show that the random variable \\(X_i+Y_i\\) has Poisson distribution of parameter 30. In the general case, if \\(X\\) and \\(Y\\) are independent Poisson random variables with parameters \\(\\lambda\\) and \\(\\mu\\) respectively, what is the distribution of the random variable \\(X+Y\\)?<br>(c) Assume that by this noon, 5 new cases were reported. Find the probability that \\(k\\) newly COVID-19 infected patients will be reported today in total.<br>Hint: Can you see that there are two ways to solve this problem, depending on whether we make some assumptions about the distribution of cases throughout the day? What assumptions can be made?<br>(d) Assume that 30 new COVID-19 infected patients were reported yesterday in the cities \\(A\\) and \\(B\\) in total. What is the probability that \\(k\\) of them come from \\(A\\), \\(k=0,1,\\dots,30\\)?",
+       "sourceTitle": "Problem set 4 (seminar 4, 2026)"
+      }
+     ],
+     "defs": [
+      6
+     ],
+     "notes": [
+      "topic-1"
+     ],
      "typo": "the sheet says \\(\\mathscr B(\\lambda)\\)"
     },
     {
@@ -478,28 +908,70 @@ const MIDTERM_PREP = {
        "kind": "Definition",
        "lecture": "L4",
        "page": 27,
-       "text": "The number of Bernoulli experiments until the first success is a rv with <b>geometric distribution</b>: \\[p_X(k)=p(1-p)^{k-1},\\qquad k=1,2,\\dots\\] Observe that (Murphy’s law) \\(\\sum_{k\\ge1}p_X(k)=p\\sum_{j=0}^\\infty(1-p)^j=\\frac p{1-(1-p)}=1\\)"
+       "text": "The number of Bernoulli experiments until the first success is a <b>rv</b> with <b>geometric distribution</b>: \\[p_X(k)=p(1-p)^{k-1},\\qquad k=1,2,\\dots\\] Observe that (and that is <b>Murphy’s law</b>) \\[\\sum_{k\\ge1}p_X(k)=p\\sum_{j=0}^\\infty(1-p)^j=\\frac{p}{1-(1-p)}=1\\]"
       },
       {
        "kind": "Definition",
        "lecture": "L4",
        "page": 28,
-       "text": "We say that a nonnegative random variable \\(X\\) is <b>memoryless</b> if \\(\\mathsf P\\{X>s+t\\mid X>t\\}=\\mathsf P\\{X>s\\}\\) for all \\(s,t\\ge0\\). A geometrically distributed random variable \\(X\\) is memoryless."
+       "text": "We say that a nonnegative random variable \\(X\\) is <i>memoryless</i> if \\[\\mathsf P\\{X>s+t|X>t\\}=\\mathsf P\\{X>s\\}\\text{ for all }s,t\\ge0\\] A geometrically distributed random variable \\(X\\) is memoryless."
       },
       {
        "kind": "Formula",
        "lecture": "L5",
        "page": 8,
-       "text": "If \\(X\\sim\\mathscr G(p)\\), then \\(\\mathsf E(X)=\\sum_{k\\ge1}\\mathsf P(X\\ge k)=\\sum_{k\\ge1}q^{k-1}=\\frac1p\\) (direct: \\(\\sum_{k\\ge1}kpq^{k-1}=p\\big(\\frac1{1-q}\\big)'=\\frac1p\\))"
+       "text": "<b>Example (Geometric distribution)</b><br>If \\(X\\sim\\mathscr G(p)\\), then \\[\\mathsf E(X)=\\sum_{k\\ge1}\\mathsf P(X\\ge k)=\\sum_{k\\ge1}q^{k-1}=\\frac1p\\]Direct calculations: \\[\\begin{aligned}\\mathsf E(X)&=\\sum_{k\\ge1}kpq^{k-1}=p\\Big(\\sum_{k\\ge1}q^k\\Big)'\\\\&=p\\cdot\\Big(\\frac1{1-q}\\Big)'=\\frac p{(1-q)^2}=\\frac p{p^2}=\\frac1p\\end{aligned}\\]"
       }
      ],
      "lectureExamples": [],
      "tips": [
       "The variance of the geometric distribution (\\(\\frac{1-p}{p^2}\\)) and its p.g.f. are not on the L4–L6 slides."
      ],
-     "practice": [],
-     "defs": [],
-     "notes": []
+     "practice": [
+      {
+       "kind": "source",
+       "source": "defs-s5",
+       "label": "Geometric distribution",
+       "text": "\\(X\\sim\\mathscr G(p)\\) with parameter \\(p\\in(0,1)\\) iff it’s pmf is : \\[p_X(k)=(1-p)^{k-1}p,\\quad k\\in\\{1,2,3,\\dots\\}\\]",
+       "sourceTitle": "Definitions for seminar 5"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST4-17"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST4-13"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST4-03"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST5-14"
+      },
+      {
+       "kind": "source",
+       "source": "ps5-2025",
+       "label": "Problem 5 (a)–(b)",
+       "text": "Assume that \\(X\\) is a <b>r.v.</b> with geometric distribution \\(\\mathscr G(p)\\).<br>(a) Calculate the <i>probability generating function</i> (p.g.f.) \\(G_X\\) of \\(X\\).<br>(b) Use \\(G_X\\) to find \\(\\mathsf E(X)\\), the second factorial moment \\(\\mu^{(2)}(X)\\) and \\(\\mathsf{Var}(X)\\)",
+       "sourceTitle": "Problem set 5 (seminar 5, 2025)"
+      },
+      {
+       "kind": "source",
+       "source": "ps5-2025",
+       "label": "Problem 8",
+       "text": "A fair die is rolled. How many rolls do you expect to do before you observe every of faces of a die at least once?",
+       "sourceTitle": "Problem set 5 (seminar 5, 2025)"
+      }
+     ],
+     "defs": [
+      5
+     ],
+     "notes": [
+      "topic-1"
+     ]
     },
     {
      "id": "x-uniform",
@@ -515,26 +987,65 @@ const MIDTERM_PREP = {
        "kind": "Property",
        "lecture": "L6",
        "page": 17,
-       "text": "\\(X\\sim\\mathscr U(a,b)\\) takes values in \\((a,b)\\) only; \\(\\mathsf P(X\\in\\Delta)\\) only depends on the size of \\(\\Delta\\); \\(\\mathsf EX=\\frac1{b-a}\\int_a^bt\\,dt=\\frac{a+b}2\\) — the middle point of \\((a,b)\\)"
+       "text": "• \\(X\\sim\\mathscr U(a,b)\\) takes values in \\((a,b)\\) only;<br>• \\(\\mathsf P(X\\in\\Delta)\\) only depends on the size of \\(\\Delta\\);<br>• the expectation \\(\\mathsf EX\\) is \\[\\mathsf EX=\\frac1{b-a}\\int_a^bt\\,dt=\\frac1{2(b-a)}t^2\\Big|_{t=a}^b=\\frac{b^2-a^2}{2(b-a)}=\\frac{a+b}2\\]and is the middle point of the interval \\((a,b)\\)"
       },
       {
        "kind": "Formula",
        "lecture": "L6",
        "page": 18,
-       "text": "\\(\\mathsf E(X^2)=\\frac{b^3-a^3}{3(b-a)}=\\frac{a^2+ab+b^2}3\\);&nbsp; \\(\\mathrm{Var}X=\\mathsf E(X^2)-\\mathsf E^2(X)=\\frac{(b-a)^2}{12}\\)"
+       "text": "• the second moment is \\[\\begin{aligned}\\mathsf E(X^2)&=\\frac1{b-a}\\int_a^bt^2\\,dt=\\frac1{3(b-a)}t^3\\Big|_{t=a}^b\\\\&=\\frac{b^3-a^3}{3(b-a)}=\\frac{a^2+ab+b^2}3,\\end{aligned}\\]• the variance is \\[\\begin{aligned}\\mathrm{Var}X=\\mathsf E(X^2)-\\mathsf E^2(X)&=\\frac{a^2+ab+b^2}3-\\frac{(a+b)^2}4\\\\&=\\frac{a^2+ab+b^2}3-\\frac{a^2+2ab+b^2}4\\\\&=\\frac{(b-a)^2}{12}\\end{aligned}\\]• It is natural that the variance is proportional to \\((b-a)^2\\)!"
       },
       {
        "kind": "Formula",
        "lecture": "L6",
        "page": 19,
-       "text": "Another way: \\(X=\\frac{a+b}2+\\frac{b-a}2U\\) with \\(U\\sim\\mathscr U(-1,1)\\), \\(\\mathsf EU=0\\), \\(\\mathrm{Var}\\,U=\\frac13\\Rightarrow\\mathrm{Var}\\,X=\\frac{(b-a)^2}4\\mathrm{Var}\\,U=\\frac{(b-a)^2}{12}\\)"
+       "text": "To calculate the above values in another way, write \\[X=\\frac{a+b}2+\\frac{b-a}2U;\\]then \\(U\\) has a uniform distribution over \\((-1,1)\\).<br>By symmetry, the expectation of \\(U\\) is zero (\\(\\mathsf EU=0\\)), whence \\[\\mathrm{Var}\\,U=\\mathsf E(U^2)=\\frac12\\int_{-1}^1t^2\\,dt=\\frac13.\\]By linearity of expectation, we find that \\[\\mathsf E\\,X=\\frac{a+b}2+\\frac{b-a}2\\,\\mathsf E\\,U=\\frac{a+b}2;\\]since \\(\\mathrm{Var}(cU)=c^2\\mathrm{Var}(U)\\) and variance of a constant is zero, \\[\\mathrm{Var}\\,X=\\frac{(b-a)^2}4\\,\\mathrm{Var}\\,U=\\frac{(b-a)^2}{12}.\\]"
       }
      ],
      "lectureExamples": [],
      "tips": [],
-     "practice": [],
-     "defs": [],
-     "notes": []
+     "practice": [
+      {
+       "kind": "midterm2017",
+       "problem": 1,
+       "part": "5"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST6-02"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST6-03"
+      },
+      {
+       "kind": "source",
+       "source": "ps6-2026",
+       "label": "Problem 4 (a)",
+       "text": "Calculate the <i>moment generating function</i> (<b>m.g.f.</b>) \\(g_X(t):=\\mathsf E(e^{tX})\\) of a <b>r.v.</b> \\(X\\) with the<br>(a) uniform distribution \\(\\mathscr U(a,b)\\);",
+       "sourceTitle": "Problem set 6 (seminar 6, 2026)"
+      },
+      {
+       "kind": "source",
+       "source": "ps6-2026",
+       "label": "Problem 2",
+       "text": "Assume that \\(X_1\\), \\(X_2\\), \\(\\dots\\), \\(X_n\\) are independent <b>r.v.</b>’s with distribution \\(\\mathscr U(0,a)\\). Find distribution (<b>c.d.f.</b> and <b>p.d.f.</b>) of the <b>r.v.</b>’s<br>(a) \\(U\\sim\\max\\{X_1,\\dots,X_n\\}\\); (b) \\(V\\sim\\min\\{X_1,\\dots,X_n\\}\\)",
+       "sourceTitle": "Problem set 6 (seminar 6, 2026)"
+      },
+      {
+       "kind": "source",
+       "source": "col2-2022",
+       "label": "New problems: Problem 10 (a)–(c)",
+       "text": "Suppose that two points \\(A\\) and \\(B\\) are independently chosen at random on the unit interval. We identify the points and their (random) abscissa, so that \\(A\\) and \\(B\\) are random variables with distribution \\(\\mathscr U(0,1)\\). Find the distributions of the following random variables:<br>(a) the distance \\(D:=|A-B|\\) between these points;<br>(b) \\(M:=\\max\\{A,B\\}\\);<br>(c) \\(N:=\\min\\{A,B\\}\\);",
+       "sourceTitle": "Colloquium 2 problem list (2022)"
+      }
+     ],
+     "defs": [
+      9
+     ],
+     "notes": [
+      "topic-8"
+     ]
     },
     {
      "id": "x-normal",
@@ -544,38 +1055,81 @@ const MIDTERM_PREP = {
        "kind": "Definition",
        "lecture": "L6",
        "page": 21,
-       "text": "A <b>standard normal, or Gaussian</b>, distribution \\(\\mathscr N(0,1)\\) is given by the density function \\(\\phi(t):=\\frac1{\\sqrt{2\\pi}}e^{-t^2/2}\\). Its c.d.f. is usually denoted \\(\\Phi\\): \\(\\Phi(t):=\\int_{-\\infty}^t\\phi(s)\\,ds=\\frac1{\\sqrt{2\\pi}}\\int_{-\\infty}^te^{-s^2/2}\\,ds\\). If \\(X\\sim\\mathscr N(0,1)\\): \\(\\mathsf EX=0\\), \\(\\mathrm{Var}X=\\mathsf EX^2=1\\)"
+       "text": "<i>A <b>standard normal, or Gaussian</b>, distribution \\(\\mathscr N(0,1)\\) is given by the density function</i>\\[\\phi(t):=\\frac1{\\sqrt{2\\pi}}\\mathrm e^{-t^2/2}\\]<i>Its c.d.f. is usually denoted \\(\\Phi\\):</i>\\[\\Phi(t):=\\int_{-\\infty}^t\\phi(s)\\,ds=\\frac1{\\sqrt{2\\pi}}\\int_{-\\infty}^t\\mathrm e^{-s^2/2}\\,ds\\]<i>If \\(X\\) has distribution \\(\\mathscr N(0,1)\\) (written \\(X\\sim\\mathscr N(0,1)\\)), then its expectation is zero and the variance is \\(1\\):</i>\\[\\begin{aligned}\\mathsf E\\,X&=\\frac1{\\sqrt{2\\pi}}\\int_{\\mathbb R}t\\mathrm e^{-t^2/2}\\,dt=0,\\\\\\mathrm{Var}\\,X=\\mathsf EX^2&=\\frac1{\\sqrt{2\\pi}}\\int_{\\mathbb R}t^2\\mathrm e^{-t^2/2}\\,dt=1.\\end{aligned}\\]"
       },
       {
        "kind": "Definition",
        "lecture": "L6",
        "page": 24,
-       "text": "If \\(Z\\sim\\mathscr N(0,1)\\), then the random variable \\(\\mu+\\sigma Z\\) is said to have a <b>normal (or Gaussian) distribution</b> \\(\\mathscr N(\\mu,\\sigma^2)\\). If \\(Y=\\mu+\\sigma Z\\sim\\mathscr N(\\mu,\\sigma^2)\\), then \\(\\mathsf EY=\\mu\\) and \\(\\mathrm{Var}Y=\\sigma^2\\)"
+       "text": "If \\(Z\\sim\\mathscr N(0,1)\\), then the random variable \\(\\mu+\\sigma Z\\) is said to have a <b>normal (or Gaussian) distribution</b> \\(\\mathscr N(\\mu,\\sigma^2)\\).<br>• If \\(Y=\\mu+\\sigma Z\\sim\\mathscr N(\\mu,\\sigma^2)\\), then \\(\\mathsf E\\,Y=\\mu\\) and \\(\\mathrm{Var}\\,Y=\\sigma^2\\)<br>• this explains the rôle of the parameters \\(\\mu\\) and \\(\\sigma^2\\)"
       },
       {
        "kind": "Formula",
        "lecture": "L6",
        "page": 24,
-       "text": "\\(F_Y(t)=\\Phi\\big(\\tfrac{t-\\mu}\\sigma\\big)\\), &nbsp;\\(f_Y(t)=\\frac1\\sigma\\phi\\big(\\tfrac{t-\\mu}\\sigma\\big)=\\frac1{\\sqrt{2\\pi}\\sigma}\\exp\\Big\\{-\\frac{(t-\\mu)^2}{2\\sigma^2}\\Big\\}\\)"
+       "text": "the density of \\(Y\\): \\[F_Y(t)=\\mathsf P(Y\\le t)=\\mathsf P(Z\\le(t-\\mu)/\\sigma)=F_Z\\big(\\tfrac{t-\\mu}\\sigma\\big),\\]so that \\[F_Y(t)=\\Phi\\Big(\\tfrac{t-\\mu}\\sigma\\Big)\\]and \\[f_Y(t)=F_Y'(t)=\\frac1\\sigma\\phi\\big(\\tfrac{t-\\mu}\\sigma\\big),\\]i.e., \\[f_Y(t)=\\frac1{\\sqrt{2\\pi}\\sigma}\\exp\\Big\\{-\\frac{(t-\\mu)^2}{2\\sigma^2}\\Big\\}.\\]"
       },
       {
        "kind": "Formula",
        "lecture": "L6",
        "page": 23,
-       "text": "m.g.f. \\(M_X(t)=e^{t^2/2}\\) for \\(\\mathscr N(0,1)\\): \\(\\mathsf E(X)=0\\), \\(\\mathsf E(X^2)=1\\), \\(\\mathsf E(X^3)=0\\), \\(\\mathsf E(X^4)=3\\) (proof of \\(\\mathsf E(X^2)=1\\) via \\(\\Gamma(\\tfrac32)\\): L6 p22)"
+       "text": "<b>Alternatively, use the m.g.f. \\(M_X\\):</b>\\[M_X(t):=\\mathsf E(e^{tX})=\\int_{\\mathbb R}e^{tx}\\phi(x)\\,dx=e^{t^2/2}\\]thus \\[\\begin{aligned}m_1(X)&=\\mathsf E(X)=M_X'(0)=\\Big(te^{t^2/2}\\Big)\\Big|_{t=0}=0\\\\m_2(X)&=\\mathsf E(X^2)=M_X''(0)=\\Big([t^2+1]e^{t^2/2}\\Big)\\Big|_{t=0}=1\\\\m_3(X)&=\\mathsf E(X^3)=M_X'''(0)=\\Big([t^3+3t]e^{t^2/2}\\Big)\\Big|_{t=0}=0\\\\m_4(X)&=\\mathsf E(X^4)=M_X^{(iv)}(0)=\\Big([t^4+6t^2+3]e^{t^2/2}\\Big)\\Big|_{t=0}=3\\end{aligned}\\]and so on"
       },
       {
        "kind": "Property",
        "lecture": "L6",
        "page": 12,
-       "text": "\\(\\int_{\\mathbb R}\\frac{e^{-x^2/2}}{\\sqrt{2\\pi}}dx=1\\); since the density is an even function, \\(\\mathsf E(X)=0\\)"
+       "text": "<b>Example (Standard normal distribution)</b><br>A <b>r.v.</b> with <b>p.d.f.</b> \\(f(x)=e^{-x^2/2}/\\sqrt{2\\pi}\\) is said to have a <b>standard normal distribution</b>. Observe that indeed (use e.g. the Gamma-function) \\[\\int_{\\mathbb R}\\frac{e^{-x^2/2}}{\\sqrt{2\\pi}}dx=1\\]Since the density is an even function, \\[\\mathsf E(X)=\\int_{\\mathbb R}x\\,f(x)\\,dx=0\\]"
       }
      ],
      "lectureExamples": [],
      "tips": [],
-     "practice": [],
-     "defs": [],
-     "notes": []
+     "practice": [
+      {
+       "kind": "midterm2017",
+       "problem": 1,
+       "part": "2"
+      },
+      {
+       "kind": "midterm2017",
+       "problem": 1,
+       "part": "3"
+      },
+      {
+       "kind": "midterm2017",
+       "problem": 3,
+       "part": "c"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST6-14"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST6-08"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST6-06"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST6-19"
+      },
+      {
+       "kind": "source",
+       "source": "ps6-2026",
+       "label": "Problem 1 (a)–(d)",
+       "text": "Assume that \\(Z\\) is a standard normal <b>r.v.</b> Find the <b>p.d.f.</b> of the following <b>r.v.</b>’s:<br>(a) \\(-Z\\) (b) \\(2Z-3\\); (c) \\(3-2Z\\); (d) \\(\\frac{Z-1}{4}\\).",
+       "sourceTitle": "Problem set 6 (seminar 6, 2026)"
+      }
+     ],
+     "defs": [
+      11
+     ],
+     "notes": [
+      "topic-8"
+     ]
     },
     {
      "id": "x-exponential",
@@ -585,13 +1139,13 @@ const MIDTERM_PREP = {
        "kind": "Definition",
        "lecture": "L6",
        "page": 27,
-       "text": "A nonnegative random variable \\(X\\) has <b>exponential distribution</b> with parameter \\(\\lambda>0\\), written \\(X\\sim\\mathscr E(\\lambda)\\), if the density of its distribution is \\[f_X(x)=\\begin{cases}\\lambda e^{-\\lambda x},&x\\ge0\\\\0,&x<0\\end{cases}\\] \\(\\mathsf EX=\\frac1\\lambda\\)"
+       "text": "A nonnegative random variable \\(X\\) has <b>exponential distribution</b> with parameter \\(\\lambda>0\\), written \\(X\\sim\\mathcal E(\\lambda)\\), if the density of its distribution is \\[f_X(x)=\\begin{cases}\\lambda\\mathrm e^{-\\lambda x},&x\\ge0\\\\0,&x < 0\\end{cases}\\]"
       },
       {
        "kind": "Formula",
        "lecture": "L6",
        "page": 28,
-       "text": "\\(\\mathsf EX^k=\\frac{\\Gamma(k+1)}{\\lambda^k}=\\frac{k!}{\\lambda^k}\\); in particular \\(\\mathrm{Var}X=\\frac2{\\lambda^2}-\\frac1{\\lambda^2}=\\frac1{\\lambda^2}\\);&nbsp; m.g.f. \\(M_X(t)=\\int_0^\\infty\\lambda e^{-x(\\lambda-t)}\\,dt\\) (sic: \\(dx\\)) \\(=\\frac{\\lambda}{\\lambda-t}\\)"
+       "text": "<b>Example (Exponential distribution (cont.))</b><br><i>Recalling the definition of the Gamma function, \\(\\Gamma(s)=\\int_0^\\infty t^{s-1}\\mathrm e^{-t}\\,dx\\), and the relation \\(\\Gamma(k)=(k-1)!\\) for natural \\(k\\), we also find that</i>\\[\\begin{aligned}\\mathsf E\\,X^k&=\\int_0^\\infty x^k\\lambda\\mathrm e^{-\\lambda x}\\,dx=\\frac1{\\lambda^k}\\int_0^\\infty y^k\\mathrm e^{-y}\\,dy\\\\&=\\frac{\\Gamma(k+1)}{\\lambda^k}=\\frac{k!}{\\lambda^k};\\end{aligned}\\]<i>in particular,</i>\\[\\mathrm{Var}X=\\mathsf E(X^2)-(\\mathsf E\\,X)^2=\\frac2{\\lambda^2}-\\frac1{\\lambda^2}=\\frac1{\\lambda^2}.\\]<i>Alternatively, find the <b>m.g.f.</b> \\(M_X\\):</i>\\[M_X(t)=\\int_0^\\infty e^{tx}f_X(x)\\,dx=\\int_0^\\infty\\lambda e^{-x(\\lambda-t)}\\,dt=\\frac\\lambda{\\lambda-t}\\]"
       },
       {
        "kind": "Property",
@@ -604,13 +1158,61 @@ const MIDTERM_PREP = {
       {
        "lecture": "L6",
        "page": 40,
-       "text": "If \\(X\\sim\\mathscr U(0,1)\\) and \\(Y=-\\ln X\\), then \\(Y\\sim\\mathscr E(1)\\). (L6 p48) Sum of two independent \\(\\mathscr E(\\lambda)\\) has \\(f_Y(y)=\\lambda^2ye^{-\\lambda y}\\), i.e. the Gamma distribution \\(\\Gamma(2,\\lambda)\\)"
+       "text": "If \\(X\\sim\\mathscr U(0,1)\\) and \\(Y=-\\ln X\\), then \\(Y\\sim\\mathscr E(1)\\)"
+      },
+      {
+       "lecture": "L6",
+       "page": 27,
+       "text": "<b>Example (Expectation of exponential distribution)</b><br><i>For \\(X\\sim\\mathcal E(\\lambda)\\), we make change of variables \\(\\lambda x=y\\) and integrate by parts to get</i>\\[\\begin{aligned}\\mathsf E\\,X&=\\int_0^\\infty x\\lambda\\mathrm e^{-\\lambda x}\\,dx=\\frac1\\lambda\\int_0^\\infty y\\mathrm e^{-y}\\,dy=-\\frac1\\lambda\\int_0^\\infty y(\\mathrm e^{-y})'\\,dy\\\\&=y\\mathrm e^{-y}\\Big|_{y=0}^\\infty+\\frac1\\lambda\\int_0^\\infty\\mathrm e^{-y}\\,dy=\\frac1\\lambda;\\end{aligned}\\]<i>alternatively,</i>\\[=\\frac1\\lambda\\int_0^\\infty y\\mathrm e^{-y}\\,dy=\\frac1\\lambda\\Gamma(2)=\\frac{1!}\\lambda=\\frac1\\lambda.\\]"
+      },
+      {
+       "lecture": "L6",
+       "page": 48,
+       "text": "<b>Let \\(X_1\\) and \\(X_2\\) be independent with distribution \\(\\mathscr E(\\lambda)\\)</b><br>• Take \\(X=X_1\\) and \\(Y=X_1+X_2\\);<br>• then \\(f_{X,Y}(x,y)=\\lambda^2e^{-\\lambda y}\\) on the set \\(0 < x < y\\);<br>• \\(f_Y(y)=\\int_0^yf_{X,Y}(x,y)\\,dx=\\lambda^2ye^{-\\lambda y}\\);<br>• i.e., \\(Y\\) has the <b>Gamma</b> distribution \\(\\Gamma(2,\\lambda)\\);<br>• now \\(f_{X|Y}(x\\mid y)=y^{-1}\\quad\\text{for}\\quad x\\in(0,y)\\), so that \\(X\\mid Y=y\\) is a uniform distribution \\(\\mathscr U(0,y)\\)<br>• clearly, \\(X\\sim\\mathscr E(\\lambda)\\), so that \\(f_{Y|X}(y\\mid x)=\\lambda e^{-\\lambda(y-x)}\\)<br>• the distribution of \\(Y\\mid X=x\\) is <b>shifted exponential</b><br>i.e., \\(Y-x\\mid X=x\\sim\\mathscr E(\\lambda)\\)<br>• In fact, \\(Z:=Y-X\\) and \\(X\\) are independent, so that \\((Y-x\\mid X=x)\\sim(Z\\mid X=x)\\sim Z\\)"
       }
      ],
      "tips": [],
-     "practice": [],
-     "defs": [],
-     "notes": []
+     "practice": [
+      {
+       "kind": "midterm2017",
+       "problem": 2,
+       "part": "4"
+      },
+      {
+       "kind": "midterm2017",
+       "problem": 5,
+       "part": "a"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST6-09"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST6-17"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST6-15"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST6-07"
+      },
+      {
+       "kind": "source",
+       "source": "ps6-2026",
+       "label": "Problem 5",
+       "text": "Alice and Bob enter simultaneously the grocery shop. Assume that their shopping times are independent <b>r.v.</b>’s \\(X\\) and \\(Y\\) respectively with exponential distribution of mean value 15 minutes.<br>(a) What is the distribution of the <b>r.v.</b> \\(M:=\\min(X,Y)\\) for the smaller of the two shopping times? What is the expected value for the smaller shopping time?<br>(b) What is the distribution of the time \\(W:=|X-Y|\\) that the first to finish shopping will wait for his/her friend?<br>(c) Check that \\(\\mathsf E(M)+\\mathsf E(W)\\) is larger than 15 min; is not there any contradiction there?<br>(d) Justify the strong memorylessness property: given that Alice is the second to finish her shopping, the difference \\(X-Y\\) has the same distribution as \\(X\\).",
+       "sourceTitle": "Problem set 6 (seminar 6, 2026)"
+      }
+     ],
+     "defs": [
+      10
+     ],
+     "notes": [
+      "topic-8"
+     ]
     }
    ]
   },
@@ -626,42 +1228,74 @@ const MIDTERM_PREP = {
        "kind": "Definition",
        "lecture": "L4",
        "page": 37,
-       "text": "Assume \\(X\\) and \\(Y\\) are discrete rv on \\((\\Omega,\\mathscr F,\\mathsf P)\\); then the function \\[p_{X,Y}(x,y):=\\mathsf P(X=x,Y=y)\\] is called the <b>joint probability mass function</b>. <i>Properties:</i> \\(p_{X,Y}\\) satisfies all properties of the usual pmf, namely \\(p_{X,Y}\\ge0\\) and \\(\\sum_{x,y}p_{X,Y}(x,y)=1\\)"
+       "text": "Assume \\(X\\) and \\(Y\\) are discrete <b>rv</b> on \\((\\Omega,\\mathscr F,\\mathsf P)\\); then the function \\[p_{X,Y}(x,y):=\\mathsf P(X=x,Y=y)\\] is called the <b>joint probability mass function</b><br><i>Remark (Properties of joint <b>pmf</b>)</i><br>\\(p_{X,Y}\\) satisfies all properties of the usual <b>pmf</b>, namely \\(p_{X,Y}\\ge0\\) and \\(\\sum_{x,y}p_{X,Y}(x,y)=1\\)"
       },
       {
        "kind": "Definition",
        "lecture": "L6",
        "page": 30,
-       "text": "Assume \\(X\\) and \\(Y\\) are r.v. defined on a probability space \\((\\Omega,\\mathscr F,\\mathsf P)\\). Their <b>joint cumulative distribution function</b> \\(F_{X,Y}\\) is \\[F_{X,Y}(x,y):=\\mathsf P(X\\le x,Y\\le y)\\]"
+       "text": "Assume \\(X\\) and \\(Y\\) are <b>r.v.</b> defined on a probability space \\((\\Omega,\\mathscr F,\\mathsf P)\\). Their <b>joint cumulative distribution function</b> \\(F_{X,Y}\\) is \\[F_{X,Y}(x,y):=\\mathsf P(X\\le x,Y\\le y)\\]"
       },
       {
        "kind": "Definition",
        "lecture": "L6",
        "page": 31,
-       "text": "We say that r.v. \\(X\\) and \\(Y\\) have <b>continuous joint distribution</b> if \\[F_{X,Y}(x,y)=\\int_{-\\infty}^x\\int_{-\\infty}^yf_{X,Y}(u,v)\\,du\\,dv\\] for a nonnegative <b>joint density</b> function \\(f_{X,Y}\\)"
+       "text": "We say that <b>r.v.</b> \\(X\\) and \\(Y\\) have <b>continuous joint distribution</b> if \\[F_{X,Y}(x,y)=\\int_{-\\infty}^x\\int_{-\\infty}^yf_{X,Y}(u,v)\\,du\\,dv\\]for a nonnegative <b>joint density</b> function \\(f_{X,Y}\\)."
       }
      ],
      "lectureExamples": [
       {
        "lecture": "L4",
        "page": 33,
-       "text": "Urn with 3 white and 2 black balls, three draws without replacement; \\(X\\) — total no. of white, \\(Y\\) — no. of white in the first two draws; the joint distribution of \\((X,Y)\\) is given by a table (L4 p33–34, p40)"
+       "text": "An urn contains 3 white balls and 2 black ones. Three balls are drawn from the urn in turn without replacement. Set<br>• \\(X\\) is the total number of white balls drawn<br>• \\(Y\\) is the number of white balls in the first two draws \\[\\begin{array}{|c|c|c|c|c|c|c|c|}\\hline & \\text{WWW} & \\text{WWB} & \\text{WBW} & \\text{BWW} & \\text{WBB} & \\text{BWB} & \\text{BBW} \\\\ \\hline \\mathsf P & .1 & .2 & .2 & .2 & .1 & .1 & .1 \\\\ \\hline \\text{X} & 3 & 2 & 2 & 2 & 1 & 1 & 1 \\\\ \\hline \\text{Y} & 2 & 2 & 1 & 1 & 1 & 1 & 0 \\\\ \\hline\\end{array}\\] The <b>joint distribution</b> of \\((X,Y)\\) can be given by the table \\[\\begin{array}{|c|c|c|c|}\\hline & \\text{X=1} & \\text{X=2} & \\text{X=3} \\\\ \\hline \\text{Y=0} & .1 & 0 & 0 \\\\ \\hline \\text{Y=1} & .2 & .4 & 0 \\\\ \\hline \\text{Y=2} & 0 & .2 & .1 \\\\ \\hline\\end{array}\\]"
       },
       {
        "lecture": "L6",
        "page": 31,
-       "text": "The uniform distribution on the unit square \\(S\\) has a joint p.d.f. \\(f_{X,Y}(x,y)=1\\) on \\(S\\), \\(0\\) otherwise (its joint c.d.f.: L6 p30)"
+       "text": "The <b>uniform distribution</b> on the unit square \\(S\\) has a joint <b>p.d.f.</b> \\[f_{X,Y}(x,y)=\\begin{cases}1&\\text{on}\\quad S\\\\0&\\text{otherwise}\\end{cases}\\]"
       },
       {
        "lecture": "L6",
        "page": 30,
-       "text": "Uniform distribution on the unit square, joint c.d.f.: \\[F_{X,Y}=\\begin{cases}1&x>1,y>1\\\\x,&x\\in(0,1),y>1\\\\y,&x>1,y\\in(0,1)\\\\xy,&x,y\\in(0,1)\\\\0,&\\text{otherwise}\\end{cases}\\]"
+       "text": "<b>Example (Uniform distribution on the unit square)</b>\\[F_{X,Y}=\\begin{cases}1&x>1,y>1\\\\x,&x\\in(0,1),y>1\\\\y,&x>1,y\\in(0,1)\\\\xy,&x,y\\in(0,1)\\\\0,&\\text{otherwise}\\end{cases}\\]"
       }
      ],
      "tips": [],
-     "practice": [],
-     "defs": [],
-     "notes": []
+     "practice": [
+      {
+       "kind": "source",
+       "source": "defs-s5",
+       "label": "Joint probability mass function",
+       "text": "The joint pmf for two discrete random variables \\(X\\) and \\(Y\\) gives the probability of their simultaneous occurrence: \\[p_{X,Y}(x,y)=P(X=x\\text{ and }Y=y)=P(X=x,Y=y)\\]",
+       "sourceTitle": "Definitions for seminar 5"
+      },
+      {
+       "kind": "source",
+       "source": "ps4-2026",
+       "label": "Problem 2 (a)",
+       "text": "A fair coin is tossed three times. Denote by \\(X\\) the number of Heads in the first two tosses and by \\(Y\\) the number of Tails in the last two tosses of the coin.<br>(a) Find the joint probability mass function \\(p_{X,Y}\\) of \\(X\\) and \\(Y\\): \\[\\begin{array}{|c|c|c|c|}\\hline\\text{Events}&X=0&X=1&X=2\\\\\\hline Y=0&\\dots&\\dots&\\dots\\\\Y=1&\\dots&\\dots&\\dots\\\\Y=2&\\dots&\\dots&\\dots\\\\\\hline\\end{array}\\qquad\\begin{array}{|c|c|c|c|}\\hline\\text{prob.}&X=0&X=1&X=2\\\\\\hline Y=0&\\dots&\\dots&\\dots\\\\Y=1&\\dots&\\dots&\\dots\\\\Y=2&\\dots&\\dots&\\dots\\\\\\hline\\end{array}\\]",
+       "sourceTitle": "Problem set 4 (seminar 4, 2026)"
+      },
+      {
+       "kind": "midterm2017",
+       "problem": 6,
+       "part": "a"
+      },
+      {
+       "kind": "source",
+       "source": "ps4-2026",
+       "label": "Problem 10",
+       "text": "Let the random variables \\(X\\) and \\(Y\\) have joint probability mass function \\(f(x,y)\\) such that: \\[\\begin{array}{lll}f(1,2)=\\frac18,\\qquad&f(1,3)=\\frac1{16},\\qquad&f(1,4)=\\frac14,\\\\f(2,2)=\\frac1{16},\\qquad&f(2,3)=\\frac18,\\qquad&f(2,4)=\\frac38.\\end{array}\\]<br>(a) Find the marginal <b>p.m.f.</b> of the <b>r.v.</b> \\(X\\) and \\(Y\\);<br>(b) Find the probability of the following events:<br>(1) \\(X>Y\\); (2) \\(X+Y\\) is odd;<br>(3) \\(X\\ge Y\\); (4) \\(X-Y\\le1\\).",
+       "sourceTitle": "Problem set 4 (seminar 4, 2026)"
+      }
+     ],
+     "defs": [
+      15
+     ],
+     "notes": [
+      "topic-3",
+      "topic-10"
+     ]
     },
     {
      "id": "n-marginal",
@@ -671,32 +1305,71 @@ const MIDTERM_PREP = {
        "kind": "Formula",
        "lecture": "L4",
        "page": 37,
-       "text": "<b>Marginal pmf’s</b> of \\(X\\) and \\(Y\\) in a joint distribution of \\((X,Y)\\) are given by \\(p_X(x)=\\sum_yp_{X,Y}(x,y)\\);&nbsp; \\(p_Y(y)=\\sum_xp_{X,Y}(x,y)\\)"
+       "text": "<b>Marginal pmf’s</b> of \\(X\\) and \\(Y\\) in a joint distribution of \\((X,Y)\\) are given by<br>• \\(p_X(x)=\\sum_yp_{X,Y}(x,y)\\);<br>• \\(p_Y(y)=\\sum_xp_{X,Y}(x,y)\\)"
       },
       {
        "kind": "Formula",
        "lecture": "L6",
        "page": 30,
-       "text": "The <b>marginal c.d.f.</b> of \\(X\\) and \\(Y\\) are \\(F_X(x)=\\lim_{y\\to\\infty}F_{X,Y}(x,y)\\), \\(F_Y(y)=\\lim_{x\\to\\infty}F_{X,Y}(x,y)\\)"
+       "text": "The <b>marginal c.d.f.</b> of \\(X\\) and \\(Y\\) are \\[\\begin{gathered}F_X(x)=\\lim_{y\\to\\infty}F_{X,Y}(x,y)\\\\F_Y(y)=\\lim_{x\\to\\infty}F_{X,Y}(x,y)\\end{gathered}\\]"
       },
       {
        "kind": "Formula",
        "lecture": "L6",
        "page": 31,
-       "text": "\\(f_X(x)=\\int_{\\mathbb R}f_{X,Y}(x,y)\\,dy\\), \\(f_Y(y)=\\int_{\\mathbb R}f_{X,Y}(x,y)\\,dx\\) give <b>marginal densities</b> of \\(X\\) and \\(Y\\)"
+       "text": "In that case, \\[\\begin{gathered}f_X(x)=\\int_{\\mathbb R}f_{X,Y}(x,y)\\,dy\\\\f_Y(y)=\\int_{\\mathbb R}f_{X,Y}(x,y)\\,dx\\end{gathered}\\]give <b>marginal densities</b> of \\(X\\) and \\(Y\\)"
       }
      ],
      "lectureExamples": [
       {
        "lecture": "L4",
        "page": 34,
-       "text": "The joint distribution completely describes the pmf’s of \\(X\\) and \\(Y\\), eg: \\(p_X(1)=\\mathsf P(X=1,Y=0)+\\mathsf P(X=1,Y=1)+\\mathsf P(X=1,Y=2)=.3\\)"
+       "text": "The joint distribution completely describes the <b>pmf</b>’s of \\(X\\) and \\(Y\\), eg: \\[\\begin{aligned}p_X(1)=\\mathsf P(X=1)&=\\mathsf P(X=1,Y=0)+\\mathsf P(X=1,Y=1)\\\\ &\\qquad+\\mathsf P(X=1,Y=2)=.3;\\\\ p_Y(1)=\\mathsf P(Y=1)&=\\mathsf P(X=1,Y=1)+\\mathsf P(X=2,Y=1)\\\\ &\\qquad+\\mathsf P(X=3,Y=1)=.6\\end{aligned}\\] \\[\\begin{array}{|c|c|c|c|}\\hline & \\textbf{X=1} & \\text{X=2} & \\text{X=3} \\\\ \\hline \\text{Y=0} & \\mathbf{.1} & 0 & 0 \\\\ \\hline \\text{Y=1} & \\mathbf{.2} & .4 & 0 \\\\ \\hline \\text{Y=2} & \\mathbf{0} & .2 & .1 \\\\ \\hline\\end{array}\\qquad\\begin{array}{|c|c|c|c|}\\hline & \\text{X=1} & \\text{X=2} & \\text{X=3} \\\\ \\hline \\text{Y=0} & .1 & 0 & 0 \\\\ \\hline \\textbf{Y=1} & \\mathbf{.2} & \\mathbf{.4} & \\mathbf{0} \\\\ \\hline \\text{Y=2} & 0 & .2 & .1 \\\\ \\hline\\end{array}\\]"
       }
      ],
      "tips": [],
-     "practice": [],
-     "defs": [],
-     "notes": []
+     "practice": [
+      {
+       "kind": "source",
+       "source": "defs-s5",
+       "label": "Marginal probability mass function",
+       "text": "The marginal pmf of a random variable \\(X\\) is obtained by summing the joint pmf over all possible values of \\(Y\\): \\[p_X(x)=P(X=x)=\\sum_yp_{X,Y}(x,y)\\]",
+       "sourceTitle": "Definitions for seminar 5"
+      },
+      {
+       "kind": "source",
+       "source": "ps4-2026",
+       "label": "Problem 2 (b)",
+       "text": "A fair coin is tossed three times. Denote by \\(X\\) the number of Heads in the first two tosses and by \\(Y\\) the number of Tails in the last two tosses of the coin.<br>(b) Calculate the marginal p.m.f.’s of \\(X\\) and \\(Y\\)",
+       "sourceTitle": "Problem set 4 (seminar 4, 2026)"
+      },
+      {
+       "kind": "midterm2017",
+       "problem": 6,
+       "part": "b"
+      },
+      {
+       "kind": "source",
+       "source": "ps4-2026",
+       "label": "Problem 5 (a)–(c)",
+       "text": "Five men and five women are ranked according to their scores on an examination. Assume that no two scores are alike and all 10! possible rankings are equally likely. Let \\(X\\) denote the highest ranking achieved by a woman and let \\(Y\\) denote their lowest ranking. (For instance, \\(X=1\\) if the top-ranked person is a female.)<br>(a) Find the probability mass function (p.m.f.) of a random variable \\(X\\);<br>(b) explain how to find the joint p.m.f. of a random vector \\((X,Y)\\), i.e., how to calculate the values \\(p_{(X,Y)}(x,y):=\\mathsf P(X=x,Y=y)\\) for all pairs of \\(x\\) and \\(y\\);<br>(c) what is the marginal distribution of \\(X\\)? Calculate the value of the marginal distribution of \\(X\\) for \\(x=3\\) and compare to the value found in part (a);",
+       "sourceTitle": "Problem set 4 (seminar 4, 2026)"
+      },
+      {
+       "kind": "source",
+       "source": "col2-2022",
+       "label": "New problems, Problem 8 (b)",
+       "text": "The field hospital is located at the centre of a circle of radius 100 km. If an accident occurs within this circle, then the hospital sends out an ambulance helicopter. Assuming that an accident occurs at a point that is uniformly distributed in the circle,<br>(b) find the distribution of the abscissa \\(X\\) of the accident point \\((X,Y)\\), its expected value and variance.",
+       "sourceTitle": "Colloquium 2 problem list (2022)"
+      }
+     ],
+     "defs": [
+      16
+     ],
+     "notes": [
+      "topic-3",
+      "topic-10"
+     ]
     },
     {
      "id": "n-independence",
@@ -706,32 +1379,65 @@ const MIDTERM_PREP = {
        "kind": "Definition",
        "lecture": "L4",
        "page": 39,
-       "text": "Recall that events \\(A\\) and \\(B\\) are independent iff \\(\\mathsf P(AB)=\\mathsf P(A)\\mathsf P(B)\\). <b>Definition (Independent rv):</b> Discrete rv \\(X\\) and \\(Y\\) are independent if for every \\(x\\) and \\(y\\), the events \\(A:=\\{X=x\\}\\) and \\(B:=\\{Y=y\\}\\) are independent. In terms of pmf: \\[\\forall x,y:\\quad p_{X,Y}(x,y)=p_X(x)p_Y(y)\\]"
+       "text": "Recall that events \\(A\\) and \\(B\\) are independent iff \\(\\mathsf P(AB)=\\mathsf P(A)\\mathsf P(B)\\)<br><i>Definition (Independent rv)</i><br>Discrete <b>rv</b> \\(X\\) and \\(Y\\) are <b>independent</b> if for every \\(x\\) and \\(y\\), the events \\(A:=\\{X=x\\}\\) and \\(B:=\\{Y=y\\}\\) are independent<br>In terms of <b>pmf</b> independence can be expressed as follows: \\[\\boxed{\\forall x,y:\\qquad p_{X,Y}(x,y)=p_X(x)p_Y(y)}\\]"
       },
       {
        "kind": "Definition",
        "lecture": "L6",
        "page": 33,
-       "text": "R.v.’s \\(X\\) and \\(Y\\) are called <b>independent</b> if for all \\(x\\) and \\(y\\) the events \\(\\{X\\le x\\}\\) and \\(\\{Y\\le y\\}\\) are independent. Thus for independent \\(X\\) and \\(Y\\): \\(\\mathsf P(X\\le x,Y\\le y)=\\mathsf P(X\\le x)\\cdot\\mathsf P(Y\\le y)\\); or \\(F_{X,Y}(x,y)=F_X(x)F_Y(y)\\); or \\(f_{X,Y}(x,y)=f_X(x)\\cdot f_Y(y)\\). <i>Remark:</i> the notion of independence is extended in a natural way to any number of random variables."
+       "text": "<b>R.v.</b>’s \\(X\\) and \\(Y\\) are called <b>independent</b> if for all \\(x\\) and \\(y\\) the events \\(\\{X\\le x\\}\\) and \\(\\{Y\\le y\\}\\) are independent.<br>• Thus for independent \\(X\\) and \\(Y\\) \\[\\mathsf P(X\\le x,Y\\le y)=\\mathsf P(X\\le x)\\cdot\\mathsf P(Y\\le y);\\]• or, in terms of cumulative distribution functions (<b>c.d.f.</b>) \\[F_{X,Y}(x,y)=F_X(x)F_Y(y)\\]• or, in terms of probability density functions (<b>p.d.f.</b>), \\[f_{X,Y}(x,y)=f_X(x)\\cdot f_Y(y).\\]<b>Remark</b><br><i>The notion of independence is extended in a natural way to any number of random variables.</i>"
       },
       {
        "kind": "Property",
        "lecture": "L6",
        "page": 35,
-       "text": "\\(X\\) and \\(Y\\) independent \\(\\Longrightarrow\\) \\(\\mathsf E(XY)=\\mathsf EX\\cdot\\mathsf EY\\) and \\(\\mathsf E\\big(g(X)h(Y)\\big)=\\mathsf E\\big(g(X)\\big)\\mathsf E\\big(h(Y)\\big)\\) for any continuous functions \\(g\\) and \\(h\\); also \\(\\mathrm{Var}(X+Y)=\\mathrm{Var}X+\\mathrm{Var}Y\\) (L6 p34); if \\(X\\) and \\(Y\\) are independent, then \\((X\\mid Y=y)\\sim X\\) (L4 p42)"
+       "text": "\\(X\\) and \\(Y\\) independent \\(\\Longrightarrow\\) \\(f_{X,Y}(x,y)=f_X(x)f_Y(y)\\) and \\[\\begin{aligned}\\mathsf E(XY)&=\\int_{\\mathbb R}\\int_{\\mathbb R}xy\\,f_{X,Y}(x,y)\\,dx\\,dy=\\int_{\\mathbb R}\\int_{\\mathbb R}xy\\,f_X(x)f_Y(y)\\,dx\\,dy\\\\&=\\int_{\\mathbb R}xf_X(x)\\,dx\\cdot\\int_{\\mathbb R}yf_Y(y)\\,dy=\\mathsf E\\,X\\cdot\\mathsf E\\,Y\\end{aligned}\\]as claimed. More generally, \\[\\mathsf E\\big(g(X)h(Y)\\big)=\\mathsf E\\big(g(X)\\big)\\mathsf E\\big(h(Y)\\big)\\]for any continuous functions \\(g\\) and \\(h\\)."
       }
      ],
      "lectureExamples": [
       {
        "lecture": "L4",
        "page": 40,
-       "text": "Urn example: \\(X\\) and \\(Y\\) are dependent as \\(p_{X,Y}(2,1)\\ne p_X(2)p_Y(1)\\); in fact, \\(X\\ge Y\\)"
+       "text": "<i>Example (An urn with 3 white and 2 black balls)</i> \\[\\begin{array}{|c|c|c|c|c|}\\hline & X=1 & X=2 & X=3 & p_Y \\\\ \\hline Y=0 & .1 & 0 & 0 & .1 \\\\ \\hline Y=1 & .2 & \\mathbf{.4} & 0 & \\mathbf{.6} \\\\ \\hline Y=2 & 0 & .2 & .1 & .3 \\\\ \\hline p_X & .3 & \\mathbf{.6} & .1 & \\\\ \\hline\\end{array}\\] \\(X\\) and \\(Y\\) are <b>dependent</b> as \\(p_{X,Y}(2,1)\\ne p_X(2)p_Y(1)\\); in fact, \\(X\\ge Y\\)"
       }
      ],
      "tips": [],
-     "practice": [],
-     "defs": [],
-     "notes": []
+     "practice": [
+      {
+       "kind": "source",
+       "source": "defs-s5",
+       "label": "Independent random variables",
+       "text": "Random variables \\(X\\) and \\(Y\\) are independent if \\[P(X\\le x,Y\\le y)=P(X\\le x)P(Y\\le y))\\]",
+       "sourceTitle": "Definitions for seminar 5"
+      },
+      {
+       "kind": "midterm2017",
+       "problem": 2,
+       "part": "2"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST4-15"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST4-09"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST5-01"
+      }
+     ],
+     "defs": [
+      16,
+      15,
+      14
+     ],
+     "notes": [
+      "topic-3",
+      "topic-10",
+      "topic-5"
+     ]
     },
     {
      "id": "n-cov-corr",
@@ -741,38 +1447,97 @@ const MIDTERM_PREP = {
        "kind": "Definition",
        "lecture": "L6",
        "page": 37,
-       "text": "For two random variables \\(X\\) and \\(Y\\), their <b>covariance</b> \\(\\mathrm{Cov}(X,Y)\\) is \\[\\mathrm{Cov}(X,Y):=\\mathsf E\\Big((X-\\mathsf EX)\\cdot(Y-\\mathsf EY)\\Big)=\\mathsf E(XY)-\\mathsf EX\\cdot\\mathsf EY.\\] If \\(\\mathrm{Cov}(X,Y)=0\\), the r.v. \\(X\\) and \\(Y\\) are called <b>uncorrelated</b>. (Discrete version: L5 p24)"
+       "text": "For two random variables \\(X\\) and \\(Y\\), their <b>covariance</b> \\(\\mathrm{Cov}(X,Y)\\) is \\[\\mathrm{Cov}(X,Y):=\\mathsf E\\Big((X-\\mathsf EX)\\cdot(Y-\\mathsf EY)\\Big)=\\mathsf E(XY)-\\mathsf EX\\cdot\\mathsf EY.\\]If \\(\\mathrm{Cov}(X,Y)=0\\), the r.v. \\(X\\) and \\(Y\\) are called <b>uncorrelated</b>."
       },
       {
        "kind": "Property",
        "lecture": "L6",
        "page": 37,
-       "text": "Independent \\(X\\) and \\(Y\\) are uncorrelated since \\(\\mathsf E(XY)=\\mathsf EX\\cdot\\mathsf EY\\). The converse is <b>not true</b>: e.g. \\(X=Z\\) and \\(Y=Z^2\\) for standard Gaussian \\(Z\\) are uncorrelated but dependent. \\(\\mathrm{Var}(X+Y)=\\mathrm{Var}X+2\\mathrm{Cov}(X,Y)+\\mathrm{Var}Y\\). \\(\\mathrm{Cov}(X,Y)>0\\) means that larger values of \\(X\\) correspond to larger values of \\(Y\\)"
+       "text": "• Independent \\(X\\) and \\(Y\\) are uncorrelated since \\(\\mathsf E(XY)=\\mathsf E\\,X\\cdot\\mathsf E\\,Y\\)<br>• The converse is <b>not true</b>: e.g. \\(X=Z\\) and \\(Y=Z^2\\) for standard Gaussian \\(Z\\) are uncorrelated but dependent<br>• For <b>r.v.</b>’s \\(X\\) and \\(Y\\), \\[\\mathrm{Var}(X+Y)=\\mathrm{Var}X+2\\mathrm{Cov}(X,Y)+\\mathrm{Var}Y\\]• In particular, for <b>independent</b> \\(X\\) and \\(Y\\) \\[\\mathrm{Var}(X+Y)=\\mathrm{Var}\\,X+\\mathrm{Var}\\,Y\\]• \\(\\mathrm{Cov}(X,Y)>0\\) means that larger values of \\(X\\) correspond to larger values of \\(Y\\)"
       },
       {
        "kind": "Remark",
        "lecture": "L5",
        "page": 26,
-       "text": "\\(\\mathrm{Cov}(X,Y)=0\\) <i>does not</i> mean \\(X\\) and \\(Y\\) are independent; \\(\\mathrm{Cov}(X,Y)\\) is a <i>bilinear</i> form"
+       "text": "• \\(\\mathrm{Cov}(X,Y)=0\\) <i><b>does not</b> mean \\(X\\) and \\(Y\\) are independent</i><br>• \\(\\mathrm{Cov}(X,Y)\\) <i>is a <b>bilinear</b> form</i>"
       },
       {
        "kind": "Definition",
        "lecture": "L6",
        "page": 38,
-       "text": "For two random variables \\(X\\) and \\(Y\\), their <b>correlation</b> \\(\\mathrm{Cor}(X,Y)\\) is \\[\\mathrm{Cor}(X,Y):=\\frac{\\mathrm{Cov}(X,Y)}{\\sqrt{\\mathrm{Var}(X)\\mathrm{Var}(Y)}}\\] (L5 p26: \\(\\mathrm{Cor}(X,Y)=\\rho(X,Y):=\\frac{\\mathrm{Cov}(X,Y)}{\\sigma(X)\\sigma(Y)}\\))"
+       "text": "For two random variables \\(X\\) and \\(Y\\), their <b>correlation</b> \\(\\mathrm{Cor}(X,Y)\\) is \\[\\mathrm{Cor}(X,Y):=\\frac{\\mathrm{Cov}(X,Y)}{\\sqrt{\\mathrm{Var}(X)\\mathrm{Var}(Y)}}\\]"
       },
       {
        "kind": "Property",
        "lecture": "L6",
        "page": 38,
-       "text": "For any two r.v.’s, \\(|\\mathrm{Cor}(X,Y)|\\le1\\) (follows from Cauchy–Bunyakowski–Schwarz inequality); for independent \\(X\\) and \\(Y\\), \\(\\mathrm{Cor}(X,Y)=0\\); \\(\\mathrm{Cor}(X,Y)=0\\Longrightarrow X\\) and \\(Y\\) are uncorrelated (but need not be independent); if \\(\\mathrm{Cor}(X,Y)=1\\), then \\(Y=aX+b\\) with \\(a>0\\); if \\(\\mathrm{Cor}(X,Y)=-1\\), then \\(Y=aX+b\\) with \\(a<0\\)"
+       "text": "• For any two <b>r.v.</b>’s \\(X\\) and \\(Y\\), \\[|\\mathrm{Cor}(X,Y)|\\le1\\](follows from Cauchy–Bunyakowski–Schwarz inequality)<br>• For independent \\(X\\) and \\(Y\\), \\(\\mathrm{Cor}(X,Y)=0\\)<br>• \\(\\mathrm{Cor}(X,Y)=0\\Longrightarrow X\\) and \\(Y\\) are <b>uncorrelated</b> (but need not be independent)<br>• If \\(\\mathrm{Cor}(X,Y)=1\\), then \\(Y=aX+b\\) with \\(a>0\\)<br>• If \\(\\mathrm{Cor}(X,Y)=-1\\), then \\(Y=aX+b\\) with \\(a < 0\\)"
+      },
+      {
+       "kind": "Definition",
+       "lecture": "L5",
+       "page": 26,
+       "text": "<b>Correlation coefficient between \\(X\\) and \\(Y\\):</b>\\[\\mathrm{Cor}(X,Y)=\\rho(X,Y):=\\frac{\\mathrm{Cov}(X,Y)}{\\sigma(X)\\sigma(Y)}\\]<b>Properties of \\(\\mathrm{Cor}(X,Y)\\)</b><br>• \\(|\\mathrm{Cor}(X,Y)|\\le1\\) (Cauchy–Bunyakowsky–Schwarz inequality)<br>• \\(\\mathrm{Cor}(X,Y)=\\pm1\\) implies \\(Y=aX+b\\)"
       }
      ],
      "lectureExamples": [],
      "tips": [],
-     "practice": [],
-     "defs": [],
-     "notes": []
+     "practice": [
+      {
+       "kind": "source",
+       "source": "defs-s5",
+       "label": "Covariance",
+       "text": "Covariance of \\(X\\) and \\(Y\\): \\[\\mathrm{Cov}(X,Y)=E\\left[(X-E[X])(Y-E[Y])\\right]=E[XY]-E[X]E[Y]\\]",
+       "sourceTitle": "Definitions for seminar 5"
+      },
+      {
+       "kind": "source",
+       "source": "defs-s5",
+       "label": "Correlation coefficient",
+       "text": "Correlation coefficient between \\(X\\) and \\(Y\\) is: \\[\\mathrm{Corr}(X,Y)=\\rho(X,Y)=\\frac{\\mathrm{Cov}(X,Y)}{\\sqrt{\\mathrm{Var}(X)\\mathrm{Var}(Y)}}\\]",
+       "sourceTitle": "Definitions for seminar 5"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST5-12"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST5-20"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST5-03"
+      },
+      {
+       "kind": "source",
+       "source": "ps5-2025",
+       "label": "Problem 2 (c)",
+       "text": "An urn contains 10 balls numbered 1 to 10. Two balls are sampled in turn without replacement and their numbers are denoted as \\(X_1\\) and \\(X_2\\) respectively. Let \\(Y\\) be the minimum of \\(X_1\\) and \\(X_2\\).<br>(c) Find covariance of \\(X_1\\) and \\(X_2\\). Can you guess the sign before calculations? Are \\(X_1\\) and \\(X_2\\) independent?",
+       "sourceTitle": "Problem set 5 (seminar 5, 2025)"
+      },
+      {
+       "kind": "source",
+       "source": "col2-2022",
+       "label": "New problems, Problem 1 (c)",
+       "text": "A fair die is rolled \\(n\\) times. Let \\(X_k\\) denote the number of rolls that give \\(k\\) points, \\(k=1,\\dots,6\\). Find<br>(c) the covariance \\(\\mathsf{Cov}(X_j,X_k)\\); can you predict the sign of the covariance without calculations? Are the <b>r.v.</b> \\(X_j\\) and \\(X_k\\) independent?<br>Hint: in (c), you may condition on \\(\\{X_k=m\\}\\) to calculate \\(\\mathsf E(X_jX_k)\\). Alternatively, calculate \\(\\mathsf{Var}(X_j+X_k)\\) and use it to determine \\(\\mathsf{Cov}(X_j,X_k)\\). Another approach can use the fact that the joint distribution of \\((X_k,X_j,n-X_k-X_j)\\) is multinomial \\(M(n;\\frac16,\\frac16,\\frac46)\\)",
+       "sourceTitle": "Colloquium 2 problem list (2022)"
+      },
+      {
+       "kind": "source",
+       "source": "ps6-2026",
+       "label": "Problem 7 (b)–(c)",
+       "text": "Let \\(Z\\sim N(0,1)\\), and let \\(X\\) be a random variable independent of \\(Z\\) with \\(P(X=1)=P(X=-1)=\\frac12\\). Define \\(Y=XZ\\).<br>(b) Show that \\(Z\\) and \\(Y\\) are dependent. <i>Hint: Compare \\(P(|Z|<1,\\ |Y|>1)\\) with \\(P(|Z|<1)\\,P(|Y|>1)\\). Note that \\(|Y|=|Z|\\) always.</i><br>(c) Show that \\(Z\\) and \\(Y\\) are uncorrelated, i.e. \\(\\mathrm{Cov}(Z,Y)=0\\). <i>Hint:</i> \\(\\mathrm{Cov}(Z,Y)=E[XZ^2]\\). <i>Use the independence of \\(Z\\) and \\(X\\).</i>",
+       "sourceTitle": "Problem set 6 (seminar 6, 2026)"
+      }
+     ],
+     "defs": [
+      13,
+      14
+     ],
+     "notes": [
+      "topic-5"
+     ]
     },
     {
      "id": "n-conditional",
@@ -782,37 +1547,72 @@ const MIDTERM_PREP = {
        "kind": "Definition",
        "lecture": "L4",
        "page": 35,
-       "text": "The function \\(p_{X|Y}(x\\mid y):=\\mathsf P(X=x\\mid Y=y)\\) for a fixed \\(y\\) is the <b>pmf</b> of a random variable \\(X\\mid Y=y\\) that is said to have a <b>conditional distribution</b> given that \\(\\{Y=y\\}\\). Observe that \\(X\\mid Y=y\\) assumes the same values as \\(X\\) but their pmf are in general different"
+       "text": "The function \\(p_{X|Y}(x\\mid y):=\\mathsf P(X=x\\mid Y=y)\\) for a fixed \\(y\\) is the <b>pmf</b> of a random variable \\(X\\mid Y=y\\) that is said to have a <b>conditional distribution</b> given that \\(\\{Y=y\\}\\)<br>Observe that \\(X\\mid Y=y\\) assumes the same values as \\(X\\) but their <b>pmf</b> are in general different"
       },
       {
        "kind": "Formula",
        "lecture": "L4",
        "page": 42,
-       "text": "\\[p_{X|Y}(x\\mid y):=\\mathsf P(X=x\\mid Y=y)=\\frac{\\mathsf P(X=x,Y=y)}{\\mathsf P(Y=y)}\\] For a fixed \\(y\\), \\(p_{X|Y}(\\cdot\\mid y)\\) is a pmf of the rv \\(X\\mid Y=y\\): \\(\\sum_xp_{X|Y}(x,y)\\) (sic) \\(=\\sum_x\\frac{p_{X,Y}(x,y)}{p_Y(y)}=\\frac{p_Y(y)}{p_Y(y)}=1\\). If \\(X\\) and \\(Y\\) are independent, then \\((X\\mid Y=y)\\sim X\\)"
+       "text": "• Given the joint distribution of \\(X\\) and \\(Y\\) and given that \\(Y=y\\) occurred, we can introduce the <b>conditional distribution</b> of the <b>rv</b> \\(X\\mid Y=y\\): \\[p_{X|Y}(x\\mid y):=\\mathsf P(X=x\\mid Y=y)=\\frac{\\mathsf P(X=x,Y=y)}{\\mathsf P(Y=y)}\\]• For a fixed \\(y\\), \\(p_{X|Y}(\\cdot\\mid y)\\) is a <b>pmf</b> of the <b>rv</b> \\(X\\mid Y=y\\): \\[\\sum_xp_{X|Y}(x,y)=\\sum_x\\frac{p_{X,Y}(x,y)}{p_Y(y)}=\\frac{p_Y(y)}{p_Y(y)}=1\\]• If \\(X\\) and \\(Y\\) are independent, then \\((X\\mid Y=y)\\sim X\\)"
       },
       {
        "kind": "Definition",
        "lecture": "L6",
        "page": 47,
-       "text": "Given a joint <b>p.d.f.</b> \\(f_{X,Y}\\), we say that the <b>conditional distribution of \\(X\\) given that \\(Y=y\\)</b> is continuous with the p.d.f. \\[f_{X|Y}(x\\mid y):=\\frac{f_{X,Y}(x,y)}{f_Y(y)}\\] (motivation: \\(\\mathsf P(X\\in\\Delta_x\\mid Y=y)\\approx\\frac{f_{X,Y}(x,y)}{f_Y(y)}|\\Delta_x|\\))"
+       "text": "Given a joint <b>p.d.f.</b> \\(f_{X,Y}\\), we say that the <b>conditional distribution of \\(X\\) given that \\(Y=y\\)</b> is continuous with the <b>p.d.f.</b> \\[f_{X|Y}(x\\mid y):=\\frac{f_{X,Y}(x,y)}{f_Y(y)}\\]"
       }
      ],
      "lectureExamples": [
       {
        "lecture": "L6",
        "page": 48,
-       "text": "\\(X_1,X_2\\) independent \\(\\mathscr E(\\lambda)\\), \\(X=X_1\\), \\(Y=X_1+X_2\\): \\(f_{X,Y}(x,y)=\\lambda^2e^{-\\lambda y}\\) on \\(0<x<y\\); \\(f_Y(y)=\\lambda^2ye^{-\\lambda y}\\); \\(f_{X|Y}(x\\mid y)=y^{-1}\\) for \\(x\\in(0,y)\\), so \\(X\\mid Y=y\\) is \\(\\mathscr U(0,y)\\); \\(f_{Y|X}(y\\mid x)=\\lambda e^{-\\lambda(y-x)}\\) — shifted exponential"
+       "text": "<b>Let \\(X_1\\) and \\(X_2\\) be independent with distribution \\(\\mathscr E(\\lambda)\\)</b><br>• Take \\(X=X_1\\) and \\(Y=X_1+X_2\\);<br>• then \\(f_{X,Y}(x,y)=\\lambda^2e^{-\\lambda y}\\) on the set \\(0 < x < y\\);<br>• \\(f_Y(y)=\\int_0^yf_{X,Y}(x,y)\\,dx=\\lambda^2ye^{-\\lambda y}\\);<br>• i.e., \\(Y\\) has the <b>Gamma</b> distribution \\(\\Gamma(2,\\lambda)\\);<br>• now \\(f_{X|Y}(x\\mid y)=y^{-1}\\quad\\text{for}\\quad x\\in(0,y)\\), so that \\(X\\mid Y=y\\) is a uniform distribution \\(\\mathscr U(0,y)\\)<br>• clearly, \\(X\\sim\\mathscr E(\\lambda)\\), so that \\(f_{Y|X}(y\\mid x)=\\lambda e^{-\\lambda(y-x)}\\)<br>• the distribution of \\(Y\\mid X=x\\) is <b>shifted exponential</b><br>i.e., \\(Y-x\\mid X=x\\sim\\mathscr E(\\lambda)\\)<br>• In fact, \\(Z:=Y-X\\) and \\(X\\) are independent, so that \\((Y-x\\mid X=x)\\sim(Z\\mid X=x)\\sim Z\\)"
       },
       {
        "lecture": "L4",
        "page": 43,
-       "text": "Independent Poisson \\(X,Y\\): the conditional distribution of \\(X\\) given \\(X+Y=n\\) is binomial with parameters \\(n\\) and \\(p=\\lambda_1/(\\lambda_1+\\lambda_2)\\)"
+       "text": "<i>Problem</i><br>If \\(X\\) and \\(Y\\) are independent Poisson random variables with respective parameters \\(\\lambda_1\\) and \\(\\lambda_2\\), calculate the conditional distribution of \\(X\\) given that \\(X+Y=n\\).<br><i>Solution</i><br>Start with calculating the <b>pmf</b> of the <b>rv</b> \\(Z:=X+Y\\): \\[\\begin{aligned}p_Z(n)&=\\sum\\nolimits_{k=0}^np_{X,Y}(k,n-k)=\\sum\\nolimits_{k=0}^np_X(k)p_Y(n-k)\\\\ &=e^{-(\\lambda_1+\\lambda_2)}\\sum\\nolimits_{k=0}^n\\frac{\\lambda_1^k\\lambda_2^{n-k}}{k!(n-k)!}=\\frac{(\\lambda_1+\\lambda_2)^n}{n!}e^{-(\\lambda_1+\\lambda_2)}\\end{aligned}\\] Thus \\(Z\\) has a Poisson distribution with parameter \\(\\lambda_1+\\lambda_2\\), and \\[\\begin{aligned}p_{X|Z}(k\\mid n)&=\\frac{p_{X,Z}(k,n)}{p_Z(n)}=\\frac{p_{X,Y}(k,n-k)}{p_Z(n)}\\\\ &=\\frac{n!}{k!(n-k)!}\\frac{\\lambda_1^k\\lambda_2^{n-k}}{(\\lambda_1+\\lambda_2)^n}=\\binom{n}{k}p^k(1-p)^{n-k}\\end{aligned}\\] this is a binomial distr. with parameters \\(n\\) and \\(p=\\lambda_1/(\\lambda_1+\\lambda_2)\\)"
       }
      ],
      "tips": [],
-     "practice": [],
-     "defs": [],
-     "notes": []
+     "practice": [
+      {
+       "kind": "source",
+       "source": "defs-s5",
+       "label": "Conditional distribution",
+       "text": "The conditional probability mass function of \\(X\\) given that \\(Y=y\\) (where \\(p_Y(y)>0\\)) is defined as: \\[p_{X|Y}(x\\mid y)=P(X=x\\mid Y=y)=\\frac{p_{X,Y}(x,y)}{p_Y(y)}\\]",
+       "sourceTitle": "Definitions for seminar 5"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST4-06"
+      },
+      {
+       "kind": "midterm2017",
+       "problem": 6,
+       "part": "c"
+      },
+      {
+       "kind": "midterm2017",
+       "problem": 4,
+       "part": "d"
+      },
+      {
+       "kind": "source",
+       "source": "ps4-2026",
+       "label": "Problem 2 (f)",
+       "text": "A fair coin is tossed three times. Denote by \\(X\\) the number of Heads in the first two tosses and by \\(Y\\) the number of Tails in the last two tosses of the coin.<br>(f) Calculate the conditional p.m.f. of \\(X\\) given that \\(Y=1\\)",
+       "sourceTitle": "Problem set 4 (seminar 4, 2026)"
+      }
+     ],
+     "defs": [
+      17
+     ],
+     "notes": [
+      "topic-3",
+      "topic-10",
+      "topic-12"
+     ]
     },
     {
      "id": "n-transform",
@@ -822,44 +1622,91 @@ const MIDTERM_PREP = {
        "kind": "Formula",
        "lecture": "L5",
        "page": 10,
-       "text": "Discrete: if \\(g\\) is a function on \\(\\mathbb R\\), \\(Y:=g(X)\\) takes values \\(g(x_k)\\); labelling the pairwise distinct values by \\(y_j\\): \\(p_Y(y_j)=\\sum_{k:g(x_k)=y_j}p_X(x_k)\\)"
+       "text": "<b>If \\(g\\) is a function on \\(\\mathbb R\\), what is the distribution of \\(Y:=g\\circ X=g(X)\\)?</b><br>• The values of \\(Y\\) are \\(g(x_k)\\);<br>• label all pairwise distinct values by \\(y_j\\); then \\[\\begin{aligned}p_Y(y_j)=\\mathsf P(Y=y_j)&=\\sum_k\\mathsf P(g(X)=y_j\\mid X=x_k)\\mathsf P(X=x_k)\\\\&=\\sum_{k:g(x_k)=y_j}\\mathsf P(X=x_k)=\\sum_{k:g(x_k)=y_j}p_X(x_k)\\end{aligned}\\]"
       },
       {
        "kind": "Formula",
        "lecture": "L6",
        "page": 40,
-       "text": "\\(Y=aX+b\\) for \\(a>0\\): \\(F_Y(y)=F_X((y-b)/a)\\), \\(f_Y(y)=\\frac1af_X((y-b)/a)\\). More generally, if \\(Y=g(X)\\) for an increasing function \\(g\\), then \\(F_Y(y)=F_X(g^{-1}(y))\\) and \\(f_Y(y)=(g^{-1})'(y)f_X(g^{-1}(y))\\). Example: \\(X\\sim\\mathscr U(0,1)\\), \\(Y=-\\ln X\\Rightarrow Y\\sim\\mathscr E(1)\\)"
+       "text": "<b>Question:</b><br>If \\(Y=g(X)\\) for some function \\(g\\), what is the distribution of \\(Y\\)?<br><b>\\(Y=aX+b\\) for \\(a>0\\Longrightarrow\\)</b>\\[F_Y(y)=\\mathsf P(Y\\le y)=\\mathsf P(aX+b\\le y)=\\mathsf P(X\\le(y-b)/a)=F_X((y-b)/a)\\]and the <b>p.d.f.</b> of \\(Y\\) is \\[f_Y(y)=F_Y'(y)=\\tfrac1aF_X'((y-b)/a)=\\tfrac1af_X((y-b)/a)\\]<b>More generally, if \\(Y=g(X)\\) for an increasing function \\(g\\), then</b>\\[F_Y(y)=\\mathsf P(Y\\le y)=\\mathsf P(g(X)\\le y)=\\mathsf P(X\\le g^{-1}(y))=F_X(g^{-1}(y))\\]and the <b>p.d.f.</b> of \\(Y\\) is \\[f_Y(y)=F_Y'(y)=(g^{-1})'(y)f_X(g^{-1}(y))\\]<b>Example</b><br>If \\(X\\sim\\mathscr U(0,1)\\) and \\(Y=-\\ln X\\), then \\(Y\\sim\\mathscr E(1)\\)"
       },
       {
        "kind": "Theorem",
        "lecture": "L6",
        "page": 41,
-       "text": "Assume that \\(\\mathbf X=(X_1,\\dots,X_n)\\) is a continuous random vector; \\(S\\subset\\mathbb R^n\\) is open and \\(\\mathsf P(\\mathbf X\\in S)=1\\); \\(\\mathbf g:S\\to\\mathbb R^n\\) is one-to-one, continuously differentiable and non-degenerate on \\(S\\). Then the random vector \\(\\mathbf Y:=\\mathbf g(\\mathbf X)\\) is continuously distributed with \\[f_{\\mathbf Y}(\\mathbf y)=f_{\\mathbf X}\\big(\\mathbf g^{-1}(\\mathbf y)\\big)\\cdot|J_{\\mathbf g^{-1}}(\\mathbf y)|=f_{\\mathbf X}\\big(\\mathbf g^{-1}(\\mathbf y)\\big)/|J_{\\mathbf g}(\\mathbf g^{-1}(\\mathbf y))|\\] (\\(J_{\\mathbf h}\\) is the Jacobian of mapping \\(\\mathbf h\\), i.e., det. of the matrix \\((\\partial h_j/\\partial y_k)_{j,k=1}^n\\))"
+       "text": "<b>Distribution of transformed variables</b><br>Assume that<br>• \\(\\mathbf X=(X_1,\\dots,X_n)\\) is a continuous random vector;<br>• \\(S\\subset\\mathbb R^n\\) is open and \\(\\mathsf P(\\mathbf X\\in S)=1\\);<br>• \\(g:S\\to\\mathbb R^n\\) is one-to-one, continuously differentiable and non-degenerate on \\(S\\).<br>Then the random vector \\(\\mathbf Y:=g(\\mathbf X)\\) is continuously distributed with \\[f_{\\mathbf Y}(\\mathbf y)=f_{\\mathbf X}\\big(\\mathbf g^{-1}(\\mathbf y)\\big)\\cdot|J_{\\mathbf g^{-1}}(\\mathbf y)|=f_{\\mathbf X}\\big(\\mathbf g^{-1}(\\mathbf y)\\big)/|J_{\\mathbf g}\\big(\\mathbf g^{-1}(\\mathbf y)\\big)|.\\](\\(J_{\\mathbf h}\\) is the Jacobian of mapping \\(\\mathbf h\\), i.e., det. of the matrix \\(\\big(\\partial h_j/\\partial y_k\\big)_{j,k=1}^n\\))."
       },
       {
        "kind": "Formula",
        "lecture": "L6",
        "page": 42,
-       "text": "Scalar case \\(Y=g(X)\\): \\(f_Y(y)=f_X(g^{-1}(y))\\cdot|(g^{-1})'(y)|=f_X(g^{-1}(y))/|g'(g^{-1}(y))|\\). Affine \\(\\mathbf g(\\mathbf x)=A\\mathbf x+\\mathbf b\\): \\(f_{\\mathbf Y}(\\mathbf y)=|\\det A|^{-1}f_{\\mathbf X}\\big(A^{-1}(\\mathbf y-\\mathbf b)\\big)\\); e.g. \\(Y_1=X_1+X_2\\), \\(Y_2=X_1-X_2\\): \\(f_{\\mathbf Y}(\\mathbf y)=\\frac12f_{\\mathbf X}\\big(\\frac{y_1+y_2}2,\\frac{y_1-y_2}2\\big)\\)"
+       "text": "<b>Scalar case: \\(Y=g(X)\\)</b>\\[f_Y(y)=f_X\\big(g^{-1}(y)\\big)\\cdot|(g^{-1})'(y)|=f_X\\big(g^{-1}(y)\\big)/|g'\\big(g^{-1}(y)\\big)|\\]If \\(X\\sim\\mathscr E(1)\\) and \\(Y=e^{-X}\\), then \\[f_Y(y)=\\tfrac1yf_X(-\\log y)=\\tfrac1ye^{\\log y}=1,\\qquad y=e^{-x}\\in(0,1)\\]<b>Affine transformation \\(\\mathbf g(\\mathbf x)=A\\mathbf x+\\mathbf b\\)</b><br>\\(J_{\\mathbf g}=\\det A\\) and \\(J_{\\mathbf g^{-1}}=\\det(A^{-1})=1/\\det A\\), so that \\[f_{\\mathbf Y}(\\mathbf y)=|\\det A|^{-1}f_{\\mathbf X}\\big(A^{-1}(\\mathbf y-\\mathbf b)\\big)\\]For example, \\(Y_1=X_1+X_2\\) and \\(Y_2=X_1-X_2\\) is the mapping \\[\\begin{pmatrix}Y_1\\\\Y_2\\end{pmatrix}=\\begin{pmatrix}1&1\\\\1&-1\\end{pmatrix}\\begin{pmatrix}X_1\\\\X_2\\end{pmatrix},\\qquad A^{-1}=\\frac12\\begin{pmatrix}1&1\\\\1&-1\\end{pmatrix}\\]thus \\[f_{\\mathbf Y}(\\mathbf y)=\\tfrac12f_{\\mathbf X}\\Big(\\tfrac{y_1+y_2}2,\\tfrac{y_1-y_2}2\\Big)\\]"
       },
       {
        "kind": "Formula",
        "lecture": "L6",
        "page": 43,
-       "text": "<b>Distribution of \\(X_1+X_2\\):</b> consider \\(Y_1=X_1+X_2\\) and \\(Y_2=X_2\\); then \\(\\mathbf g^{-1}(y_1,y_2)=(y_1-y_2,y_2)\\) and \\(f_{\\mathbf Y}(\\mathbf y)=f_{\\mathbf X}(y_1-y_2,y_2)\\), and the marginal p.d.f. of \\(Y_1\\) (i.e., p.d.f. of \\(X_1+X_2\\)) is \\(f_{X_1+X_2}(y_1)=f_{Y_1}(y_1)=\\int_{\\mathbb R}f_{\\mathbf X}(y_1-t,t)\\,dt=\\int_{\\mathbb R}f_{\\mathbf X}(t,y_1-t)\\,dt\\). If \\(X_1\\) and \\(X_2\\) are independent, then we get the <b>convolution</b> of \\(f_{X_1}\\) and \\(f_{X_2}\\): \\[f_{X_1+X_2}(y)=\\int_{\\mathbb R}f_{X_1}(y-t)f_{X_2}(t)\\,dt=\\int_{\\mathbb R}f_{X_1}(t)f_{X_2}(y-t)\\,dt\\]"
+       "text": "<b>Distribution of \\(X_1+X_2\\)</b><br>Consider \\(Y_1=X_1+X_2\\) and \\(Y_2=X_2\\); then \\(g^{-1}(y_1,y_2)=(y_1-y_2,y_2)\\) and \\[f_{\\mathbf Y}(\\mathbf y)=f_{\\mathbf X}(y_1-y_2,y_2)\\]and the marginal <b>p.d.f.</b> of \\(Y_1\\) (i.e., <b>p.d.f.</b> of \\(X_1+X_2\\)) is \\[f_{X_1+X_2}(y_1)=f_{Y_1}(y_1)=\\int_{\\mathbb R}f_{\\mathbf X}(y_1-t,t)\\,dt=\\int_{\\mathbb R}f_{\\mathbf X}(t,y_1-t)\\,dt\\]If \\(X_1\\) and \\(X_2\\) are independent, then we get the <b>convolution</b> of \\(f_{X_1}\\) and \\(f_{X_2}\\): \\[f_{X_1+X_2}(y)=\\int_{\\mathbb R}f_{X_1}(y-t)f_{X_2}(t)\\,dt=\\int_{\\mathbb R}f_{X_1}(t)f_{X_2}(y-t)\\,dt\\]"
       },
       {
        "kind": "Formula",
        "lecture": "L4",
        "page": 43,
-       "text": "Discrete sum \\(Z:=X+Y\\) of nonnegative integer-valued rv’s (as in the Poisson example): \\(p_Z(n)=\\sum_{k=0}^np_{X,Y}(k,n-k)\\), and for independent \\(X,Y\\): \\(=\\sum_{k=0}^np_X(k)p_Y(n-k)\\). Via p.g.f., for independent \\(X,Y\\): \\(G_{X+Y}=G_XG_Y\\) (L5 p28)"
+       "text": "<i>Problem</i><br>If \\(X\\) and \\(Y\\) are independent Poisson random variables with respective parameters \\(\\lambda_1\\) and \\(\\lambda_2\\), calculate the conditional distribution of \\(X\\) given that \\(X+Y=n\\).<br><i>Solution</i><br>Start with calculating the <b>pmf</b> of the <b>rv</b> \\(Z:=X+Y\\): \\[\\begin{aligned}p_Z(n)&=\\sum\\nolimits_{k=0}^np_{X,Y}(k,n-k)=\\sum\\nolimits_{k=0}^np_X(k)p_Y(n-k)\\\\ &=e^{-(\\lambda_1+\\lambda_2)}\\sum\\nolimits_{k=0}^n\\frac{\\lambda_1^k\\lambda_2^{n-k}}{k!(n-k)!}=\\frac{(\\lambda_1+\\lambda_2)^n}{n!}e^{-(\\lambda_1+\\lambda_2)}\\end{aligned}\\] Thus \\(Z\\) has a Poisson distribution with parameter \\(\\lambda_1+\\lambda_2\\)"
+      },
+      {
+       "kind": "Property",
+       "lecture": "L5",
+       "page": 28,
+       "text": "If \\(X\\) and \\(Y\\) are independent, then \\(G_{X+Y}(s)=G_X(s)G_Y(s)\\)<br>The latter property follows from the fact that \\(s^X\\) and \\(s^Y\\) are independent <b>r.v.</b>, so that \\[G_{X+Y}(s)=\\mathsf E(s^Xs^Y)=\\mathsf E(s^X)\\mathsf E(s^Y)=G_X(s)G_Y(s)\\]"
       }
      ],
      "lectureExamples": [],
      "tips": [],
-     "practice": [],
-     "defs": [],
-     "notes": []
+     "practice": [
+      {
+       "kind": "source",
+       "source": "ps6-2026",
+       "label": "Problem 1",
+       "text": "Assume that \\(Z\\) is a standard normal <b>r.v.</b> Find the <b>p.d.f.</b> of the following <b>r.v.</b>’s:<br>(a) \\(-Z\\) (b) \\(2Z-3\\); (c) \\(3-2Z\\); (d) \\(\\frac{Z-1}4\\). (e) \\(|Z|\\); (f) \\(Z^2\\).",
+       "sourceTitle": "Problem set 6 (seminar 6, 2026)"
+      },
+      {
+       "kind": "midterm2017",
+       "problem": 3,
+       "part": "a"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST6-11"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST6-01"
+      },
+      {
+       "kind": "source",
+       "source": "ps6-2026",
+       "label": "Problem 9",
+       "text": "The metro train arrives at the station near your home every quarter hour starting at 6:00 a.m. You walk into the station every morning between 7:10 and 7:30 a.m., with the time in this interval being a random variable with given PDF. Let \\(X\\) be the elapsed time, in minutes, between 7:10 and the time of your arrival. Let \\(Y\\) be the time that you have to wait until you board a train. Calculate the <b>c.d.f.</b> of Y in terms of the <b>c.d.f.</b> of \\(X\\) and differentiate to obtain a formula for the <b>p.d.f.</b> of \\(Y\\).",
+       "sourceTitle": "Problem set 6 (seminar 6, 2026)"
+      },
+      {
+       "kind": "source",
+       "source": "col2-2022",
+       "label": "New problems, Problem 11",
+       "text": "Assume that \\(X_1\\) and \\(X_2\\) are independent <b>r.v.</b>’s with exponential distribution \\(\\mathscr E(\\lambda)\\). Set \\(Y_1=X_1-X_2\\) and \\(Y_2=X_2\\). Find the joint distribution of the <b>r.v.</b>’s \\(Y_1\\) and \\(Y_2\\) and marginal distribution of \\(Y_1\\).<br>Hint: use formula (7.1), Section 6.7 of Ross. \\(Y_1\\) has a <i>double exponential</i>, or <i>Laplace</i> distribution",
+       "sourceTitle": "Colloquium 2 problem list (2022)"
+      }
+     ],
+     "defs": [
+      18,
+      19
+     ],
+     "notes": [
+      "topic-9",
+      "topic-10"
+     ]
     }
    ]
   },
@@ -875,56 +1722,124 @@ const MIDTERM_PREP = {
        "kind": "Definition",
        "lecture": "L4",
        "page": 25,
-       "text": "If a Bernoulli experiment is repeated \\(n\\) times, and the outcomes of the different experiments are independent, then the total number of successes is a <b>binomial</b> rv \\(X\\sim\\mathscr B(n,p)\\). Example (number of sixes in rolling a die 5 times): \\(p_Y(k)=\\binom5k\\big(\\tfrac16\\big)^k\\big(\\tfrac56\\big)^{5-k}\\)"
+       "text": "If a Bernoulli experiment is repeated \\(n\\) times, and the outcomes of the different experiments are independent, then the total number of successes is a <b>binomial</b> <b>rv</b> \\(X\\sim\\mathscr B(n,p)\\): \\[p_X(k)=\\binom{n}{k}p^k(1-p)^{n-k},\\qquad k=0,1,\\dots,n.\\]"
       },
       {
        "kind": "Definition",
        "lecture": "L4",
        "page": 27,
-       "text": "The number of Bernoulli experiments until the first success is a rv with <b>geometric distribution</b>. Example (number of die throws until the first six): \\(p_Y(k)=\\big(\\tfrac16\\big)\\big(\\tfrac56\\big)^{k-1}\\)"
+       "text": "The number of Bernoulli experiments until the first success is a <b>rv</b> with <b>geometric distribution</b>: \\[p_X(k)=p(1-p)^{k-1},\\qquad k=1,2,\\dots\\]"
       },
       {
        "kind": "Remark",
        "lecture": "L4",
        "page": 16,
-       "text": "<i>Warning:</i> different rv may posses (sic: possess) the same pmf — Heads in 5 tosses with \\(p=.4\\), white balls in 5 draws with replacement (4 white, 6 black), and the no. of 5 random numbers from \\([0,1]\\) that are \\(\\le .4\\) all have \\(\\mathsf P(Z=k)=\\mathsf P(Y=k)=\\mathsf P(X=k)\\)"
+       "text": "<i>Warning: different <b>rv</b> may posses the same <b>pmf</b></i><br>• total number \\(X\\) of Heads in 5 tosses of biased coin with \\(p=.4\\): \\[p_X(k)=\\mathsf P(X=k)=\\binom{5}{k}p^kq^{5-k},\\qquad k=0,1,\\dots,5\\]• an urn contains 4 white balls and 6 black ones. A ball is drawn at random, its colour marked, and then returned in the urn. The number \\(Y\\) of white balls in 5 draws is a <b>rv</b> with \\[p_Y(k)=\\mathsf P(Y=k)=\\binom{5}{k}\\bigl(\\tfrac{4}{10}\\bigr)^k\\bigl(\\tfrac{6}{10}\\bigr)^{5-k},\\qquad k=0,1,\\dots,5\\]• generate 5 random numbers from \\([0,1]\\) and count the no. \\(Z\\) of those \\(\\le.4\\); then \\[\\mathsf P(Z=k)=\\mathsf P(Y=k)=\\mathsf P(X=k)\\]"
       },
       {
        "kind": "Property",
        "lecture": "L6",
        "page": 17,
-       "text": "\\(X\\sim\\mathscr U(a,b)\\) takes values in \\((a,b)\\) only; \\(\\mathsf P(X\\in\\Delta)\\) only depends on the size of \\(\\Delta\\)"
+       "text": "• \\(X\\sim\\mathscr U(a,b)\\) takes values in \\((a,b)\\) only;<br>• \\(\\mathsf P(X\\in\\Delta)\\) only depends on the size of \\(\\Delta\\);"
       },
       {
        "kind": "Property",
        "lecture": "L6",
        "page": 24,
-       "text": "Normal: \\(\\mu+\\sigma Z\\) with \\(Z\\sim\\mathscr N(0,1)\\); density \\(\\frac1{\\sqrt{2\\pi}\\sigma}\\exp\\big\\{-\\frac{(t-\\mu)^2}{2\\sigma^2}\\big\\}\\). Exponential (L6 p27–28): density \\(\\lambda e^{-\\lambda x}\\), \\(x\\ge0\\), lack of memory \\(\\mathsf P(X>s+t\\mid X>s)=\\mathsf P(X>t)\\)"
+       "text": "If \\(Z\\sim\\mathscr N(0,1)\\), then the random variable \\(\\mu+\\sigma Z\\) is said to have a <b>normal (or Gaussian) distribution</b> \\(\\mathscr N(\\mu,\\sigma^2)\\)."
+      },
+      {
+       "kind": "Definition",
+       "lecture": "L4",
+       "page": 30,
+       "text": "The <b>Poisson</b> <b>rv</b> \\(X\\sim\\mathscr P(\\lambda)\\) is the limit of binomial <b>rv</b>’s \\(X_n\\sim\\mathscr B(n,p_n)\\) when \\(n\\cdot p_n\\to\\lambda\\) as \\(n\\to\\infty\\); then \\[p_X(k)=\\frac{\\lambda^k}{k!}e^{-\\lambda},\\qquad k=0,1,\\dots\\]"
+      },
+      {
+       "kind": "Definition",
+       "lecture": "L6",
+       "page": 27,
+       "text": "A nonnegative random variable \\(X\\) has <b>exponential distribution</b> with parameter \\(\\lambda>0\\), written \\(X\\sim\\mathcal E(\\lambda)\\), if the density of its distribution is \\[f_X(x)=\\begin{cases}\\lambda\\mathrm e^{-\\lambda x},&x\\ge0\\\\0,&x < 0\\end{cases}\\]"
       }
      ],
      "lectureExamples": [
       {
        "lecture": "L4",
        "page": 30,
-       "text": "Poisson \\(\\mathscr P(\\lambda)\\) is the limit of binomial \\(\\mathscr B(n,p_n)\\) when \\(n\\cdot p_n\\to\\lambda\\). Example (radioactive decay): the number of alpha-particles emitted in one hour is distributed according to the Poisson law with parameter 6; \\(\\mathsf P(X\\ge3)=1-\\mathsf P(X\\le2)=1-\\big(1+\\lambda+\\frac{\\lambda^2}2\\big)e^{-\\lambda}\\)"
+       "text": "<i>Example (Radioactive decay: alpha-particle emission)</i><br>Assume the number of alpha-particles emitted by some radioactive substance in one hour is distributed according to the Poisson law with parameter 6. Find the probability that at least 3 alpha-particles will be emitted within the next hour.<br>Since \\(\\{X\\ge3\\}=\\Omega\\setminus\\{X\\le2\\}\\), we find that \\[\\mathsf P(X\\ge3)=1-\\mathsf P(X\\le2)=1-\\Bigl(1+\\lambda+\\tfrac{\\lambda^2}{2}\\Bigr)e^{-\\lambda}\\]"
       },
       {
        "lecture": "L4",
        "page": 31,
-       "text": "Alpha-particle emission in shorter times: \\(Y_1,\\dots,Y_{60}\\) — emissions during the 1st, 2nd etc minute; we expect \\(Y_k\\sim\\mathscr B(1,0.1)\\); thus \\(Y:=Y_1+\\dots+Y_{60}\\sim\\mathscr B(60,0.1)\\); compare \\(X\\sim\\mathscr P(6)\\) and \\(Y\\sim\\mathscr B(n,6/n)\\) for various \\(n\\)"
+       "text": "<i>Alpha-particle emission in shorter times</i><br>• Denote by \\(Y_1,Y_2,\\dots,Y_{60}\\) the number alpha-particle emissions during the \\(1^{\\text{st}}\\), \\(2^{\\text{nd}}\\) etc minute<br>• We expect that \\(Y_k\\sim\\mathscr B(1,0.1)\\); thus<br>\\(Y:=Y_1+\\cdots+Y_{60}\\sim\\mathscr B(60,0.1)\\)<br>• Let us compare the distributions of \\(X\\sim\\mathscr P(6)\\) and \\(Y\\sim\\mathscr B(n,6/n)\\) for various \\(n\\)"
       },
       {
        "lecture": "L4",
        "page": 23,
-       "text": "Bernoulli rv’s: indicator of getting at least two <i>Heads</i> in tossing a coin 3 times; indicator of getting <i>six</i> in rolling a die; indicator of getting <i>nine</i> in rolling a die twice"
+       "text": "<i>Example (Bernoulli rv’s:)</i><br>• indicator of getting at least two <i>Heads</i> in tossing a coin 3 times<br>• indicator of getting <i>six</i> in rolling a die<br>• indicator of getting <i>nine</i> in rolling a die twice"
+      },
+      {
+       "lecture": "L4",
+       "page": 25,
+       "text": "<i>Example (Number of sixes in rolling a die 5 times:)</i><br>If \\(Y\\) is the number of sixes, then \\[p_Y(k)=\\binom{5}{k}\\bigl(\\tfrac16\\bigr)^k\\bigl(\\tfrac56\\bigr)^{5-k}\\]"
+      },
+      {
+       "lecture": "L4",
+       "page": 27,
+       "text": "<i>Example (Number of die throws until the first six)</i><br>If \\(Y\\) is the number of rolling until the first six shows up, then \\[p_Y(k)=\\bigl(\\tfrac16\\bigr)\\bigl(\\tfrac56\\bigr)^{k-1}\\]"
       }
      ],
      "tips": [
       "Practise it in the app: self-test types “Recognise the distribution from the experiment”, “Densities: … recognise the distribution”, “Match a pmf / pdf formula to its distribution”."
      ],
-     "practice": [],
-     "defs": [],
-     "notes": []
+     "practice": [
+      {
+       "kind": "selftest",
+       "id": "ST4-19"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST6-02"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST6-10"
+      },
+      {
+       "kind": "source",
+       "source": "ps4-2026",
+       "label": "Problem 2 (c)",
+       "text": "A fair coin is tossed three times. Denote by \\(X\\) the number of Heads in the first two tosses and by \\(Y\\) the number of Tails in the last two tosses of the coin.<br>(c) What distributions do \\(X\\) and \\(Y\\) have?",
+       "sourceTitle": "Problem set 4 (seminar 4, 2026)"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST4-30"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST4-23"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST4-26"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST4-29"
+      }
+     ],
+     "defs": [
+      4,
+      5,
+      6,
+      9,
+      10,
+      11
+     ],
+     "notes": [
+      "topic-1",
+      "topic-8"
+     ]
     },
     {
      "id": "c-construct",
@@ -934,43 +1849,94 @@ const MIDTERM_PREP = {
       {
        "lecture": "L4",
        "page": 5,
-       "text": "Often, outcomes are associated with some numerical values: in rolling two fair dice, only the total sum \\(X\\) can be important; e.g., \\(X=5\\) for outcomes \\((1,4),(2,3),(3,2),(4,1)\\); therefore, \\(\\mathsf P(X=5)=4/36\\). \\(X\\) can assume values between 2 and 12 (table of \\(x\\), event \\(\\{X=x\\}\\), \\(\\mathsf P(X=x)\\))"
+       "text": "<b>Often, outcomes are associated with some numerical values:</b><br>In rolling two fair dice, only the total sum \\(X\\) can be important; e.g., \\(X=5\\) for outcomes \\((1,4),(2,3),(3,2),(4,1)\\); therefore, \\(\\mathsf P(X=5)=4/36\\). \\(X\\) can assume values between 2 and 12: \\[\\begin{array}{|c|c|c|}\\hline \\text{Value }x\\text{ of }X & \\text{event }\\{X=x\\} & \\mathsf P(X=x) \\\\ \\hline 2 & \\text{(1,1)} & 1/36 \\\\ 3 & \\text{(1,2),(2,1)} & 2/36 \\\\ \\dots & \\dots & \\dots \\\\ 12 & \\text{(6,6)} & 1/36 \\\\ \\hline\\end{array}\\]"
       },
       {
        "lecture": "L4",
        "page": 6,
-       "text": "In tossing a biased coin three times, record the total number \\(Y\\) of Heads; \\(Y\\) can assume the values \\(0,1,2,3\\) with \\(\\mathsf P(Y=y)=q^3,\\,3pq^2,\\,3p^2q,\\,p^3\\) (events ‘TTT’; ‘HTT’,‘THT’,‘TTH’; ‘HHT’,‘HTH’,‘THH’; ‘HHH’)"
+       "text": "In tossing a biased coin three times, record the total number \\(Y\\) of Heads; thus \\(Y\\) can assume the values \\(0,1,2,3\\): \\[\\begin{array}{|c|c|c|}\\hline \\text{Value }y\\text{ of }Y & \\text{event }\\{Y=y\\} & \\mathsf P(Y=y) \\\\ \\hline 0 & \\text{‘TTT’} & q^3 \\\\ 1 & \\text{‘HTT’, ‘THT’, ’TTH’} & 3pq^2 \\\\ 2 & \\text{‘HHT’, ‘HTH’, ’THH’} & 3p^2q \\\\ 3 & \\text{‘HHH’} & p^3 \\\\ \\hline\\end{array}\\]"
       },
       {
        "lecture": "L4",
        "page": 7,
-       "text": "Shuffle \\(n\\) cards, and let \\(X\\) be the position of the \\(j\\)th card: \\(\\mathsf P(X=k)=\\frac1n\\)"
+       "text": "• Shuffle \\(n\\) cards, and let \\(X\\) be the position of the \\(j\\)th card.<br>• \\(\\mathsf P(X=k)=\\frac1n\\)"
       },
       {
        "lecture": "L4",
        "page": 8,
-       "text": "3 balls are drawn without replacement from an urn containing 10 balls numbered 1 to 10. Sample space \\(\\Omega=\\{\\text{subsets of 3 from }1,\\dots,20\\}\\) (sic: 10) \\(=\\{\\omega=\\{\\omega_1,\\omega_2,\\omega_3\\}\\mid\\omega_1<\\omega_2<\\omega_3\\}\\); \\(\\mathscr F=2^\\Omega\\); \\(\\mathsf P\\) is a uniform probability measure on \\(\\Omega\\); \\(X(\\omega)=\\)“largest of three numbers”\\(=\\omega_3\\)"
+       "text": "3 balls are drawn without replacement from an urn containing 10 balls numbered 1 to 10. What is the probability that the largest no. is \\(k\\)?<br>• Sample space \\[\\begin{aligned}\\Omega&=\\{\\textit{“all draws”}\\}=\\{\\textit{subsets of }3\\textit{ from }1,\\dots,20\\}\\\\ &=\\{\\omega=\\{\\omega_1,\\omega_2,\\omega_3\\}\\mid\\omega_1 < \\omega_2 < \\omega_3,\\omega_j\\in\\overline{1,10}\\}\\end{aligned}\\]• \\(\\mathscr F=2^\\Omega;\\quad\\) \\(\\mathsf P\\) is a uniform probability measure on \\(\\Omega\\)<br>• \\(X(\\omega)=\\)“<i>largest of three numbers</i>”\\(=\\omega_3\\)<br>• \\(X(\\omega)=k\\iff\\) ball no. \\(k\\) is drawn and the other two are smaller: \\[\\iff\\omega_1 < \\omega_2 < \\omega_3=k\\]• therefore, \\(\\quad\\mathsf P(X=k)=C_{k-1}^2/C_{10}^3\\) \\[\\begin{array}{|c|c|c|c|c|c|c|c|c|}\\hline k & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\\\ \\hline \\mathsf P(X=k) & & & & & & & & \\\\ \\hline\\end{array}\\]"
       },
       {
        "lecture": "L4",
        "page": 10,
-       "text": "The <i>lifetime</i> \\(T\\) of any equipment (eg., notebook hard disk) can be any positive number: the sample space \\(\\Omega=\\{\\)the set of all notebooks\\(\\}\\); probability measure \\(\\mathsf P\\) on \\(\\Omega\\) — any; \\(T\\) is a random variable on this probability space"
+       "text": "The <i>lifetime</i> \\(T\\) of any equipment (eg., notebook hard disk) can be any positive number. Here<br>• the sample space \\(\\Omega=\\{\\)the set of all notebooks\\(\\}\\);<br>• probability measure \\(\\mathsf P\\) on \\(\\Omega\\) — any<br>\\(T\\) is a random variable on this probability space."
       },
       {
        "lecture": "L6",
        "page": 5,
-       "text": "A point \\(P\\) is randomly chosen inside a triangle \\(\\Delta\\) of height \\(h\\) and base \\(a\\); the distance from \\(P\\) to the base is \\(X\\); thus \\(\\Omega=\\{\\)interior points of \\(\\Delta\\}\\), \\(\\mathscr F=\\{\\)“good” subsets of \\(\\Omega\\}\\), \\(\\mathsf P\\) is a uniform measure (area); \\(X\\) is a r.v. on \\((\\Omega,\\mathscr F,\\mathsf P)\\)"
+       "text": "• A point \\(P\\) is randomly chosen inside a triangle \\(\\Delta\\) of height \\(h\\) and base \\(a\\)<br>• the distance from \\(P\\) to the base is measured and denoted \\(X\\)<br>• thus \\(\\Omega=\\{\\)interior points of \\(\\Delta\\}\\);<br>\\(\\mathscr F=\\{\\)“good” subsets of \\(\\Omega\\}\\);<br>\\(\\mathsf P\\) is a uniform measure (area)<br>• \\(X\\) is a <b>r.v.</b> on \\((\\Omega,\\mathscr F,\\mathsf P)\\)<br>• <b>c.d.f.</b> (cumulative distribution function) of \\(X\\): \\[\\mathsf P(X>x)=\\frac{\\mu(\\Delta_1)}{\\mu(\\Delta)}=\\Big(\\frac{h-x}h\\Big)^2\\]therefore, \\[F_X(x)=\\mathsf P(X\\le x)=\\frac xh\\Big(2-\\frac xh\\Big),\\qquad0\\le x\\le h\\]"
       },
       {
        "lecture": "L5",
        "page": 19,
-       "text": "Via indicators: for \\(X\\sim\\mathscr B(n,p)\\) denote by \\(I_k\\) the success indicator of the \\(k^{\\text{th}}\\) trial; then \\(X=I_1+I_2+\\dots+I_n\\) (quicksort comparisons as a sum of indicators \\(X_{ij}\\): L5 p14)"
+       "text": "<b>The binomial distribution</b><br>• Probabilistic meaning of \\(X\\sim\\mathscr B(n,p)\\): numbers of successes in the Bernoulli trials (e.g., number of Heads in \\(n\\) tossing of a biased coin)<br>• denote by \\(I_k\\) the <b>success indicator</b> of the \\(k^{\\text{th}}\\) trial: \\(I_k=1\\) if that trial was a success and \\(I_k=0\\) otherwise<br>• then \\(X=I_1+I_2+\\cdots+I_n\\)<br>• Therefore, \\(\\mathsf E(X)=\\mathsf E(I_1)+\\mathsf E(I_2)+\\cdots+\\mathsf E(I_n)=n\\mathsf E(I_1)=np\\)"
+      },
+      {
+       "lecture": "L5",
+       "page": 14,
+       "text": "<b>Input: any of \\(n!\\) equally likely permutations of \\(1,2,\\dots,n\\)</b><br>• \\(X\\) is a random number of comparisons made when pivots are chosen uniformly at random<br>• were \\(i\\) and \\(j\\) (\\(i < j\\)) compared?<br>• \\(X_{ij}\\) a comparison indicator (\\(=1\\) if \\(i\\) and \\(j\\) got compared, \\(=0\\) else)<br>• \\(X_{ij}=1\\) iff \\(i\\) or \\(j\\) was a pivot <b>before</b> any of \\(i+1,\\dots,j-1\\) (otherwise \\(i\\) and \\(j\\) are moved to different parts sorted independently)<br>• thus \\(\\mathsf E(X_{ij})=\\mathsf P(X_{ij}=1)=2/(j-i+1)\\) and \\[\\begin{aligned}\\mathsf E(X)=\\sum_{i < j}\\mathsf E(X_{ij})=\\sum_{i < j}\\frac2{j-i+1}&=\\sum_{i=1}^n\\sum_{j=i+1}^n\\frac2{j-i+1}\\\\&\\le\\sum_{i=1}^n\\sum_{k=1}^n\\frac2k=2n\\sum_{k=1}^n\\frac1k=O(n\\log n)\\end{aligned}\\]"
       }
      ],
      "tips": [],
-     "practice": [],
-     "defs": [],
-     "notes": []
+     "practice": [
+      {
+       "kind": "source",
+       "source": "ps4-2026",
+       "label": "Problem 9",
+       "text": "Two balls are chosen randomly from an urn containing 8 white, 4 black, and 2 orange balls. Suppose that we win 2 for each black ball selected and we lose 1 for each white ball selected. Let \\(X\\) denote our winnings. What are the possible values of \\(X\\), and what are the probabilities associated with each value?",
+       "sourceTitle": "Problem set 4 (seminar 4, 2026)"
+      },
+      {
+       "kind": "source",
+       "source": "ps5-2025",
+       "label": "Problem 7",
+       "text": "The children’s library has 4 shelves with books. There are 35 books on the first shelf, 20 on the second, 45 on the third, and 60 on the fourth. Alice randomly chooses one book. Let \\(X\\) denote the number of books on the shelf from which Alice chose the book. Bob first randomly selects the shelf from which he will later choose a book. Let \\(Y\\) denote the number of books on the shelf chosen by Bob.<br>(a) Which of \\(\\mathsf E(X)\\) anf \\(\\mathsf E(Y)\\) do you think is larger? Give your reasoning in words.<br>(b) Compute \\(\\mathsf E(X)\\) and \\(\\mathsf E(Y)\\).",
+       "sourceTitle": "Problem set 5 (seminar 5, 2025)"
+      },
+      {
+       "kind": "source",
+       "source": "ps5-2025",
+       "label": "Problem 6",
+       "text": "In the morning, the centipede put shoes on all \\(2m\\) of its legs. During the day, each shoe could be lost with probability \\(p\\) independently of the others. What is the expected number of pairs of legs in shoes in the evening if there are \\(n\\) shoes left? Hint: calculate the expectation of the indicator \\(I_k\\) that both shoes in the pair no. \\(k\\) are not lost,conditioned on the number of soes left \\(N=n\\).",
+       "sourceTitle": "Problem set 5 (seminar 5, 2025)"
+      },
+      {
+       "kind": "source",
+       "source": "col2-2022",
+       "label": "New problems, Problem 9 (a)–(b)",
+       "text": "Suppose stop lights at an intersection alternately show green for one minute, red for one minute (ignore yellow). Suppose a car arrives at the lights at a time distributed uniformly at random relative to this cycle. Let \\(X\\) be the delay of the car at the lights, neglecting any delay due to traffic congestion.<br>(a) Find a formula for the <b>c.d.f.</b> of \\(X\\) and sketch its graph.<br>(b) Is \\(X\\) discrete, continuous, or neither?",
+       "sourceTitle": "Colloquium 2 problem list (2022)"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST4-01"
+      },
+      {
+       "kind": "source",
+       "source": "col2-2022",
+       "label": "New problems, Problem 6 (a)",
+       "text": "Alice flips a biased coin (with probability \\(p\\) of showing Heads) 5 times, and if Tail shows up on the last toss, then she continues tossing until the first Head appears. Let \\(N\\) be the total number of tosses made and \\(X\\) be the total number of Heads.<br>(a) Find the distributions of <b>r.v.</b>’s \\(N\\) and \\(X\\);",
+       "sourceTitle": "Colloquium 2 problem list (2022)"
+      }
+     ],
+     "defs": [
+      1,
+      7
+     ],
+     "notes": [
+      "topic-1",
+      "topic-7"
+     ]
     },
     {
      "id": "c-distributions",
@@ -980,41 +1946,97 @@ const MIDTERM_PREP = {
        "kind": "Formula",
        "lecture": "L5",
        "page": 10,
-       "text": "Distribution of \\(Y:=g(X)\\): the values of \\(Y\\) are \\(g(x_k)\\); label all pairwise distinct values by \\(y_j\\); then \\(p_Y(y_j)=\\sum_{k:g(x_k)=y_j}p_X(x_k)\\)"
+       "text": "<b>If \\(g\\) is a function on \\(\\mathbb R\\), what is the distribution of \\(Y:=g\\circ X=g(X)\\)?</b><br>• The values of \\(Y\\) are \\(g(x_k)\\);<br>• label all pairwise distinct values by \\(y_j\\); then \\[\\begin{aligned}p_Y(y_j)=\\mathsf P(Y=y_j)&=\\sum_k\\mathsf P(g(X)=y_j\\mid X=x_k)\\mathsf P(X=x_k)\\\\&=\\sum_{k:g(x_k)=y_j}\\mathsf P(X=x_k)=\\sum_{k:g(x_k)=y_j}p_X(x_k)\\end{aligned}\\]"
       },
       {
        "kind": "Formula",
        "lecture": "L4",
        "page": 20,
-       "text": "From pmf to cdf and back: \\(F_X(t)=\\sum_{x_j\\le t}p_X(x_j)\\), \\(p_X(x_j)=F_X(x_j)-F_X(x_j-0)\\); continuous case (L6 p6): \\(f_X=F_X'\\), \\(\\mathsf P(a<X\\le b)=\\int_a^bf_X(t)\\,dt\\)"
+       "text": "<b>pmf</b> vs <b>cdf</b>:<br>• Clearly, \\(F_X(t)=\\sum_{x_j\\le t}p_X(x_j)\\)<br>• on the other hand, \\(p_X(x_j)=F_X(x_j)-F_X(x_j-0)\\)"
+      },
+      {
+       "kind": "Definition",
+       "lecture": "L6",
+       "page": 6,
+       "text": "If the <b>c.d.f.</b> \\(F_X\\) is differentiable (save finitely many pts), \\(X\\) is called <b>continuous</b>. Derivative \\(F_X'(x)\\) is called the <b>probability density function</b> (<b>p.d.f.</b>) of the <b>r.v.</b> \\(X\\) and is denoted \\(f_X(x)\\)<br>Properties of <b>p.d.f.</b>:<br>• \\(f_X(x)\\ge0\\);<br>• \\(\\mathsf P(a < X\\le b)=\\int_a^bf_X(t)\\,dt\\)<br>• in particular, \\(\\int_{\\mathbb R}f_X(t)\\,dt=1\\)"
       }
      ],
      "lectureExamples": [
       {
        "lecture": "L4",
        "page": 12,
-       "text": "\\(X\\) = largest of three balls from 10: \\(X=k\\iff\\) ball no. \\(k\\) is drawn and the other two are smaller, so \\[\\mathsf P(X=k)=\\binom{k-1}2\\Big/\\binom{10}3;\\] in particular \\(\\mathsf P(X\\ge7)=\\mathsf P(X=7)+\\mathsf P(X=8)+\\mathsf P(X=9)+\\mathsf P(X=10)=5/6\\)"
+       "text": "3 balls are drawn without replacement from an urn containing 10 balls numbered 1 to 10. What is the probability that the largest of three numbers will be at least 7?<br>• Sample space \\(\\Omega=\\{\\textit{“all draws”}\\}=\\{\\textit{subsets of }3\\textit{ from }1,\\dots,20\\}\\)<br>• \\(\\mathscr F=2^\\Omega;\\quad\\) \\(\\mathsf P\\) a uniform probability measure on \\(\\Omega\\)<br>• \\(X=\\)“<i>largest of three numbers</i>” is a <b>rv</b> on \\((\\Omega,\\mathscr F,\\mathsf P)\\)<br>• \\(X=k\\iff\\) ball no. \\(k\\) is drawn and the other two are smaller: \\[\\mathsf P(X=k)=\\frac{\\binom{k-1}{2}}{\\binom{10}{3}}\\]• in particular, \\[\\begin{aligned}&\\mathsf P(X\\ge7)\\\\ &\\qquad=\\mathsf P(X=7)+\\mathsf P(X=8)+\\mathsf P(X=9)+\\mathsf P(X=10)\\\\ &\\qquad=5/6\\end{aligned}\\]"
       },
       {
        "lecture": "L6",
        "page": 5,
-       "text": "Triangle: \\(\\mathsf P(X>x)=\\frac{\\mu(\\Delta_1)}{\\mu(\\Delta)}=\\big(\\frac{h-x}h\\big)^2\\), therefore \\(F_X(x)=\\mathsf P(X\\le x)=\\frac xh\\big(2-\\frac xh\\big)\\), \\(0\\le x\\le h\\); then (L6 p10) \\(f_X(x)=F_X'(x)=\\frac2h\\big(1-\\frac xh\\big)\\) for \\(x\\in(0,h)\\), \\(0\\) otherwise"
+       "text": "• A point \\(P\\) is randomly chosen inside a triangle \\(\\Delta\\) of height \\(h\\) and base \\(a\\)<br>• the distance from \\(P\\) to the base is measured and denoted \\(X\\)<br>• thus \\(\\Omega=\\{\\)interior points of \\(\\Delta\\}\\);<br>\\(\\mathscr F=\\{\\)“good” subsets of \\(\\Omega\\}\\);<br>\\(\\mathsf P\\) is a uniform measure (area)<br>• \\(X\\) is a <b>r.v.</b> on \\((\\Omega,\\mathscr F,\\mathsf P)\\)<br>• <b>c.d.f.</b> (cumulative distribution function) of \\(X\\): \\[\\mathsf P(X>x)=\\frac{\\mu(\\Delta_1)}{\\mu(\\Delta)}=\\Big(\\frac{h-x}h\\Big)^2\\]therefore, \\[F_X(x)=\\mathsf P(X\\le x)=\\frac xh\\Big(2-\\frac xh\\Big),\\qquad0\\le x\\le h\\]"
       },
       {
        "lecture": "L6",
        "page": 11,
-       "text": "If \\(f_X(x)=a/x^2\\) for \\(x\\ge a>0\\) and \\(0\\) otherwise, then \\(F_X(x)=\\int_a^xas^{-2}\\,ds=1-a/x\\) for \\(x>a\\)"
+       "text": "If \\(f_X(x)=a/x^2\\) for \\(x\\ge a>0\\) and \\(f_X(x)=0\\) otherwise, then \\[\\begin{gathered}F_X(x)=\\int_a^xas^{-2}\\,ds=1-a/x\\quad\\text{for}\\quad x>a;\\\\\\mathsf E(X)=\\int_{\\mathbb R}x\\,f_X(x)\\,dx=\\int_a^\\infty\\frac{a\\,dx}x=\\infty\\end{gathered}\\]thus \\(X\\) does not have finite expectation"
       },
       {
        "lecture": "L4",
        "page": 43,
-       "text": "Sum of independent Poisson rv’s via the pmf: \\(p_Z(n)=\\sum_{k=0}^np_X(k)p_Y(n-k)=e^{-(\\lambda_1+\\lambda_2)}\\sum_{k=0}^n\\frac{\\lambda_1^k\\lambda_2^{n-k}}{k!(n-k)!}=\\frac{(\\lambda_1+\\lambda_2)^n}{n!}e^{-(\\lambda_1+\\lambda_2)}\\); thus \\(Z\\) has a Poisson distribution with parameter \\(\\lambda_1+\\lambda_2\\)"
+       "text": "<i>Problem</i><br>If \\(X\\) and \\(Y\\) are independent Poisson random variables with respective parameters \\(\\lambda_1\\) and \\(\\lambda_2\\), calculate the conditional distribution of \\(X\\) given that \\(X+Y=n\\).<br><i>Solution</i><br>Start with calculating the <b>pmf</b> of the <b>rv</b> \\(Z:=X+Y\\): \\[\\begin{aligned}p_Z(n)&=\\sum\\nolimits_{k=0}^np_{X,Y}(k,n-k)=\\sum\\nolimits_{k=0}^np_X(k)p_Y(n-k)\\\\ &=e^{-(\\lambda_1+\\lambda_2)}\\sum\\nolimits_{k=0}^n\\frac{\\lambda_1^k\\lambda_2^{n-k}}{k!(n-k)!}=\\frac{(\\lambda_1+\\lambda_2)^n}{n!}e^{-(\\lambda_1+\\lambda_2)}\\end{aligned}\\] Thus \\(Z\\) has a Poisson distribution with parameter \\(\\lambda_1+\\lambda_2\\), and \\[\\begin{aligned}p_{X|Z}(k\\mid n)&=\\frac{p_{X,Z}(k,n)}{p_Z(n)}=\\frac{p_{X,Y}(k,n-k)}{p_Z(n)}\\\\ &=\\frac{n!}{k!(n-k)!}\\frac{\\lambda_1^k\\lambda_2^{n-k}}{(\\lambda_1+\\lambda_2)^n}=\\binom{n}{k}p^k(1-p)^{n-k}\\end{aligned}\\] this is a binomial distr. with parameters \\(n\\) and \\(p=\\lambda_1/(\\lambda_1+\\lambda_2)\\)"
+      },
+      {
+       "lecture": "L6",
+       "page": 10,
+       "text": "• In the above example with a triangle, \\[f_X(x)=F_X'(x)=\\begin{cases}0,&x\\notin(0,h)\\\\\\tfrac2h(1-\\tfrac xh),&x\\in(0,h)\\end{cases}\\]• therefore, \\[\\mathsf E(X)=\\int_{\\mathbb R}x\\,f_X(x)\\,dx=2\\int_0^h\\tfrac xh(1-\\tfrac xh)\\,dx=\\tfrac{x^2}h\\Big|_0^h-\\tfrac{2x^3}{3h^2}\\Big|_0^h=\\tfrac h3\\]"
       }
      ],
      "tips": [],
-     "practice": [],
-     "defs": [],
-     "notes": []
+     "practice": [
+      {
+       "kind": "source",
+       "source": "ps4-2026",
+       "label": "Problem 1 (a)–(b)",
+       "text": "Suppose that a fair die is rolled twice. What is the probability mass function of the following random variables:<br>(a) \\(X=\\) “the maximum value to appear in the two rolls”;<br>(b) \\(Y=\\) “the minimum value to appear in the two rolls”. Give a short explanation why \\(p_X(j)=p_Y(7-j)\\) for \\(j=1,2,\\dots,6\\).",
+       "sourceTitle": "Problem set 4 (seminar 4, 2026)"
+      },
+      {
+       "kind": "source",
+       "source": "ps6-2026",
+       "label": "Problem 2",
+       "text": "Assume that \\(X_1\\), \\(X_2\\), \\(\\dots\\), \\(X_n\\) are independent <b>r.v.</b>’s with distribution \\(\\mathscr U(0,a)\\). Find distribution (<b>c.d.f.</b> and <b>p.d.f.</b>) of the <b>r.v.</b>’s<br>(a) \\(U\\sim\\max\\{X_1,\\dots,X_n\\}\\); (b) \\(V\\sim\\min\\{X_1,\\dots,X_n\\}\\)",
+       "sourceTitle": "Problem set 6 (seminar 6, 2026)"
+      },
+      {
+       "kind": "source",
+       "source": "ps5-2025",
+       "label": "Problem 3 (a)",
+       "text": "A fair coin is tossed repeatedly and independently until two consecutive heads or two consecutive tails appear. Denote by \\(N\\) the r.v. equal to the number of tosses made.<br>(a) Find the p.m.f. of the r.v. \\(N\\).",
+       "sourceTitle": "Problem set 5 (seminar 5, 2025)"
+      },
+      {
+       "kind": "source",
+       "source": "ps5-2025",
+       "label": "Problem 2 (a)",
+       "text": "An urn contains 10 balls numbered 1 to 10. Two balls are sampled in turn without replacement and their numbers are denoted as \\(X_1\\) and \\(X_2\\) respectively. Let \\(Y\\) be the minimum of \\(X_1\\) and \\(X_2\\).<br>(a) Show that the distributions of \\(X_1\\) and \\(X_2\\) coincide.",
+       "sourceTitle": "Problem set 5 (seminar 5, 2025)"
+      },
+      {
+       "kind": "source",
+       "source": "col2-2022",
+       "label": "New problems, Problem 8 (a)",
+       "text": "The field hospital is located at the centre of a circle of radius 100 km. If an accident occurs within this circle, then the hospital sends out an ambulance helicopter. Assuming that an accident occurs at a point that is uniformly distributed in the circle,<br>(a) find the distribution of the travel distance \\(D\\) to the accident point, its expected value and variance;<br>Hint: in (a), start with finding the c.d.f. of \\(D\\)",
+       "sourceTitle": "Colloquium 2 problem list (2022)"
+      }
+     ],
+     "defs": [
+      2,
+      3,
+      8
+     ],
+     "notes": [
+      "topic-1",
+      "topic-2",
+      "topic-7",
+      "topic-12"
+     ]
     },
     {
      "id": "c-moments",
@@ -1024,55 +2046,104 @@ const MIDTERM_PREP = {
        "kind": "Formula",
        "lecture": "L6",
        "page": 22,
-       "text": "Euler Gamma-function: \\(\\Gamma(s):=\\int_0^\\infty t^{s-1}e^{-t}\\,dt\\); \\(\\Gamma(s+1)=s\\Gamma(s)\\), \\(\\Gamma(\\frac12)=\\sqrt\\pi\\), \\(\\Gamma(n+1)=n!\\). Used for \\(\\mathscr N(0,1)\\): \\(\\frac1{\\sqrt{2\\pi}}\\int_{\\mathbb R}t^2e^{-t^2/2}\\,dt=\\sqrt{\\frac2\\pi}\\int_0^\\infty t^2e^{-t^2/2}\\,dt\\overset{u=t^2/2}{=}\\frac2{\\sqrt\\pi}\\int_0^\\infty\\sqrt ue^{-u}\\,du=\\frac2{\\sqrt\\pi}\\Gamma(\\tfrac32)=1\\)"
+       "text": "<b>To prove that \\(\\mathsf E(X^2)=1\\):</b><br>• use parity to get \\[\\frac1{\\sqrt{2\\pi}}\\int_{\\mathbb R}t^2\\mathrm e^{-t^2/2}\\,dt=\\sqrt{\\frac2\\pi}\\int_0^\\infty t^2\\mathrm e^{-t^2/2}\\,dt\\]• make substitution \\(u=t^2/2\\), or \\(t=\\sqrt{2u}\\)<br>• conclude that \\(dt=du/\\sqrt{2u}\\) and \\[\\sqrt{\\frac2\\pi}\\int_0^\\infty t^2\\mathrm e^{-t^2/2}\\,dt=\\frac2{\\sqrt\\pi}\\int_0^\\infty\\sqrt u\\,\\mathrm e^{-u}\\,du=\\frac2{\\sqrt\\pi}\\cdot\\Gamma(\\tfrac32)=\\frac2{\\sqrt\\pi}\\cdot\\frac{\\sqrt\\pi}2=1\\]in view of the relations \\(\\Gamma(s+1)=s\\Gamma(s)\\) and \\(\\Gamma(\\tfrac12)=\\sqrt\\pi\\)<br>• here \\(\\Gamma(\\cdot)\\) is the <b>Euler Gamma-function</b> \\[\\Gamma(s):=\\int_0^\\infty t^{s-1}e^{-t}\\,dt;\\]observe that \\(\\Gamma(n+1)=n!\\)"
       }
      ],
      "lectureExamples": [
       {
        "lecture": "L5",
        "page": 7,
-       "text": "Binomial: \\(\\mathsf E(X)=\\sum_{k=0}^nk\\binom nkp^k(1-p)^{n-k}=np\\sum_{k=1}^n\\binom{n-1}{k-1}p^{k-1}(1-p)^{n-k}=np(p+1-p)^{n-1}=np\\). Infinite expectation: \\(p_X(k)=1/[k(k+1)]\\Rightarrow\\mathsf E(X)=+\\infty\\)"
+       "text": "<b>Example (Binomial distribution)</b><br>For \\(X\\) with binomial distribution \\(\\mathscr B(n,p)\\): \\[\\begin{aligned}\\mathsf E(X)=\\sum_{k=0}^nk\\binom nkp^k(1-p)^{n-k}&=np\\sum_{k=1}^n\\binom{n-1}{k-1}p^{k-1}(1-p)^{n-k}\\\\&=np(p+1-p)^{n-1}=np\\end{aligned}\\]<b>Example (Infinite expectation)</b><br>For \\(X\\) with <b>p.m.f.</b> \\(p_X(k)=1/[k(k+1)]\\), \\(k\\in\\mathbb N\\), the series \\[\\sum_{k\\ge1}\\frac k{k(k+1)}=\\sum_{k\\ge1}\\frac1{k+1}\\] does not converge, thus \\(\\mathsf E(X)=+\\infty\\)"
       },
       {
        "lecture": "L5",
        "page": 8,
-       "text": "Geometric via the useful formula: \\(\\mathsf E(X)=\\sum_{k\\ge1}\\mathsf P(X\\ge k)=\\sum_{k\\ge1}q^{k-1}=\\frac1p\\); directly: \\(\\sum_{k\\ge1}kpq^{k-1}=p\\big(\\sum_{k\\ge1}q^k\\big)'=\\frac p{(1-q)^2}=\\frac1p\\)"
+       "text": "<b>Example (Geometric distribution)</b><br>If \\(X\\sim\\mathscr G(p)\\), then \\[\\mathsf E(X)=\\sum_{k\\ge1}\\mathsf P(X\\ge k)=\\sum_{k\\ge1}q^{k-1}=\\frac1p\\]Direct calculations: \\[\\begin{aligned}\\mathsf E(X)&=\\sum_{k\\ge1}kpq^{k-1}=p\\Big(\\sum_{k\\ge1}q^k\\Big)'\\\\&=p\\cdot\\Big(\\frac1{1-q}\\Big)'=\\frac p{(1-q)^2}=\\frac p{p^2}=\\frac1p\\end{aligned}\\]"
       },
       {
        "lecture": "L5",
        "page": 16,
-       "text": "Total probability rule: \\(N\\) = tosses until two Heads in a row; \\(a:=\\mathsf E(N)\\) satisfies \\(a=(a+1)q+(a+2)pq+2p^2\\), so \\(\\mathsf E(N)=\\frac{q+2pq+2p^2}{1-q-pq}=\\frac{q+2p}{p^2}=\\frac1p+\\frac1{p^2}\\)"
+       "text": "Let \\(N\\) be the number of tosses of a non-symmetric coin until the first occurrence of two Heads in row. Then \\[\\mathsf E(N)=\\mathsf E(N\\mid T_1)\\mathsf P(T_1)+\\mathsf E(N\\mid H_1T_2)\\mathsf P(H_1T_2)+\\mathsf E(N\\mid H_1H_2)\\mathsf P(H_1H_2)\\]If \\(a:=\\mathsf E(N)\\), then \\(a=(a+1)q+(a+2)pq+2p^2\\), so that \\[\\mathsf E(N)=\\frac{q+2pq+2p^2}{1-q-pq}=\\frac{q+2p}{p^2}=\\frac1p+\\frac1{p^2}\\]"
       },
       {
        "lecture": "L5",
        "page": 20,
-       "text": "Variance through the factorial moment: \\(\\mu^{(2)}(X)=n(n-1)p^2\\) for \\(\\mathscr B(n,p)\\), \\(\\mathrm{Var}(X)=\\mu^{(2)}(X)+\\mathsf E(X)-\\mathsf E(X)^2=np(1-p)\\); or through independent indicators (L5 p25)"
+       "text": "The 2\\(^{\\text{nd}}\\) factorial moment of \\(X\\sim\\mathscr B(n,p)\\) is \\[\\begin{aligned}\\mu^{(2)}(X)=\\mathsf E(X(X-1))&=\\sum_{k=0}^nk(k-1)p_X(k)\\\\&=n(n-1)p^2\\sum_{j=0}^{n-2}\\binom{n-2}jp^j(1-p)^{n-k}=n(n-1)p^2\\end{aligned}\\]Therefore, \\[\\begin{aligned}\\mathrm{Var}(X)=\\sigma_X^2&=\\mathsf E(X^2-X+X)-\\mathsf E(X)^2=\\mu^{(2)}(X)+\\mathsf E(X)-\\mathsf E(X)^2\\\\&=n(n-1)p^2+np-n^2p^2=np-np^2=np(1-p)\\end{aligned}\\]"
       },
       {
        "lecture": "L5",
        "page": 33,
-       "text": "Through the p.g.f.: for \\(N\\) above, \\(G_N(s)=\\frac{s^2p^2}{1-sq-s^2pq}\\) and \\(\\mathsf E(N)=G_N'(1)=\\frac{2p^2+q+2pq}{p^2}=\\frac{1+p}{p^2}\\); \\(G_N^{(k)}(0)/k!=p_N(k)\\) gives the p.m.f. of \\(N\\)"
+       "text": "<b>Example: Let \\(N\\) be the number of tosses of a coin until two Heads occur in row</b><br>By the total probability rule for expectations, \\(G_N(s)=\\mathsf E(s^N)\\) satisfies \\[\\begin{aligned}G_N(s)&=\\mathsf E(s^N\\mid T_1)\\mathsf P(T_1)+\\mathsf E(s^N\\mid H_1T_2)\\mathsf P(H_1T_2)+\\mathsf E(s^N\\mid H_1H_2)\\mathsf P(H_1H_2)\\\\&=\\mathsf E(s^{N+1})q+\\mathsf E(s^{N+2})pq+s^2p^2\\end{aligned}\\]so that \\[G_N(s)=\\frac{s^2p^2}{1-sq-s^2pq}\\]In particular, \\[\\begin{aligned}\\mathsf E(N)=G_N'(1)&=\\frac{2sp^2(1-sq-s^2pq)+s^2p^2(q+2spq)}{(1-sq-s^2pq)^2}\\Big|_{s=1}\\\\&=\\frac{2p^2+q+2pq}{p^2}=\\frac{1+p}{p^2}\\end{aligned}\\]As explained above, \\(G_N^{(k)}(0)/k!=p_N(k)\\), which gives the <b>p.m.f.</b> of \\(N\\)"
       },
       {
        "lecture": "L6",
        "page": 10,
-       "text": "Continuous: triangle \\(\\mathsf E(X)=\\int_{\\mathbb R}xf_X(x)\\,dx=2\\int_0^h\\frac xh(1-\\frac xh)\\,dx=\\frac h3\\); scaling (L6 p13): \\(Y:=\\frac1hX\\Rightarrow\\mathsf E(Y)=\\frac13=\\frac1h\\mathsf E(X)\\)"
+       "text": "• In the above example with a triangle, \\[f_X(x)=F_X'(x)=\\begin{cases}0,&x\\notin(0,h)\\\\\\tfrac2h(1-\\tfrac xh),&x\\in(0,h)\\end{cases}\\]• therefore, \\[\\mathsf E(X)=\\int_{\\mathbb R}x\\,f_X(x)\\,dx=2\\int_0^h\\tfrac xh(1-\\tfrac xh)\\,dx=\\tfrac{x^2}h\\Big|_0^h-\\tfrac{2x^3}{3h^2}\\Big|_0^h=\\tfrac h3\\]"
       },
       {
        "lecture": "L6",
        "page": 23,
-       "text": "Moments via the m.g.f. (\\(\\mathscr N(0,1)\\), \\(M_X(t)=e^{t^2/2}\\)): \\(\\mathsf E(X)=M_X'(0)=0\\), \\(\\mathsf E(X^2)=1\\), \\(\\mathsf E(X^3)=0\\), \\(\\mathsf E(X^4)=M_X^{(iv)}(0)=3\\). Uniform: \\(\\frac{a+b}2\\), \\(\\frac{(b-a)^2}{12}\\) (L6 p17–19); exponential: \\(\\mathsf EX^k=\\frac{k!}{\\lambda^k}\\), \\(\\mathrm{Var}X=\\frac1{\\lambda^2}\\) (L6 p28)"
+       "text": "<b>Alternatively, use the m.g.f. \\(M_X\\):</b>\\[M_X(t):=\\mathsf E(e^{tX})=\\int_{\\mathbb R}e^{tx}\\phi(x)\\,dx=e^{t^2/2}\\]thus \\[\\begin{aligned}m_1(X)&=\\mathsf E(X)=M_X'(0)=\\Big(te^{t^2/2}\\Big)\\Big|_{t=0}=0\\\\m_2(X)&=\\mathsf E(X^2)=M_X''(0)=\\Big([t^2+1]e^{t^2/2}\\Big)\\Big|_{t=0}=1\\\\m_3(X)&=\\mathsf E(X^3)=M_X'''(0)=\\Big([t^3+3t]e^{t^2/2}\\Big)\\Big|_{t=0}=0\\\\m_4(X)&=\\mathsf E(X^4)=M_X^{(iv)}(0)=\\Big([t^4+6t^2+3]e^{t^2/2}\\Big)\\Big|_{t=0}=3\\end{aligned}\\]and so on"
       },
       {
        "lecture": "L6",
        "page": 27,
-       "text": "Exponential: change of variables \\(\\lambda x=y\\) and integration by parts: \\(\\mathsf EX=\\int_0^\\infty x\\lambda e^{-\\lambda x}\\,dx=\\frac1\\lambda\\int_0^\\infty ye^{-y}\\,dy=-\\frac1\\lambda\\int_0^\\infty y(e^{-y})'\\,dy=ye^{-y}\\big|_{y=0}^\\infty+\\frac1\\lambda\\int_0^\\infty e^{-y}\\,dy=\\frac1\\lambda\\); alternatively \\(=\\frac1\\lambda\\int_0^\\infty ye^{-y}\\,dy=\\frac1\\lambda\\Gamma(2)=\\frac{1!}\\lambda=\\frac1\\lambda\\)"
+       "text": "<b>Example (Expectation of exponential distribution)</b><br><i>For \\(X\\sim\\mathcal E(\\lambda)\\), we make change of variables \\(\\lambda x=y\\) and integrate by parts to get</i>\\[\\begin{aligned}\\mathsf E\\,X&=\\int_0^\\infty x\\lambda\\mathrm e^{-\\lambda x}\\,dx=\\frac1\\lambda\\int_0^\\infty y\\mathrm e^{-y}\\,dy=-\\frac1\\lambda\\int_0^\\infty y(\\mathrm e^{-y})'\\,dy\\\\&=y\\mathrm e^{-y}\\Big|_{y=0}^\\infty+\\frac1\\lambda\\int_0^\\infty\\mathrm e^{-y}\\,dy=\\frac1\\lambda;\\end{aligned}\\]<i>alternatively,</i>\\[=\\frac1\\lambda\\int_0^\\infty y\\mathrm e^{-y}\\,dy=\\frac1\\lambda\\Gamma(2)=\\frac{1!}\\lambda=\\frac1\\lambda.\\]"
       }
      ],
      "tips": [],
-     "practice": [],
-     "defs": [],
-     "notes": []
+     "practice": [
+      {
+       "kind": "midterm2017",
+       "problem": 5,
+       "part": "b"
+      },
+      {
+       "kind": "source",
+       "source": "ps5-2025",
+       "label": "Problem 10",
+       "text": "Suppose that a fair die is rolled twice. Find <i>expectation</i> and <i>variance</i> for the following random variables:<br>(a) the maximum value to appear in the two rolls;<br>(b) the minimum value to appear in the two rolls;<br>(c) the value of the first roll minus the value of the second roll.",
+       "sourceTitle": "Problem set 5 (seminar 5, 2025)"
+      },
+      {
+       "kind": "source",
+       "source": "ps5-2025",
+       "label": "Problem 9",
+       "text": "Two balls are chosen randomly from an urn containing 8 white, 4 black, and 2 orange balls. Suppose that we win \\(\\$2\\) for each black ball selected and we lose \\(\\$1\\) for each white ball selected. Let \\(X\\) denote our winnings. Find the expected value and variance of the random variable \\(X\\).",
+       "sourceTitle": "Problem set 5 (seminar 5, 2025)"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST5-15"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST5-11"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST5-09"
+      },
+      {
+       "kind": "source",
+       "source": "ps5-2025",
+       "label": "Problem 3 (b)–(d)",
+       "text": "A fair coin is tossed repeatedly and independently until two consecutive heads or two consecutive tails appear. Denote by \\(N\\) the r.v. equal to the number of tosses made.<br>(b) Find the expected value of the r.v. \\(N\\).<br>(c) Find the variance of the r.v. \\(N\\).<br>Assume now that the coin is tossed until we obtain a tail that is immediately preceded by a head; let a r.v. \\(N_1\\) denote the corresponding number of tosses.<br>(d) Find the p.m.f. and the expected value of the r.v. \\(N_1\\).",
+       "sourceTitle": "Problem set 5 (seminar 5, 2025)"
+      }
+     ],
+     "defs": [
+      12,
+      13,
+      20,
+      21
+     ],
+     "notes": [
+      "topic-4",
+      "topic-5",
+      "topic-6",
+      "topic-11"
+     ]
     },
     {
      "id": "c-joint",
@@ -1082,32 +2153,94 @@ const MIDTERM_PREP = {
        "kind": "Formula",
        "lecture": "L5",
        "page": 24,
-       "text": "\\(\\mathrm{Cov}(X,Y)=\\mathsf E(X-\\mathsf E(X))(Y-\\mathsf E(Y))=\\mathsf E(XY)-\\mathsf E(X)\\mathsf E(Y)\\), with \\(\\mathsf E(g(X,Y))=\\sum_{k,j}g(x_k,y_j)p_{X,Y}(x_k,y_j)\\) (L5 p12)"
+       "text": "The <b>covariance</b> of <b>r.v.</b> \\(X\\) and \\(Y\\) is \\[\\mathrm{Cov}(X,Y)=\\mathsf E(X-\\mathsf E(X))(Y-\\mathsf E(Y))=\\mathsf E(XY)-\\mathsf E(X)\\mathsf E(Y)\\]"
+      },
+      {
+       "kind": "Formula",
+       "lecture": "L5",
+       "page": 12,
+       "text": "<b>Linearity of expectation</b><br><b>Theorem:</b> Assume \\(X\\) and \\(Y\\) are <b>r.v.</b> with joint <b>p.m.f.</b> \\(p_{X,Y}\\); then \\[\\mathsf E(aX+bY)=a\\mathsf E(X)+b\\mathsf E(Y)\\]<b>Remark:</b> An analogue of the previous thm reads \\[\\mathsf E(g(X,Y))=\\sum_{k,j}g(x_k,y_j)p_{X,Y}(x_k,y_j)\\]"
       }
      ],
      "lectureExamples": [
       {
        "lecture": "L4",
        "page": 33,
-       "text": "Urn with 3 white and 2 black balls, three drawn in turn without replacement; \\(X\\) — total white, \\(Y\\) — white in the first two draws. Outcomes WWW, WWB, WBW, BWW, WBB, BWB, BBW have \\(\\mathsf P=.1,.2,.2,.2,.1,.1,.1\\); joint table: \\(Y{=}0\\): \\(.1,0,0\\); \\(Y{=}1\\): \\(.2,.4,0\\); \\(Y{=}2\\): \\(0,.2,.1\\) (columns \\(X=1,2,3\\))"
+       "text": "An urn contains 3 white balls and 2 black ones. Three balls are drawn from the urn in turn without replacement. Set<br>• \\(X\\) is the total number of white balls drawn<br>• \\(Y\\) is the number of white balls in the first two draws \\[\\begin{array}{|c|c|c|c|c|c|c|c|}\\hline & \\text{WWW} & \\text{WWB} & \\text{WBW} & \\text{BWW} & \\text{WBB} & \\text{BWB} & \\text{BBW} \\\\ \\hline \\mathsf P & .1 & .2 & .2 & .2 & .1 & .1 & .1 \\\\ \\hline \\text{X} & 3 & 2 & 2 & 2 & 1 & 1 & 1 \\\\ \\hline \\text{Y} & 2 & 2 & 1 & 1 & 1 & 1 & 0 \\\\ \\hline\\end{array}\\] The <b>joint distribution</b> of \\((X,Y)\\) can be given by the table \\[\\begin{array}{|c|c|c|c|}\\hline & \\text{X=1} & \\text{X=2} & \\text{X=3} \\\\ \\hline \\text{Y=0} & .1 & 0 & 0 \\\\ \\hline \\text{Y=1} & .2 & .4 & 0 \\\\ \\hline \\text{Y=2} & 0 & .2 & .1 \\\\ \\hline\\end{array}\\]"
       },
       {
        "lecture": "L4",
        "page": 34,
-       "text": "Marginals from the table: \\(p_X(1)=\\mathsf P(X=1,Y=0)+\\mathsf P(X=1,Y=1)+\\mathsf P(X=1,Y=2)=.3\\); \\(p_Y(1)=\\mathsf P(X=1,Y=1)+\\mathsf P(X=2,Y=1)+\\mathsf P(X=3,Y=1)=.6\\). Full margins (L4 p40): \\(p_X=(.3,.6,.1)\\), \\(p_Y=(.1,.6,.3)\\)"
+       "text": "The joint distribution completely describes the <b>pmf</b>’s of \\(X\\) and \\(Y\\), eg: \\[\\begin{aligned}p_X(1)=\\mathsf P(X=1)&=\\mathsf P(X=1,Y=0)+\\mathsf P(X=1,Y=1)\\\\ &\\qquad+\\mathsf P(X=1,Y=2)=.3;\\\\ p_Y(1)=\\mathsf P(Y=1)&=\\mathsf P(X=1,Y=1)+\\mathsf P(X=2,Y=1)\\\\ &\\qquad+\\mathsf P(X=3,Y=1)=.6\\end{aligned}\\] \\[\\begin{array}{|c|c|c|c|}\\hline & \\textbf{X=1} & \\text{X=2} & \\text{X=3} \\\\ \\hline \\text{Y=0} & \\mathbf{.1} & 0 & 0 \\\\ \\hline \\text{Y=1} & \\mathbf{.2} & .4 & 0 \\\\ \\hline \\text{Y=2} & \\mathbf{0} & .2 & .1 \\\\ \\hline\\end{array}\\qquad\\begin{array}{|c|c|c|c|}\\hline & \\text{X=1} & \\text{X=2} & \\text{X=3} \\\\ \\hline \\text{Y=0} & .1 & 0 & 0 \\\\ \\hline \\textbf{Y=1} & \\mathbf{.2} & \\mathbf{.4} & \\mathbf{0} \\\\ \\hline \\text{Y=2} & 0 & .2 & .1 \\\\ \\hline\\end{array}\\]"
       },
       {
        "lecture": "L6",
        "page": 48,
-       "text": "Continuous: \\(X=X_1\\), \\(Y=X_1+X_2\\) with independent \\(X_1,X_2\\sim\\mathscr E(\\lambda)\\): \\(f_{X,Y}(x,y)=\\lambda^2e^{-\\lambda y}\\) on \\(0<x<y\\); marginal \\(f_Y(y)=\\int_0^yf_{X,Y}(x,y)\\,dx=\\lambda^2ye^{-\\lambda y}\\). Uniform on the unit square: joint c.d.f. \\(xy\\) on \\((0,1)^2\\) (L6 p30)"
+       "text": "<b>Let \\(X_1\\) and \\(X_2\\) be independent with distribution \\(\\mathscr E(\\lambda)\\)</b><br>• Take \\(X=X_1\\) and \\(Y=X_1+X_2\\);<br>• then \\(f_{X,Y}(x,y)=\\lambda^2e^{-\\lambda y}\\) on the set \\(0 < x < y\\);<br>• \\(f_Y(y)=\\int_0^yf_{X,Y}(x,y)\\,dx=\\lambda^2ye^{-\\lambda y}\\);<br>• i.e., \\(Y\\) has the <b>Gamma</b> distribution \\(\\Gamma(2,\\lambda)\\);<br>• now \\(f_{X|Y}(x\\mid y)=y^{-1}\\quad\\text{for}\\quad x\\in(0,y)\\), so that \\(X\\mid Y=y\\) is a uniform distribution \\(\\mathscr U(0,y)\\)<br>• clearly, \\(X\\sim\\mathscr E(\\lambda)\\), so that \\(f_{Y|X}(y\\mid x)=\\lambda e^{-\\lambda(y-x)}\\)<br>• the distribution of \\(Y\\mid X=x\\) is <b>shifted exponential</b><br>i.e., \\(Y-x\\mid X=x\\sim\\mathscr E(\\lambda)\\)<br>• In fact, \\(Z:=Y-X\\) and \\(X\\) are independent, so that \\((Y-x\\mid X=x)\\sim(Z\\mid X=x)\\sim Z\\)"
+      },
+      {
+       "lecture": "L4",
+       "page": 40,
+       "text": "<i>Example (An urn with 3 white and 2 black balls)</i> \\[\\begin{array}{|c|c|c|c|c|}\\hline & X=1 & X=2 & X=3 & p_Y \\\\ \\hline Y=0 & .1 & 0 & 0 & .1 \\\\ \\hline Y=1 & .2 & \\mathbf{.4} & 0 & \\mathbf{.6} \\\\ \\hline Y=2 & 0 & .2 & .1 & .3 \\\\ \\hline p_X & .3 & \\mathbf{.6} & .1 & \\\\ \\hline\\end{array}\\] \\(X\\) and \\(Y\\) are <b>dependent</b> as \\(p_{X,Y}(2,1)\\ne p_X(2)p_Y(1)\\); in fact, \\(X\\ge Y\\)"
       }
      ],
      "tips": [
       "The L4–L6 slides have no worked numeric covariance example; compute it from a joint table with the two formulas above (e.g. the urn table of L4 p33)."
      ],
-     "practice": [],
-     "defs": [],
-     "notes": []
+     "practice": [
+      {
+       "kind": "source",
+       "source": "ps6-2026",
+       "label": "Problem 6 (a)–(d)",
+       "text": "The joint probability density function of random variables \\(X\\) and \\(Y\\) is given by the formula \\[f_{X,Y}(x,y)=\\begin{cases}a,&x,y>0,x+y<1\\\\0,&\\text{otherwise}\\end{cases}\\]<br>(a) Find the value of \\(a\\)<br>(b) Calculate the marginal <b>p.d.f.</b>’s \\(f_X\\) and \\(f_Y\\) and decide whether \\(X\\) and \\(Y\\) are independent<br>(c) Find \\(\\mathsf E(X)\\), \\(\\mathsf E(Y)\\) and the covariance \\(\\mathsf{Cov}(X,Y)\\)<br>(d) Calculate \\(\\mathsf E(XY)\\)",
+       "sourceTitle": "Problem set 6 (seminar 6, 2026)"
+      },
+      {
+       "kind": "source",
+       "source": "ps6-2026",
+       "label": "Problem 8 (a)–(d)",
+       "text": "Random variables \\(X\\) and \\(Y\\) are distributed according to the joint PDF \\[f_{X,Y}(x,y)=\\begin{cases}ax,&\\text{if }1\\le x\\le2\\text{ and }0\\le y\\le x,\\\\0,&\\text{otherwise}\\end{cases}\\]<br>(a) Evaluate the constant \\(a\\).<br>(b) Determine the marginal PDF \\(f_Y(y)\\).<br>(c) Find \\(\\mathsf E(X)\\), \\(\\mathsf E(Y)\\) and the covariance \\(\\mathsf{Cov}(X,Y)\\)<br>(d) Calculate \\(\\mathsf E(XY)\\)",
+       "sourceTitle": "Problem set 6 (seminar 6, 2026)"
+      },
+      {
+       "kind": "source",
+       "source": "ps5-2025",
+       "label": "Problem 11 (a)–(d)",
+       "text": "Assume \\(X\\) and \\(Y\\) have joint probability mass function \\[\\begin{array}{c|cccc}p(x,y)&y=-1&y=1&y=2&y=3\\\\\\hline x=0&1/12&1/4&0&0\\\\x=1&1/12&1/12&1/12&1/12\\\\x=3&0&0&1/4&1/12\\end{array}\\]<br>(a) Find \\(\\mathsf E(X)\\), \\(\\mathsf E(Y)\\), \\(\\mathsf E(S)\\), \\(\\mathsf E(D)\\), and \\(\\mathsf E(M)\\), where \\(S=X+Y\\), \\(D=X-Y\\), and \\(M=\\max\\{X,Y\\}\\).<br>(b) Find whether \\(X\\) is independent of \\(Y\\).<br>(c) Find variance of the random variables \\(S\\) and \\(M\\).<br>(d) Find covariance of \\(X\\) and \\(D\\).",
+       "sourceTitle": "Problem set 5 (seminar 5, 2025)"
+      },
+      {
+       "kind": "source",
+       "source": "ps5-2025",
+       "label": "Problem 4",
+       "text": "A die with 6 faces, numbered \\(1,\\dots,6\\), is rolled a fixed number of times \\(n\\). The probability that the \\(i^{th}\\) face comes up on each roll is denoted \\(p_i\\) and the results of different rolls are assumed independent. Let \\(X_i\\) be the number of times that the \\(i^{th}\\) face comes up.<br>(a) Find the joint p.m.f. \\(p_{X_1,\\dots X_r}(k_1,\\dots,k_r)=\\mathsf P(X_1=k_1,\\dots,X_r=k_r)\\) for \\(r=1,2\\), and 6.<br>(b) Find the expected value of \\(X_i\\).<br>(c) Find the variance of \\(X_i\\).<br>(d) Find \\(E[X_iX_j]\\) for \\(i\\ne j\\).",
+       "sourceTitle": "Problem set 5 (seminar 5, 2025)"
+      },
+      {
+       "kind": "source",
+       "source": "col2-2022",
+       "label": "New problems, Problem 12 (a)–(d)",
+       "text": "Assume that \\(X\\) and \\(Y\\) are non-negative <b>r.v.</b>’s with a joint distribution given by the density \\[f_{X,Y}(x,y)=\\begin{cases}ce^{-\\lambda x},&\\text{if }0\\le y\\le x<\\infty\\\\0&\\text{otherwise}\\end{cases}\\] for some \\(\\lambda>0\\).<br>(a) Find the constant \\(c\\);<br>(b) determine the marginal distributions of \\(X\\) and \\(Y\\) and identify them;<br>(Hint: one of them is a Gamma distribution)<br>(c) calculate \\(\\mathsf E(X)\\), \\(\\mathsf E(Y)\\), \\(\\mathsf E(X^2)\\), \\(\\mathsf E(Y^2)\\);<br>(d) calculate \\(\\mathsf{Var}(X)\\), \\(\\mathsf{Var}(Y)\\), \\(\\mathsf{Cov}(X,Y)\\);<br>(Hint: using the gamma-functions eliminates almost all calculations)",
+       "sourceTitle": "Colloquium 2 problem list (2022)"
+      },
+      {
+       "kind": "source",
+       "source": "col2-2022",
+       "label": "New problems, Problem 6 (c)",
+       "text": "Alice flips a biased coin (with probability \\(p\\) of showing Heads) 5 times, and if Tail shows up on the last toss, then she continues tossing until the first Head appears. Let \\(N\\) be the total number of tosses made and \\(X\\) be the total number of Heads.<br>(c) what is the covariance of \\(N\\) and \\(X\\)? are these <b>r.v.</b>’s independent?",
+       "sourceTitle": "Colloquium 2 problem list (2022)"
+      }
+     ],
+     "defs": [
+      15,
+      16,
+      13
+     ],
+     "notes": [
+      "topic-3",
+      "topic-10",
+      "topic-5"
+     ]
     },
     {
      "id": "c-independence",
@@ -1117,30 +2250,93 @@ const MIDTERM_PREP = {
        "kind": "Formula",
        "lecture": "L4",
        "page": 39,
-       "text": "Discrete: \\(\\forall x,y:\\ p_{X,Y}(x,y)=p_X(x)p_Y(y)\\); continuous (L6 p33): \\(F_{X,Y}(x,y)=F_X(x)F_Y(y)\\) or \\(f_{X,Y}(x,y)=f_X(x)\\cdot f_Y(y)\\)"
+       "text": "In terms of <b>pmf</b> independence can be expressed as follows: \\[\\boxed{\\forall x,y:\\qquad p_{X,Y}(x,y)=p_X(x)p_Y(y)}\\]"
+      },
+      {
+       "kind": "Formula",
+       "lecture": "L6",
+       "page": 33,
+       "text": "• Thus for independent \\(X\\) and \\(Y\\) \\[\\mathsf P(X\\le x,Y\\le y)=\\mathsf P(X\\le x)\\cdot\\mathsf P(Y\\le y);\\]• or, in terms of cumulative distribution functions (<b>c.d.f.</b>) \\[F_{X,Y}(x,y)=F_X(x)F_Y(y)\\]• or, in terms of probability density functions (<b>p.d.f.</b>), \\[f_{X,Y}(x,y)=f_X(x)\\cdot f_Y(y).\\]"
+      },
+      {
+       "kind": "Property",
+       "lecture": "L5",
+       "page": 26,
+       "text": "<b>Meaning of covariance: \\(\\mathrm{Cov}(X,Y)>0\\Longrightarrow\\)</b><br>• \\(X\\) and \\(Y\\) dependent<br>• larger values of \\(X\\) <i>typically</i> correspond to larger values of \\(Y\\) <b>(positive correlation)</b>"
       }
      ],
      "lectureExamples": [
       {
        "lecture": "L4",
        "page": 40,
-       "text": "One violated cell is enough: \\(X\\) and \\(Y\\) are dependent as \\(p_{X,Y}(2,1)\\ne p_X(2)p_Y(1)\\); in fact, \\(X\\ge Y\\)"
+       "text": "<i>Example (An urn with 3 white and 2 black balls)</i> \\[\\begin{array}{|c|c|c|c|c|}\\hline & X=1 & X=2 & X=3 & p_Y \\\\ \\hline Y=0 & .1 & 0 & 0 & .1 \\\\ \\hline Y=1 & .2 & \\mathbf{.4} & 0 & \\mathbf{.6} \\\\ \\hline Y=2 & 0 & .2 & .1 & .3 \\\\ \\hline p_X & .3 & \\mathbf{.6} & .1 & \\\\ \\hline\\end{array}\\] \\(X\\) and \\(Y\\) are <b>dependent</b> as \\(p_{X,Y}(2,1)\\ne p_X(2)p_Y(1)\\); in fact, \\(X\\ge Y\\)"
       },
       {
        "lecture": "L6",
        "page": 37,
-       "text": "Uncorrelated is not independent: \\(X=Z\\) and \\(Y=Z^2\\) for standard Gaussian \\(Z\\) are uncorrelated but dependent. Cov \\(>0\\Rightarrow\\) dependent (L5 p26)"
+       "text": "• Independent \\(X\\) and \\(Y\\) are uncorrelated since \\(\\mathsf E(XY)=\\mathsf E\\,X\\cdot\\mathsf E\\,Y\\)<br>• The converse is <b>not true</b>: e.g. \\(X=Z\\) and \\(Y=Z^2\\) for standard Gaussian \\(Z\\) are uncorrelated but dependent"
       },
       {
        "lecture": "L6",
        "page": 48,
-       "text": "\\(Z:=Y-X\\) and \\(X\\) are independent, so that \\((Y-x\\mid X=x)\\sim(Z\\mid X=x)\\sim Z\\)"
+       "text": "<b>Let \\(X_1\\) and \\(X_2\\) be independent with distribution \\(\\mathscr E(\\lambda)\\)</b><br>• Take \\(X=X_1\\) and \\(Y=X_1+X_2\\);<br>• then \\(f_{X,Y}(x,y)=\\lambda^2e^{-\\lambda y}\\) on the set \\(0 < x < y\\);<br>• \\(f_Y(y)=\\int_0^yf_{X,Y}(x,y)\\,dx=\\lambda^2ye^{-\\lambda y}\\);<br>• i.e., \\(Y\\) has the <b>Gamma</b> distribution \\(\\Gamma(2,\\lambda)\\);<br>• now \\(f_{X|Y}(x\\mid y)=y^{-1}\\quad\\text{for}\\quad x\\in(0,y)\\), so that \\(X\\mid Y=y\\) is a uniform distribution \\(\\mathscr U(0,y)\\)<br>• clearly, \\(X\\sim\\mathscr E(\\lambda)\\), so that \\(f_{Y|X}(y\\mid x)=\\lambda e^{-\\lambda(y-x)}\\)<br>• the distribution of \\(Y\\mid X=x\\) is <b>shifted exponential</b><br>i.e., \\(Y-x\\mid X=x\\sim\\mathscr E(\\lambda)\\)<br>• In fact, \\(Z:=Y-X\\) and \\(X\\) are independent, so that \\((Y-x\\mid X=x)\\sim(Z\\mid X=x)\\sim Z\\)"
       }
      ],
      "tips": [],
-     "practice": [],
-     "defs": [],
-     "notes": []
+     "practice": [
+      {
+       "kind": "source",
+       "source": "ps4-2026",
+       "label": "Problem 8 (a)–(b)",
+       "text": "You roll two fair dice, and they show \\(X\\) and \\(Y\\), respectively. Let \\(U=\\min\\{X,Y\\}\\), \\(V=\\max\\{X,Y\\}\\).<br>(a) Write down the joint distributions of:<br>(i) \\(\\{U,X\\}\\); (ii) \\(\\{U,V\\}\\); (iii) \\(\\{X,Y,V\\}\\)<br>(b) Which of the above <b>r.v.</b> are independent?",
+       "sourceTitle": "Problem set 4 (seminar 4, 2026)"
+      },
+      {
+       "kind": "source",
+       "source": "ps6-2026",
+       "label": "Problem 3 (a)",
+       "text": "Suppose that \\(X\\) and \\(Y\\) have joint probability density function \\[f_{X,Y}(x,y)=\\begin{cases}9e^{-3x-3y}&x\\ge0,y\\ge0;\\\\0&\\text{otherwise}\\end{cases}\\]<br>(a) Find the marginal <b>p.d.f.</b>’s of \\(X\\) and \\(Y\\); prove that \\(X\\) and \\(Y\\) are independent.",
+       "sourceTitle": "Problem set 6 (seminar 6, 2026)"
+      },
+      {
+       "kind": "source",
+       "source": "ps4-2026",
+       "label": "Problem 5 (d)",
+       "text": "Five men and five women are ranked according to their scores on an examination. Assume that no two scores are alike and all 10! possible rankings are equally likely. Let \\(X\\) denote the highest ranking achieved by a woman and let \\(Y\\) denote their lowest ranking. (For instance, \\(X=1\\) if the top-ranked person is a female.)<br>(d) are the random variables \\(X\\) and \\(Y\\) independent?",
+       "sourceTitle": "Problem set 4 (seminar 4, 2026)"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST4-02"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST5-08"
+      },
+      {
+       "kind": "source",
+       "source": "col2-2022",
+       "label": "New problems, Problem 10 (a)–(d)",
+       "text": "Suppose that two points \\(A\\) and \\(B\\) are independently chosen at random on the unit interval. We identify the points and their (random) abscissa, so that \\(A\\) and \\(B\\) are random variables with distribution \\(\\mathscr U(0,1)\\). Find the distributions of the following random variables:<br>(a) the distance \\(D:=|A-B|\\) between these points;<br>(b) \\(M:=\\max\\{A,B\\}\\);<br>(c) \\(N:=\\min\\{A,B\\}\\);<br>(d) which among the random variables \\(A,B,D,M,N\\) are pairwise independent?",
+       "sourceTitle": "Colloquium 2 problem list (2022)"
+      },
+      {
+       "kind": "source",
+       "source": "col2-2022",
+       "label": "New problems, Problem 2 (b)",
+       "text": "Assume that \\(X\\) has a Poisson distribution \\(\\mathscr P(\\lambda)\\) and that, conditioned on \\(\\{X=k\\}\\), a <b>r.v.</b> \\(Y\\) is binomially distributed \\(\\mathscr B(k,p)\\).<br>(b) find the distribution of \\(X-Y\\) and then prove that the <b>r.v.</b> \\(Y\\) and \\(X-Y\\) are independent;",
+       "sourceTitle": "Colloquium 2 problem list (2022)"
+      }
+     ],
+     "defs": [
+      16,
+      15,
+      14
+     ],
+     "notes": [
+      "topic-3",
+      "topic-10"
+     ]
     },
     {
      "id": "c-conditional",
@@ -1150,30 +2346,86 @@ const MIDTERM_PREP = {
        "kind": "Formula",
        "lecture": "L4",
        "page": 42,
-       "text": "\\(p_{X|Y}(x\\mid y)=\\frac{\\mathsf P(X=x,Y=y)}{\\mathsf P(Y=y)}\\); for a fixed \\(y\\) it sums to 1; if \\(X\\) and \\(Y\\) are independent, then \\((X\\mid Y=y)\\sim X\\)"
+       "text": "• Given the joint distribution of \\(X\\) and \\(Y\\) and given that \\(Y=y\\) occurred, we can introduce the <b>conditional distribution</b> of the <b>rv</b> \\(X\\mid Y=y\\): \\[p_{X|Y}(x\\mid y):=\\mathsf P(X=x\\mid Y=y)=\\frac{\\mathsf P(X=x,Y=y)}{\\mathsf P(Y=y)}\\]• For a fixed \\(y\\), \\(p_{X|Y}(\\cdot\\mid y)\\) is a <b>pmf</b> of the <b>rv</b> \\(X\\mid Y=y\\): \\[\\sum_xp_{X|Y}(x,y)=\\sum_x\\frac{p_{X,Y}(x,y)}{p_Y(y)}=\\frac{p_Y(y)}{p_Y(y)}=1\\]• If \\(X\\) and \\(Y\\) are independent, then \\((X\\mid Y=y)\\sim X\\)"
       }
      ],
      "lectureExamples": [
       {
        "lecture": "L4",
        "page": 35,
-       "text": "Urn example: \\(\\mathsf P(X=1\\mid Y=0)=\\mathsf P(\\mathrm{BBW}\\mid\\mathrm{BBW})=1\\), \\(\\mathsf P(X=2\\mid Y=0)=0\\), \\(\\mathsf P(X=3\\mid Y=0)=0\\) — the conditional distribution of \\(X\\) given the event \\(\\{Y=0\\}\\)"
+       "text": "If the value of \\(Y\\) is known, this changes the possibilities for \\(X\\), e.g. \\[\\begin{aligned}\\mathsf P(X=1\\mid Y=0)&=\\mathsf P(\\mathrm{BBW}\\mid\\mathrm{BBW})=1,\\\\ \\mathsf P(X=2\\mid Y=0)&=\\phantom{\\mathsf P(\\mathrm{BBW}\\mid\\mathrm{BBW})}=0,\\\\ \\mathsf P(X=3\\mid Y=0)&=\\phantom{\\mathsf P(\\mathrm{BBW}\\mid\\mathrm{BBW})}=0,\\end{aligned}\\] and this gives a conditional distribution of \\(X\\) given the event \\(\\{Y=0\\}\\)."
       },
       {
        "lecture": "L4",
        "page": 43,
-       "text": "Independent Poisson \\(\\lambda_1,\\lambda_2\\), \\(Z=X+Y\\sim\\mathscr P(\\lambda_1+\\lambda_2\\)): \\(p_{X|Z}(k\\mid n)=\\frac{p_{X,Y}(k,n-k)}{p_Z(n)}=\\binom nkp^k(1-p)^{n-k}\\), \\(p=\\lambda_1/(\\lambda_1+\\lambda_2)\\)"
+       "text": "<i>Problem</i><br>If \\(X\\) and \\(Y\\) are independent Poisson random variables with respective parameters \\(\\lambda_1\\) and \\(\\lambda_2\\), calculate the conditional distribution of \\(X\\) given that \\(X+Y=n\\).<br><i>Solution</i><br>Start with calculating the <b>pmf</b> of the <b>rv</b> \\(Z:=X+Y\\): \\[\\begin{aligned}p_Z(n)&=\\sum\\nolimits_{k=0}^np_{X,Y}(k,n-k)=\\sum\\nolimits_{k=0}^np_X(k)p_Y(n-k)\\\\ &=e^{-(\\lambda_1+\\lambda_2)}\\sum\\nolimits_{k=0}^n\\frac{\\lambda_1^k\\lambda_2^{n-k}}{k!(n-k)!}=\\frac{(\\lambda_1+\\lambda_2)^n}{n!}e^{-(\\lambda_1+\\lambda_2)}\\end{aligned}\\] Thus \\(Z\\) has a Poisson distribution with parameter \\(\\lambda_1+\\lambda_2\\), and \\[\\begin{aligned}p_{X|Z}(k\\mid n)&=\\frac{p_{X,Z}(k,n)}{p_Z(n)}=\\frac{p_{X,Y}(k,n-k)}{p_Z(n)}\\\\ &=\\frac{n!}{k!(n-k)!}\\frac{\\lambda_1^k\\lambda_2^{n-k}}{(\\lambda_1+\\lambda_2)^n}=\\binom{n}{k}p^k(1-p)^{n-k}\\end{aligned}\\] this is a binomial distr. with parameters \\(n\\) and \\(p=\\lambda_1/(\\lambda_1+\\lambda_2)\\)"
       },
       {
        "lecture": "L6",
        "page": 48,
-       "text": "Continuous: \\(f_{X|Y}(x\\mid y)=y^{-1}\\) for \\(x\\in(0,y)\\), so \\(X\\mid Y=y\\) is \\(\\mathscr U(0,y)\\); \\(f_{Y|X}(y\\mid x)=\\lambda e^{-\\lambda(y-x)}\\) — shifted exponential (definition \\(f_{X|Y}=f_{X,Y}/f_Y\\): L6 p47)"
+       "text": "<b>Let \\(X_1\\) and \\(X_2\\) be independent with distribution \\(\\mathscr E(\\lambda)\\)</b><br>• Take \\(X=X_1\\) and \\(Y=X_1+X_2\\);<br>• then \\(f_{X,Y}(x,y)=\\lambda^2e^{-\\lambda y}\\) on the set \\(0 < x < y\\);<br>• \\(f_Y(y)=\\int_0^yf_{X,Y}(x,y)\\,dx=\\lambda^2ye^{-\\lambda y}\\);<br>• i.e., \\(Y\\) has the <b>Gamma</b> distribution \\(\\Gamma(2,\\lambda)\\);<br>• now \\(f_{X|Y}(x\\mid y)=y^{-1}\\quad\\text{for}\\quad x\\in(0,y)\\), so that \\(X\\mid Y=y\\) is a uniform distribution \\(\\mathscr U(0,y)\\)<br>• clearly, \\(X\\sim\\mathscr E(\\lambda)\\), so that \\(f_{Y|X}(y\\mid x)=\\lambda e^{-\\lambda(y-x)}\\)<br>• the distribution of \\(Y\\mid X=x\\) is <b>shifted exponential</b><br>i.e., \\(Y-x\\mid X=x\\sim\\mathscr E(\\lambda)\\)<br>• In fact, \\(Z:=Y-X\\) and \\(X\\) are independent, so that \\((Y-x\\mid X=x)\\sim(Z\\mid X=x)\\sim Z\\)"
       }
      ],
      "tips": [],
-     "practice": [],
-     "defs": [],
-     "notes": []
+     "practice": [
+      {
+       "kind": "source",
+       "source": "col2-2022",
+       "label": "New problems, Problem 2 (c)",
+       "text": "Assume that \\(X\\) has a Poisson distribution \\(\\mathscr P(\\lambda)\\) and that, conditioned on \\(\\{X=k\\}\\), a <b>r.v.</b> \\(Y\\) is binomially distributed \\(\\mathscr B(k,p)\\).<br>(c) find the conditional distribution of \\(X\\) given the event \\(\\{Y=n\\}\\).<br>Hint: in (c), you may start with \\(\\mathsf P(X=k\\mid Y=n)=\\mathsf P(X-Y=k-n\\mid Y=n)\\) and use part (b)",
+       "sourceTitle": "Colloquium 2 problem list (2022)"
+      },
+      {
+       "kind": "source",
+       "source": "ps5-2025",
+       "label": "Problem 2 (e)–(f)",
+       "text": "An urn contains 10 balls numbered 1 to 10. Two balls are sampled in turn without replacement and their numbers are denoted as \\(X_1\\) and \\(X_2\\) respectively. Let \\(Y\\) be the minimum of \\(X_1\\) and \\(X_2\\).<br>(e) Find the conditional distribution of \\(X_1\\) given that \\(Y=y\\).<br>Hint: the case \\(X_1=y\\) is special<br>(f) Find expectation and variance of \\(X_1\\) given that \\(Y=y\\).",
+       "sourceTitle": "Problem set 5 (seminar 5, 2025)"
+      },
+      {
+       "kind": "source",
+       "source": "ps6-2026",
+       "label": "Problem 8 (e)",
+       "text": "Random variables \\(X\\) and \\(Y\\) are distributed according to the joint PDF \\[f_{X,Y}(x,y)=\\begin{cases}ax,&\\text{if }1\\le x\\le2\\text{ and }0\\le y\\le x,\\\\0,&\\text{otherwise}\\end{cases}\\]<br>(e) Determine the conditional expectation of \\(X\\) given that \\(Y=3/2\\).",
+       "sourceTitle": "Problem set 6 (seminar 6, 2026)"
+      },
+      {
+       "kind": "source",
+       "source": "ps4-2026",
+       "label": "Problem 8 (c)",
+       "text": "You roll two fair dice, and they show \\(X\\) and \\(Y\\), respectively. Let \\(U=\\min\\{X,Y\\}\\), \\(V=\\max\\{X,Y\\}\\).<br>(c) Find the conditional p.m.f. of the <b>r.v.</b> \\(X\\mid U=u\\) and \\(Y\\mid V=v\\).",
+       "sourceTitle": "Problem set 4 (seminar 4, 2026)"
+      },
+      {
+       "kind": "source",
+       "source": "ps4-2026",
+       "label": "Problem 6 (c)",
+       "text": "When coin \\(A\\) is flipped, it lands on Heads with probability 0.4; when coin \\(B\\) is flipped, it lands on Heads with probability 0.6. One of these coins is randomly chosen and flipped 10 times; let \\(X\\) denote the total number of Heads.<br>(c) Given that the first of these ten flips lands Heads, what is the conditional distribution of the total number of Heads? (Hint: condition on the coin chosen)",
+       "sourceTitle": "Problem set 4 (seminar 4, 2026)"
+      },
+      {
+       "kind": "source",
+       "source": "ps6-2026",
+       "label": "Problem 6 (e)–(f)",
+       "text": "The joint probability density function of random variables \\(X\\) and \\(Y\\) is given by the formula \\[f_{X,Y}(x,y)=\\begin{cases}a,&x,y>0,x+y<1\\\\0,&\\text{otherwise}\\end{cases}\\]<br>(e) Calculate the probability density function \\(f_{X|Y}(x\\mid0.5)\\) of \\(X\\) given that \\(Y=0.5\\)<br>(f) Find the conditional expectation \\(\\mathsf E(X\\mid Y=0.5)\\)",
+       "sourceTitle": "Problem set 6 (seminar 6, 2026)"
+      },
+      {
+       "kind": "source",
+       "source": "col2-2022",
+       "label": "New problems, Problem 1 (b)",
+       "text": "A fair die is rolled \\(n\\) times. Let \\(X_k\\) denote the number of rolls that give \\(k\\) points, \\(k=1,\\dots,6\\). Find<br>(b) the conditional distribution of \\(X_j\\) given that \\(\\{X_k=m\\}\\) \\((k\\ne j)\\); is it any of the standard distributions? If so, can you give an explanation for that?",
+       "sourceTitle": "Colloquium 2 problem list (2022)"
+      }
+     ],
+     "defs": [
+      17
+     ],
+     "notes": [
+      "topic-3",
+      "topic-10",
+      "topic-12"
+     ]
     },
     {
      "id": "c-transform",
@@ -1183,47 +2435,101 @@ const MIDTERM_PREP = {
        "kind": "Formula",
        "lecture": "L6",
        "page": 40,
-       "text": "c.d.f. method: \\(Y=aX+b\\), \\(a>0\\): \\(F_Y(y)=F_X((y-b)/a)\\), \\(f_Y(y)=\\frac1af_X((y-b)/a)\\); increasing \\(g\\): \\(F_Y(y)=F_X(g^{-1}(y))\\), \\(f_Y(y)=(g^{-1})'(y)f_X(g^{-1}(y))\\). Example: \\(X\\sim\\mathscr U(0,1)\\), \\(Y=-\\ln X\\Rightarrow Y\\sim\\mathscr E(1)\\)"
+       "text": "<b>Question:</b><br>If \\(Y=g(X)\\) for some function \\(g\\), what is the distribution of \\(Y\\)?<br><b>\\(Y=aX+b\\) for \\(a>0\\Longrightarrow\\)</b>\\[F_Y(y)=\\mathsf P(Y\\le y)=\\mathsf P(aX+b\\le y)=\\mathsf P(X\\le(y-b)/a)=F_X((y-b)/a)\\]and the <b>p.d.f.</b> of \\(Y\\) is \\[f_Y(y)=F_Y'(y)=\\tfrac1aF_X'((y-b)/a)=\\tfrac1af_X((y-b)/a)\\]<b>More generally, if \\(Y=g(X)\\) for an increasing function \\(g\\), then</b>\\[F_Y(y)=\\mathsf P(Y\\le y)=\\mathsf P(g(X)\\le y)=\\mathsf P(X\\le g^{-1}(y))=F_X(g^{-1}(y))\\]and the <b>p.d.f.</b> of \\(Y\\) is \\[f_Y(y)=F_Y'(y)=(g^{-1})'(y)f_X(g^{-1}(y))\\]<b>Example</b><br>If \\(X\\sim\\mathscr U(0,1)\\) and \\(Y=-\\ln X\\), then \\(Y\\sim\\mathscr E(1)\\)"
       },
       {
        "kind": "Formula",
        "lecture": "L6",
        "page": 43,
-       "text": "Sum: \\(f_{X_1+X_2}(y)=\\int_{\\mathbb R}f_{X_1}(y-t)f_{X_2}(t)\\,dt\\) for independent \\(X_1,X_2\\) (convolution); discrete (L4 p43): \\(p_{X+Y}(n)=\\sum_{k=0}^np_X(k)p_Y(n-k)\\)"
+       "text": "If \\(X_1\\) and \\(X_2\\) are independent, then we get the <b>convolution</b> of \\(f_{X_1}\\) and \\(f_{X_2}\\): \\[f_{X_1+X_2}(y)=\\int_{\\mathbb R}f_{X_1}(y-t)f_{X_2}(t)\\,dt=\\int_{\\mathbb R}f_{X_1}(t)f_{X_2}(y-t)\\,dt\\]"
       },
       {
        "kind": "Formula",
        "lecture": "L6",
        "page": 24,
-       "text": "Affine change of variable: \\(Y=\\mu+\\sigma Z\\), \\(F_Y(t)=\\mathsf P(Z\\le(t-\\mu)/\\sigma)=F_Z\\big(\\frac{t-\\mu}\\sigma\\big)=\\Phi\\big(\\frac{t-\\mu}\\sigma\\big)\\), \\(f_Y(t)=\\frac1\\sigma\\phi\\big(\\frac{t-\\mu}\\sigma\\big)\\)"
+       "text": "the density of \\(Y\\): \\[F_Y(t)=\\mathsf P(Y\\le t)=\\mathsf P(Z\\le(t-\\mu)/\\sigma)=F_Z\\big(\\tfrac{t-\\mu}\\sigma\\big),\\]so that \\[F_Y(t)=\\Phi\\Big(\\tfrac{t-\\mu}\\sigma\\Big)\\]and \\[f_Y(t)=F_Y'(t)=\\frac1\\sigma\\phi\\big(\\tfrac{t-\\mu}\\sigma\\big),\\]i.e., \\[f_Y(t)=\\frac1{\\sqrt{2\\pi}\\sigma}\\exp\\Big\\{-\\frac{(t-\\mu)^2}{2\\sigma^2}\\Big\\}.\\]"
       }
      ],
      "lectureExamples": [
       {
        "lecture": "L6",
        "page": 42,
-       "text": "If \\(X\\sim\\mathscr E(1)\\) and \\(Y=e^{-X}\\), then \\(f_Y(y)=\\frac1yf_X(-\\log y)=\\frac1ye^{\\log y}=1\\), \\(y=e^{-x}\\in(0,1)\\); affine map \\(Y_1=X_1+X_2\\), \\(Y_2=X_1-X_2\\): \\(f_{\\mathbf Y}(\\mathbf y)=\\frac12f_{\\mathbf X}\\big(\\frac{y_1+y_2}2,\\frac{y_1-y_2}2\\big)\\)"
+       "text": "<b>Scalar case: \\(Y=g(X)\\)</b>\\[f_Y(y)=f_X\\big(g^{-1}(y)\\big)\\cdot|(g^{-1})'(y)|=f_X\\big(g^{-1}(y)\\big)/|g'\\big(g^{-1}(y)\\big)|\\]If \\(X\\sim\\mathscr E(1)\\) and \\(Y=e^{-X}\\), then \\[f_Y(y)=\\tfrac1yf_X(-\\log y)=\\tfrac1ye^{\\log y}=1,\\qquad y=e^{-x}\\in(0,1)\\]<b>Affine transformation \\(\\mathbf g(\\mathbf x)=A\\mathbf x+\\mathbf b\\)</b><br>\\(J_{\\mathbf g}=\\det A\\) and \\(J_{\\mathbf g^{-1}}=\\det(A^{-1})=1/\\det A\\), so that \\[f_{\\mathbf Y}(\\mathbf y)=|\\det A|^{-1}f_{\\mathbf X}\\big(A^{-1}(\\mathbf y-\\mathbf b)\\big)\\]For example, \\(Y_1=X_1+X_2\\) and \\(Y_2=X_1-X_2\\) is the mapping \\[\\begin{pmatrix}Y_1\\\\Y_2\\end{pmatrix}=\\begin{pmatrix}1&1\\\\1&-1\\end{pmatrix}\\begin{pmatrix}X_1\\\\X_2\\end{pmatrix},\\qquad A^{-1}=\\frac12\\begin{pmatrix}1&1\\\\1&-1\\end{pmatrix}\\]thus \\[f_{\\mathbf Y}(\\mathbf y)=\\tfrac12f_{\\mathbf X}\\Big(\\tfrac{y_1+y_2}2,\\tfrac{y_1-y_2}2\\Big)\\]"
       },
       {
        "lecture": "L5",
        "page": 32,
-       "text": "Via generating functions (L5 p30, p32): \\(\\mathscr B(n,p)+\\mathscr B(m,p)=\\mathscr B(n+m,p)\\); \\(\\mathscr P(\\lambda_1)+\\mathscr P(\\lambda_2)=\\mathscr P(\\lambda_1+\\lambda_2)\\) for independent summands"
+       "text": "<b>Corollary</b><br><i>\\(X\\sim\\mathscr B(n,p)\\) and \\(Y\\sim\\mathscr B(m,p)\\) are independent, then \\(X+Y\\sim\\mathscr B(n+m,p)\\)</i><br><b>Corollary</b><br><i>If \\(X\\sim\\mathscr P(\\lambda_1)\\) and \\(Y\\sim\\mathscr P(\\lambda_2)\\) are independent, then \\(X+Y\\sim\\mathscr P(\\lambda_1+\\lambda_2)\\)</i>"
       },
       {
        "lecture": "L6",
        "page": 48,
-       "text": "Via the joint density: for independent \\(X_1,X_2\\sim\\mathscr E(\\lambda)\\), \\(Y=X_1+X_2\\) has \\(f_Y(y)=\\int_0^yf_{X,Y}(x,y)\\,dx=\\lambda^2ye^{-\\lambda y}\\), i.e. the Gamma distribution \\(\\Gamma(2,\\lambda)\\)"
+       "text": "<b>Let \\(X_1\\) and \\(X_2\\) be independent with distribution \\(\\mathscr E(\\lambda)\\)</b><br>• Take \\(X=X_1\\) and \\(Y=X_1+X_2\\);<br>• then \\(f_{X,Y}(x,y)=\\lambda^2e^{-\\lambda y}\\) on the set \\(0 < x < y\\);<br>• \\(f_Y(y)=\\int_0^yf_{X,Y}(x,y)\\,dx=\\lambda^2ye^{-\\lambda y}\\);<br>• i.e., \\(Y\\) has the <b>Gamma</b> distribution \\(\\Gamma(2,\\lambda)\\);<br>• now \\(f_{X|Y}(x\\mid y)=y^{-1}\\quad\\text{for}\\quad x\\in(0,y)\\), so that \\(X\\mid Y=y\\) is a uniform distribution \\(\\mathscr U(0,y)\\)<br>• clearly, \\(X\\sim\\mathscr E(\\lambda)\\), so that \\(f_{Y|X}(y\\mid x)=\\lambda e^{-\\lambda(y-x)}\\)<br>• the distribution of \\(Y\\mid X=x\\) is <b>shifted exponential</b><br>i.e., \\(Y-x\\mid X=x\\sim\\mathscr E(\\lambda)\\)<br>• In fact, \\(Z:=Y-X\\) and \\(X\\) are independent, so that \\((Y-x\\mid X=x)\\sim(Z\\mid X=x)\\sim Z\\)"
       },
       {
        "lecture": "L6",
        "page": 13,
-       "text": "Scaling a density (triangle): \\(Y:=\\frac1hX\\); then \\(f_Y(y)=hf_X(hy)=2(1-y)\\) for \\(y\\in(0,1)\\) and zero otherwise; \\(\\mathsf E(Y)=\\int_0^12y(1-y)\\,dy=\\frac13=\\frac1h\\mathsf E(X)\\)"
+       "text": "<b>Example (Triangle)</b><br>Set \\(Y:=\\tfrac1hX\\); then \\(f_Y(y)=hf_X(hy)=2(1-y)\\) for \\(y\\in(0,1)\\) and zero otherwise; \\[\\mathsf E(Y)=\\int_0^12y(1-y)\\,dy=1-\\tfrac23=\\tfrac13=\\tfrac1h\\mathsf E(X)\\]"
       }
      ],
      "tips": [],
-     "practice": [],
-     "defs": [],
-     "notes": []
+     "practice": [
+      {
+       "kind": "source",
+       "source": "ps6-2026",
+       "label": "Problem 3 (b)–(e)",
+       "text": "Suppose that \\(X\\) and \\(Y\\) have joint probability density function \\[f_{X,Y}(x,y)=\\begin{cases}9e^{-3x-3y}&x\\ge0,y\\ge0;\\\\0&\\text{otherwise}\\end{cases}\\]<br>(b) find the joint distribution of the <b>r.v.</b>’s \\(S:=X+Y\\) and \\(Y\\);<br>(c) find the distribution of \\(S\\)<br>(d) find the joint distribution of the <b>r.v.</b>’s \\(D:=X-Y\\) and \\(Y\\);<br>(e) find the distribution of \\(D\\).<br>Hint: in (b) and (d), use the formula for the <b>p.d.f.</b> of a transformed random vector \\((X\\pm Y,Y)\\)",
+       "sourceTitle": "Problem set 6 (seminar 6, 2026)"
+      },
+      {
+       "kind": "midterm2017",
+       "problem": 4,
+       "part": "c"
+      },
+      {
+       "kind": "midterm2017",
+       "problem": 1,
+       "part": "5"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST6-16"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST6-18"
+      },
+      {
+       "kind": "selftest",
+       "id": "ST6-20"
+      },
+      {
+       "kind": "source",
+       "source": "ps6-2026",
+       "label": "Problem 10",
+       "text": "Romeo and Juliet have a date at a given time, and each, independently, will be late by an amount of time that is exponentially distributed with parameter \\(\\alpha\\). What is the PDF of the difference between their times of arrival?",
+       "sourceTitle": "Problem set 6 (seminar 6, 2026)"
+      },
+      {
+       "kind": "source",
+       "source": "ps6-2026",
+       "label": "Problem 7 (d)",
+       "text": "Let \\(Z\\sim N(0,1)\\), and let \\(X\\) be a random variable independent of \\(Z\\) with \\(P(X=1)=P(X=-1)=\\frac12\\). Define \\(Y=XZ\\).<br>(d) Find \\(P(Z+Y=0)\\) and conclude that \\(Z+Y\\) is not normally distributed, even though \\(Z\\) and \\(Y\\) are each normal. <i>Hint: Write \\(Z+Y=(1+X)Y\\) and consider the two cases \\(X=\\pm1\\).</i>",
+       "sourceTitle": "Problem set 6 (seminar 6, 2026)"
+      }
+     ],
+     "defs": [
+      18,
+      19,
+      20,
+      21
+     ],
+     "notes": [
+      "topic-9",
+      "topic-10",
+      "topic-6",
+      "topic-11"
+     ]
     },
     {
      "id": "c-problems",
@@ -1233,9 +2539,60 @@ const MIDTERM_PREP = {
      "tips": [
       "Not lecture content. Problem sets in the repo: <i>midterm trah/PS-seminar4-2026 (1).pdf</i>, <i>PS-seminar5-2024.pdf</i>, <i>PS-seminar5-2025.pdf</i>, <i>PS-seminar6-2026.pdf</i>; past papers: <i>PrbSt-midterm2-2017.pdf</i>, <i>PS_Col2_2022.pdf</i>. In the app: “Exam problems” (Seminars 4–6, Colloquium 2022, Midterm 2017, with hints and solutions) and “LMS self-tests”."
      ],
-     "practice": [],
-     "defs": [],
-     "notes": []
+     "practice": [
+      {
+       "kind": "midterm2017",
+       "problem": 5,
+       "part": "c"
+      },
+      {
+       "kind": "midterm2017",
+       "problem": 6,
+       "part": "d"
+      },
+      {
+       "kind": "midterm2017",
+       "problem": 3,
+       "part": "d"
+      },
+      {
+       "kind": "source",
+       "source": "ps6-2026",
+       "label": "Problem 5",
+       "text": "Alice and Bob enter simultaneously the grocery shop. Assume that their shopping times are independent <b>r.v.</b>’s \\(X\\) and \\(Y\\) respectively with exponential distribution of mean value 15 minutes.<br>(a) What is the distribution of the <b>r.v.</b> \\(M:=\\min(X,Y)\\) for the smaller of the two shopping times? What is the expected value for the smaller shopping time?<br>(b) What is the distribution of the time \\(W:=|X-Y|\\) that the first to finish shopping will wait for his/her friend?<br>(c) Check that \\(\\mathsf E(M)+\\mathsf E(W)\\) is larger than 15 min; is not there any contradiction there?<br>(d) Justify the strong memorylessness property: given that Alice is the second to finish her shopping, the difference \\(X-Y\\) has the same distribution as \\(X\\).",
+       "sourceTitle": "Problem set 6 (seminar 6, 2026)"
+      },
+      {
+       "kind": "source",
+       "source": "ps4-2026",
+       "label": "Problem 4",
+       "text": "A communications channel transmits the digits 0 and 1. However, due to noise, the digit transmitted is incorrectly received with probability 0.2. Suppose that we want to transmit an important message consisting of \\(n\\) binary digits. To reduce the chance of error, we transmit 00000 instead of 0 and 11111 instead of 1. If the receiver of the message uses the “majority” rule for decoding, what is the probability that<br>(a) the message will be wrong when decoded?<br>(b) at most two binary digits of the original message will be wrongly decoded?<br>(c) what is the most probable number of correctly decoded binary digits?<br>What independence assumptions are you making?",
+       "sourceTitle": "Problem set 4 (seminar 4, 2026)"
+      },
+      {
+       "kind": "source",
+       "source": "ps4-2026",
+       "label": "Problem 7",
+       "text": "Suppose that a biased coin that lands on Heads with probability \\(p\\) is flipped 10 times. Given that a total of 6 Heads results, find the conditional probability that the first 3 outcomes<br>(a) are HTT (meaning that the first flip results in Heads, the second in Tails, and the third in Tails);<br>(b) include precisely \\(k\\) Heads; \\(k=0,1,2,3\\).<br>Assume now that there are 2 Heads in the first three tosses of the coin.<br>(c) What is the conditional probability that there are \\(k\\) Heads in all 10 tosses?<br>(d) What is the most probable number of Heads in all 10 tosses?",
+       "sourceTitle": "Problem set 4 (seminar 4, 2026)"
+      },
+      {
+       "kind": "problem",
+       "id": 24
+      }
+     ],
+     "defs": [
+      4,
+      10,
+      11,
+      17
+     ],
+     "notes": [
+      "topic-1",
+      "topic-8",
+      "topic-10",
+      "topic-12"
+     ]
     }
    ]
   }

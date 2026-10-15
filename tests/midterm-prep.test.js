@@ -57,3 +57,26 @@ test('practice papers: the points of the parts add up to each problem and the to
     }
   }
 });
+
+test('every formula in the checklist and the papers renders with the bundled KaTeX', () => {
+  const katex = require('../vendor/katex/katex.min.js');
+  const strings = [];
+  const walk = v => {
+    if (typeof v === 'string') strings.push(v);
+    else if (Array.isArray(v)) v.forEach(walk);
+    else if (v && typeof v === 'object') Object.values(v).forEach(walk);
+  };
+  walk(prep);
+  walk(papers);
+  const bad = [];
+  let count = 0;
+  for (const s of strings) {
+    for (const m of s.matchAll(/\\\(([\s\S]*?)\\\)|\\\[([\s\S]*?)\\\]/g)) {
+      count++;
+      try { katex.renderToString(m[1] ?? m[2], { throwOnError: true, displayMode: !!m[2], macros: { '\\mbox': '\\text{#1}' } }); }
+      catch (e) { bad.push(`${(m[1] ?? m[2]).slice(0, 50)} → ${e.message.slice(0, 70)}`); }
+    }
+  }
+  assert.ok(count > 500, `${count} formulas found`);
+  assert.deepEqual(bad, []);
+});
