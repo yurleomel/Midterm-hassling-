@@ -481,7 +481,7 @@ window.PS_DATA = {
         "**Linear dependence**: $|\\rho(X, Y)| = 1 \\iff \\exists a \\ne 0, b$ such that $Y = aX + b$ almost surely. If $a > 0, \\rho = 1$; if $a < 0, \\rho = -1$.",
         "**Invariance**: For constants $a > 0, c > 0$: $\\rho(aX+b, cY+d) = \\rho(X, Y)$. If $ac < 0$, sign flips.",
         "**Independence implies $\\rho = 0$**: If $X, Y$ are independent, $\\text{Cov}(X, Y) = 0 \\implies \\rho = 0$.",
-        "**CRUCIAL TRAP: $\\rho = 0 \\centernot\\implies$ independent!**"
+        "**CRUCIAL TRAP: $\\rho = 0 \\nRightarrow$ independent!**"
       ],
       "example": "Let $X \\sim U(-1, 1)$, and $Y = X^2$. Then $E[X] = 0, E[XY] = E[X^3] = 0 \\implies \\text{Cov}(X, Y) = 0 \\implies \\rho = 0$. But $Y$ is completely determined by $X$, so they are strongly dependent!",
       "colloquiumTip": "Colloquium Question 6: Always state Cauchy-Schwarz inequality $E[(U - \\lambda V)^2] \\ge 0$ as the proof that $|\\rho| \\le 1$, and present the $X \\sim U(-1, 1), Y = X^2$ counterexample.",

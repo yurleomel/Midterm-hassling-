@@ -31,3 +31,23 @@ test('every exam problem links to theory that exists (no dead ends)', () => {
   const stale = Object.keys(PS.PROBLEM_THEORY).filter(id => !PS.PROBLEMS_BANK.some(p => String(p.id) === id));
   assert.deepEqual(stale, [], 'no links for problems that are not in the bank');
 });
+
+test('every formula in the colloquium definitions and oral questions renders with the bundled KaTeX', () => {
+  const katex = require('../vendor/katex/katex.min.js');
+  const strings = [];
+  const walk = v => {
+    if (typeof v === 'string') strings.push(v);
+    else if (Array.isArray(v)) v.forEach(walk);
+    else if (v && typeof v === 'object') Object.values(v).forEach(walk);
+  };
+  walk(PS.DEFINITIONS_21);
+  walk(PS.ORAL_QUESTIONS_12);
+  const bad = [];
+  for (const s of strings) {
+    for (const m of s.matchAll(/\$\$([\s\S]+?)\$\$|\$([^$]+?)\$/g)) {
+      try { katex.renderToString(m[1] ?? m[2], { throwOnError: true, displayMode: !!m[1], macros: { '\\mbox': '\\text{#1}' } }); }
+      catch (e) { bad.push(`${(m[1] ?? m[2]).slice(0, 50)} → ${e.message.slice(0, 70)}`); }
+    }
+  }
+  assert.deepEqual(bad, []);
+});
