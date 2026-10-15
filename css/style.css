@@ -781,3 +781,189 @@ html.light .nav-item .mm-nav-clock[data-stage="last"] { color: #be123c; } /* ros
   white-space: nowrap;
 }
 .mm-table th { background-color: rgb(var(--surface-slate-800, 30 41 59) / 0.6); font-weight: 700; }
+   Get ready (js/get-ready.js): the Midterm 2 checklist.
+   Colours mostly come from Tailwind utilities in the markup (remapped
+   for the light theme above). This block holds the geometry and the
+   states utilities cannot express: the "I can do this" box, the filter
+   switch, verbatim quote blocks and our own notes. Light first, then
+   dark; all motion is off under prefers-reduced-motion.
+   ======================================================== */
+
+/* Small buttons share one height, so buttons side by side line up */
+.gr-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  min-height: 2.25rem;
+  padding: 0.375rem 0.875rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+.gr-ref {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+
+/* Links inside a sentence */
+.gr-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 600;
+  color: #4338ca;                                   /* indigo-700: 7.9:1 on white */
+  text-decoration: underline;
+  text-decoration-color: rgb(67 56 202 / 0.35);
+  text-underline-offset: 2px;
+  cursor: pointer;
+  transition: color 0.15s, text-decoration-color 0.15s;
+}
+.gr-link:hover { color: #312e81; text-decoration-color: currentColor; }
+html.dark .gr-link { color: #a5b4fc; text-decoration-color: rgb(165 180 252 / 0.4); }   /* indigo-300 */
+html.dark .gr-link:hover { color: #e0e7ff; text-decoration-color: currentColor; }
+
+/* Item rows: the whole text is the expand control; a ticked item gets a quiet green tint */
+.gr-item { transition: border-color 0.15s, background-color 0.15s; }
+.gr-item.is-ticked { border-color: #a7f3d0; background-color: #f3fef9; }             /* emerald-200 / emerald-50 tint */
+html.dark .gr-item.is-ticked { border-color: rgb(16 185 129 / 0.45); background-color: #0f2431; }
+.gr-item.nav-landed { border-radius: 0.75rem; }
+.gr-open:hover { background-color: rgb(15 23 42 / 0.04); }
+html.dark .gr-open:hover { background-color: rgb(255 255 255 / 0.05); }
+.gr-chevron { display: inline-flex; transition: transform 0.2s; }
+.gr-item.is-open .gr-chevron { transform: rotate(180deg); }
+
+/* "I can do this": a 22px box in a 36px tap target. The tick is drawn always and shown by aria-checked,
+   so a re-sync only flips the attribute. Unticked outline slate-500: 4.8:1 on white, 3.7:1 on the dark card. */
+.gr-check {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+.gr-box {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.375rem;
+  height: 1.375rem;
+  border: 2px solid #64748b;
+  border-radius: 0.375rem;
+  background: #ffffff;
+  color: #ffffff;
+  font-size: 0.875rem;
+  transition: background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+.gr-box .lucide-icon { opacity: 0; stroke-width: 3; }
+.gr-check:hover .gr-box, .gr-can:hover .gr-box { border-color: #4f46e5; box-shadow: 0 0 0 3px rgb(99 102 241 / 0.18); }
+[aria-checked="true"] > .gr-box { background: #047857; border-color: #047857; }              /* emerald-700: white tick 5.5:1 */
+[aria-checked="true"] > .gr-box .lucide-icon { opacity: 1; }
+.gr-check[aria-checked="true"]:hover .gr-box, .gr-can[aria-checked="true"]:hover .gr-box { background: #065f46; border-color: #065f46; }
+html.dark :not([aria-checked="true"]) > .gr-box { background: transparent; }
+html.dark :is(.gr-check, .gr-can):hover .gr-box { border-color: #818cf8; box-shadow: 0 0 0 3px rgb(129 140 248 / 0.22); }
+html.dark :is(.gr-check, .gr-can)[aria-checked="true"]:hover .gr-box { background: #059669; border-color: #059669; }
+
+/* The same tick at the end of an open item, as a labelled button */
+.gr-can .gr-box { width: 1rem; height: 1rem; border-width: 1.5px; border-radius: 0.25rem; font-size: 0.625rem; }
+.gr-can[aria-checked="true"] { border-color: #6ee7b7; background-color: #ecfdf5; color: #047857; }
+html.dark .gr-can[aria-checked="true"] { border-color: #059669; background-color: rgb(6 78 59 / 0.35); color: #6ee7b7; }
+
+/* "Only what I haven't ticked": a switch. Track off slate-500 (4.4:1 on the light page, 4.2:1 on the dark one) */
+.gr-track {
+  position: relative;
+  flex-shrink: 0;
+  display: inline-block;
+  width: 2rem;
+  height: 1.125rem;
+  border-radius: 9999px;
+  background: #64748b;
+  transition: background-color 0.15s;
+}
+.gr-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 9999px;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.3);
+  transition: transform 0.15s;
+}
+.gr-switch[aria-checked="true"] .gr-track { background: #4f46e5; }
+.gr-switch[aria-checked="true"] .gr-knob { transform: translateX(0.875rem); }
+.gr-switch:hover { color: #0f172a; }
+.gr-switch:hover .gr-track { background: #475569; }
+.gr-switch[aria-checked="true"]:hover .gr-track { background: #4338ca; }
+html.dark .gr-switch:hover { color: #f1f5f9; }
+html.dark .gr-switch:hover .gr-track { background: #94a3b8; }
+html.dark .gr-switch[aria-checked="true"] .gr-track { background: #6366f1; }
+html.dark .gr-switch[aria-checked="true"]:hover .gr-track { background: #818cf8; }
+
+/* Verbatim quotes: a bar on the left (lecture slides indigo, problem sets and sheets emerald) and a citation.
+   Long formulas scroll inside the quote instead of widening the page on phones. */
+.gr-quote {
+  padding: 0.625rem 0.875rem 0.625rem 1rem;
+  border-left: 3px solid #6366f1;
+  border-radius: 0.25rem 0.75rem 0.75rem 0.25rem;
+  background: #f8fafc;
+}
+html.dark .gr-quote { background: rgb(2 6 23 / 0.45); }
+.gr-quote-source { border-left-color: #10b981; }
+.gr-quote-text, .gr-scroll { overflow-x: auto; overflow-y: hidden; overflow-wrap: break-word; padding-bottom: 2px; }
+.gr-kind {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 0.4375rem;
+  border-radius: 0.375rem;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.125rem;
+}
+.gr-extra {
+  display: inline-block;
+  padding: 0 0.3125rem;
+  border-radius: 0.25rem;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 14px;
+  vertical-align: 1px;
+}
+
+/* Our own words (tips, the formula-sheet callout): dashed amber, never the quote style */
+.gr-ours { border: 1px dashed #f59e0b; background: #fffbeb; }
+html.dark .gr-ours { border-color: rgb(217 119 6 / 0.6); background: rgb(69 26 3 / 0.3); }
+/* Our marks inside a quote ("(sic: …)", pointers to other slides): same amber family, text unchanged */
+.gr-ed { padding: 0 0.2em; border-radius: 0.25rem; background: rgb(245 158 11 / 0.14); color: #92400e; cursor: help; }
+html.dark .gr-ed { background: rgb(245 158 11 / 0.14); color: #fcd34d; }
+
+/* Progress bar and the sheet's closing line */
+.gr-bar > span { background: #6366f1; transition: width 0.5s ease, background-color 0.3s; }
+.gr-bar > span.is-done { background: #10b981; }
+.gr-done { animation: gr-pop 0.5s cubic-bezier(0.3, 1.4, 0.5, 1) both; }
+@keyframes gr-pop { from { opacity: 0; transform: translateY(4px) scale(0.98); } to { opacity: 1; transform: none; } }
+
+:is(.gr-check, .gr-open, .gr-switch, .gr-btn, .gr-ref, .gr-chip, .gr-link):focus-visible { outline: 2px solid #4f46e5; outline-offset: 2px; }
+html.dark :is(.gr-check, .gr-open, .gr-switch, .gr-btn, .gr-ref, .gr-chip, .gr-link):focus-visible { outline-color: #818cf8; }
+
+@media (prefers-reduced-motion: reduce) {
+  .gr-done { animation: none; }
+  .gr-item, .gr-chevron, .gr-box, .gr-track, .gr-knob, .gr-bar > span { transition: none; }
+}
