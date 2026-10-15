@@ -38,6 +38,7 @@ class AppController {
     window.userProfile?.renderExamScheduleAndGrades?.();
     window.geminiMentor?.updateKeyStatusUI();
     this.renderAllMath();
+    this.setupRouting(); // last: open the section / item named in the address
   }
 
   setupTheme() {
@@ -96,8 +97,9 @@ class AppController {
     if (show) sidebar.querySelector('.nav-item.tab-active')?.focus({ preventScroll: true });
   }
 
-  switchTab(tabId) {
+  switchTab(tabId, { fromRoute = false } = {}) {
     this.currentTab = tabId;
+    if (!fromRoute) this.setRoute(tabId);
 
     // Toggle active tab buttons
     document.querySelectorAll('[data-tab-target]').forEach(btn => {
@@ -242,102 +244,196 @@ class AppController {
     this.renderDashboardScheduleOnly();
   }
 
+  // --- STUDY PLAN: every task links to where it is done and checks off from the real result ---
   renderDashboardScheduleOnly() {
-    const roadmapContainer = document.getElementById('dashboard-schedule-list');
-    if (!roadmapContainer || !window.PS_DATA?.SCHEDULE_DAYS) return;
+    const host = document.getElementById('dashboard-schedule-list');
+    const days = window.PS_DATA?.SCHEDULE_DAYS;
+    if (!host || !days || typeof StudyPlan === 'undefined') return;
 
-    const daysCompleted = window.quizManager?.readinessState?.daysCompleted || {};
-    const defScores = window.quizManager?.readinessState?.definitionsScores || {};
-    const solvedTests = window.quizManager?.getSolvedTopicTestsCount() || 0;
-    const solvedProbs = window.quizManager?.getSolvedProblemsCount() || 0;
+    const ctx = StudyPlan.contextFromApp();
+    const dates = StudyPlan.dayDates(StudyPlan.midtermDate(), days.map(d => d.day));
+    const { state, focus } = StudyPlan.timeline(dates, StudyPlan.dateKey(new Date()));
+    if (!this.planOpenDays) this.planOpenDays = new Set([focus]);
+    const esc = v => String(v ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const dateLabel = key => (key ? new Date(`${key}T12:00`).toLocaleDateString('uk-UA', { weekday: 'short', day: 'numeric', month: 'short' }) : '');
 
-    roadmapContainer.innerHTML = window.PS_DATA.SCHEDULE_DAYS.map(day => {
-      const isCompleted = daysCompleted[day.day] || false;
-      const isToday = day.day === 1;
+    host.innerHTML = days.map(day => {
+      const key = dates[day.day];
+      const statuses = day.tasks.map(t => StudyPlan.status(t, ctx, key));
+      const doneCount = statuses.filter(st => st.done).length;
+      const allDone = doneCount === day.tasks.length;
+      const when = state[day.day];
+      const open = this.planOpenDays.has(day.day);
+      const badge = allDone
+        ? `<span class="plan-badge bg-emerald-600 text-white">${icon('check')} Виконано</span>`
+        : when === 'today' ? `<span class="plan-badge bg-indigo-600 text-white">${icon('zap')} Сьогодні</span>`
+        : when === 'past' ? `<span class="plan-badge bg-slate-800 text-slate-400">Минув</span>`
+        : `<span class="plan-badge bg-slate-800 text-slate-300">День ${day.day}</span>`;
+
+      const tasks = day.tasks.map((task, i) => {
+        const link = StudyPlan.linkFor(task);
+        const st = statuses[i];
+        const manual = StudyPlan.isManual(link);
+        const mark = manual
+          ? `<button class="plan-check ${st.done ? 'is-checked' : ''}" role="checkbox" aria-checked="${st.done}" data-plan-check="${task.id}" title="${st.done ? 'Зняти позначку' : 'Позначити виконаним'}">${st.done ? icon('check') : ''}</button>`
+          : `<span class="plan-dot ${st.done ? 'is-done' : ''}" title="Відмічається автоматично за результатом">${st.done ? icon('check') : ''}</span>`;
+        const progress = st.need ? `<span class="plan-progress ${st.done ? 'text-emerald-400' : 'text-slate-400'}">${st.have}/${st.need}</span>`
+          : st.left ? `<span class="plan-progress text-rose-400">${st.left}</span>` : '';
+        return `
+          <div class="plan-task">
+            ${mark}
+            <button class="plan-open" data-plan-open="${task.id}">
+              <span class="plan-text ${st.done ? 'is-done' : ''}">${esc(task.text)}</span>
+              <span class="plan-link">${esc(StudyPlan.linkLabel(link))} ${icon('arrow-right')}</span>
+            </button>
+            ${progress}
+          </div>`;
+      }).join('');
 
       return `
-        <div class="day-card p-5 rounded-2xl border ${
-          isCompleted 
-            ? 'border-emerald-500/50 bg-emerald-950/20 shadow-emerald-500/10' 
-            : isToday 
-              ? 'border-indigo-500 bg-indigo-950/20 shadow-indigo-500/10' 
-              : 'border-slate-800 bg-slate-900/60'
-        } shadow-lg mb-5 transition duration-200">
-          <div class="flex flex-col md:flex-row md:items-center justify-between pb-3 border-b border-slate-800/80 mb-3 gap-2">
-            <div>
-              <div class="flex items-center gap-2">
-                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold ${
-                  isCompleted 
-                    ? 'bg-emerald-600 text-white' 
-                    : isToday 
-                      ? 'bg-indigo-600 text-white' 
-                      : 'bg-slate-800 text-slate-300'
-                }">
-                  ${isCompleted ? `${icon('check')} COMPLETED (+2%)` : isToday ? `${icon('zap')} TODAY` : `DAY ${day.day}`}
-                </span>
-                <span class="text-xs text-slate-400">${day.date}</span>
-                <span class="text-[10px] text-indigo-400 font-mono bg-indigo-950/80 px-2 py-0.5 rounded border border-indigo-800">
-                  ${icon('zap')} Auto-Verified
-                </span>
+        <div class="plan-day ${when === 'today' ? 'is-today' : ''} ${allDone ? 'is-done' : ''}" data-plan-day="${day.day}">
+          <button class="plan-day-head" data-plan-toggle="${day.day}" aria-expanded="${open}">
+            ${badge}
+            <span class="text-xs text-slate-400 whitespace-nowrap">${dateLabel(key)}</span>
+            <span class="flex-1 min-w-0 text-sm font-bold text-slate-100 truncate">${esc(day.title)}</span>
+            <span class="text-xs font-semibold tabular-nums ${allDone ? 'text-emerald-400' : 'text-slate-400'}">${doneCount}/${day.tasks.length}</span>
+            <span class="plan-chevron ${open ? 'rotate-180' : ''}">${icon('chevron-down')}</span>
+          </button>
+          ${open ? `
+            <div class="plan-day-body">
+              <p class="text-xs text-slate-400 mb-3 leading-relaxed">${esc(day.description)}</p>
+              <div class="space-y-1">${tasks}</div>
+              <div class="mt-3 p-2.5 rounded-lg bg-slate-950/60 border border-slate-800/80 text-xs text-amber-300/90 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                <span>${icon('flag')} <strong>Мета дня:</strong> ${esc(day.colloquiumGoal)}</span>
+                ${day.day <= StudyPlan.BONUS_DAYS ? `<span class="text-[11px] whitespace-nowrap ${allDone ? 'text-emerald-400 font-bold' : 'text-slate-400'}">${allDone ? `${icon('check')} +2% зараховано` : '+2% до готовності, коли все виконано'}</span>` : ''}
               </div>
-              <h3 class="text-lg font-bold text-slate-100 mt-1">${day.title}</h3>
-            </div>
-            <div class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-800/80 border border-slate-700/80 text-indigo-300">
-              ${icon('target')} ${day.focus}
-            </div>
-          </div>
-          <p class="text-xs text-slate-300 mb-4 leading-relaxed">${day.description}</p>
-          
-          <!-- Non-manual tasks: automatically updated by actual performance -->
-          <div class="space-y-2 mb-4">
-            ${day.tasks.map((task, idx) => {
-              let isTaskDone = false;
-              const studySec = Math.max(window.userProfile?.profile?.studySeconds || 0, window.userProfile?.profile?.totalSeconds || 0);
-              if (day.day === 1) {
-                if (idx === 0) isTaskDone = [1,2,3,4,5].filter(id => (defScores[id]||0) >= 6).length >= 3;
-                if (idx === 1) isTaskDone = solvedTests >= 1;
-                if (idx === 2) isTaskDone = studySec >= 1200;
-              } else if (day.day === 2) {
-                if (idx === 0) isTaskDone = [6,7,8,9,10,11,12].filter(id => (defScores[id]||0) >= 6).length >= 4;
-                if (idx === 1) isTaskDone = solvedProbs >= 3;
-                if (idx === 2) isTaskDone = solvedTests >= 2;
-              } else if (day.day === 3) {
-                if (idx === 0) isTaskDone = [13,14,15,16,17,18,19,20,21].filter(id => (defScores[id]||0) >= 6).length >= 4;
-                if (idx === 1) isTaskDone = solvedProbs >= 6;
-                if (idx === 2) isTaskDone = solvedTests >= 3;
-              } else if (day.day === 4) {
-                if (idx === 0) isTaskDone = solvedTests >= 5;
-                if (idx === 1) isTaskDone = solvedProbs >= 10;
-                if (idx === 2) isTaskDone = studySec >= 3600;
-              } else if (day.day === 5) {
-                if (idx === 0) isTaskDone = solvedTests >= 8;
-                if (idx === 1) isTaskDone = (window.quizManager?.readinessState?.overallPercent || 0) >= 80;
-                if (idx === 2) isTaskDone = solvedProbs >= 15;
-              }
-
-              return `
-                <div class="flex items-center gap-3 p-2.5 rounded-lg bg-slate-850/80 text-xs text-slate-200">
-                  <input type="checkbox" disabled class="task-checkbox mt-0.5 w-4 h-4 rounded text-emerald-600 bg-slate-800 border-slate-700" ${isTaskDone ? 'checked' : ''}>
-                  <span class="${isTaskDone ? 'line-through text-emerald-400 font-medium' : 'text-slate-300'} flex-1">
-                    ${task.text}
-                  </span>
-                  <span class="text-[10px] font-mono ${isTaskDone ? 'text-emerald-400 font-bold' : 'text-slate-500'}">
-                    ${isTaskDone ? `${icon('check')} Achieved` : 'In Progress'}
-                  </span>
-                </div>
-              `;
-            }).join('')}
-          </div>
-
-          <div class="p-3 rounded-lg bg-slate-950/60 border border-slate-800/80 text-xs text-amber-300/90 flex items-center justify-between">
-            <span>${icon('flag')} <strong>Milestone:</strong> ${day.colloquiumGoal}</span>
-            <span class="font-mono text-[11px] ${isCompleted ? 'text-emerald-400 font-bold' : 'text-slate-400'}">
-              ${isCompleted ? `${icon('check')} +2% Bonus Active` : '+2% Readiness Bonus when all tasks achieved'}
-            </span>
-          </div>
-        </div>
-      `;
+            </div>` : ''}
+        </div>`;
     }).join('');
+
+    host.querySelectorAll('[data-plan-toggle]').forEach(btn => btn.addEventListener('click', () => {
+      const n = Number(btn.getAttribute('data-plan-toggle'));
+      if (this.planOpenDays.has(n)) this.planOpenDays.delete(n);
+      else this.planOpenDays.add(n);
+      this.renderDashboardScheduleOnly();
+    }));
+    host.querySelectorAll('[data-plan-open]').forEach(btn => btn.addEventListener('click', () => this.openPlanTask(btn.getAttribute('data-plan-open'))));
+    host.querySelectorAll('[data-plan-check]').forEach(btn => btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-plan-check');
+      const rs = window.quizManager?.readinessState;
+      if (!rs) return;
+      rs.planChecks = { ...(rs.planChecks || {}) };
+      if (rs.planChecks[id]) delete rs.planChecks[id];
+      else rs.planChecks[id] = true;
+      window.quizManager.saveReadiness(); // re-renders the plan and the readiness meter
+    }));
+    this.renderAllMath(host);
+  }
+
+  // Go to the exact place where a plan task is done (first unfinished item of it)
+  openPlanTask(taskId) {
+    const task = (window.PS_DATA?.SCHEDULE_DAYS || []).flatMap(d => d.tasks).find(t => t.id === taskId);
+    if (!task) return;
+    const link = StudyPlan.linkFor(task);
+    const ctx = StudyPlan.contextFromApp();
+    switch (link.kind) {
+      case 'definitions':
+        return this.openDefinition(link.ids.find(id => (ctx.defScores[id] || 0) < StudyPlan.PASS_SCORE) ?? link.ids[0]);
+      case 'problems':
+        return this.openProblem(link.ids.find(id => !ctx.problemsMastered[id]) ?? link.ids[0]);
+      case 'quiz':
+        return this.openQuizTopic(link.topics.find(t => !ctx.topicTests[t]?.solved) ?? link.topics[0]);
+      case 'oral':
+        this.switchTab('colloquium');
+        return this.scrollToTarget('oral-questions-list');
+      case 'drill':
+      case 'ticket':
+        this.switchTab('colloquium');
+        this.setColloquiumMode(link.kind);
+        return this.scrollToTarget('colloquium-modes');
+      case 'exam':
+        this.switchTab('dashboard');
+        return this.scrollToTarget('exam-schedule-grades-card');
+      case 'pomodoro':
+        this.switchTab('dashboard');
+        return this.scrollToTarget('pomodoro-card');
+      case 'mistakes':
+        this.switchTab('dashboard');
+        return this.scrollToTarget('mistakes-card');
+      case 'selftests':
+        return this.switchTab('selftests');
+      case 'formulas':
+        return this.switchTab('formulas');
+      case 'topic':
+        return this.openTopic(link.topic);
+      default:
+    }
+  }
+
+  // Smooth-scroll below the sticky top bar and briefly outline where the user landed
+  scrollToTarget(target) {
+    const el = typeof target === 'string' ? document.getElementById(target) : target;
+    if (!el) return;
+    requestAnimationFrame(() => {
+      const top = el.getBoundingClientRect().top + window.scrollY - 72;
+      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+      el.classList.remove('nav-landed');
+      void el.offsetWidth; // restart the highlight animation
+      el.classList.add('nav-landed');
+      setTimeout(() => el.classList.remove('nav-landed'), 1600);
+    });
+  }
+
+  openDefinition(defId, { fromRoute = false } = {}) {
+    const defs = window.PS_DATA?.DEFINITIONS_21 || [];
+    const index = defs.findIndex(d => d.id === Number(defId));
+    if (index < 0) return this.switchTab('colloquium', { fromRoute });
+    this.switchTab('colloquium', { fromRoute });
+    if (this.colloquiumMode !== 'browse') this.setColloquiumMode('browse');
+    this.flashcardIndex = index;
+    this.isCardFlipped = true;
+    this.renderFlashcard();
+    this.renderAllMath(document.getElementById('flashcard-container'));
+    if (!fromRoute) this.setRoute(`colloquium/def/${defs[index].id}`, { replace: true });
+    this.scrollToTarget('flashcard-container');
+  }
+
+  openQuizTopic(topicId, { fromRoute = false } = {}) {
+    this.switchTab('quizzes', { fromRoute });
+    window.quizManager?.startQuiz(Number(topicId));
+    if (!fromRoute) this.setRoute(`quizzes/${topicId}`, { replace: true });
+  }
+
+  openTopic(topicId, { fromRoute = false } = {}) {
+    this.switchTab('topics', { fromRoute });
+    if (!fromRoute) this.setRoute(`topics/${topicId}`, { replace: true });
+    this.scrollToTarget(`topic-card-${topicId}`);
+  }
+
+  // --- ROUTING: the address mirrors the section (and item), so back/forward, refresh and links work ---
+  // #/dashboard · #/colloquium[/def/3] · #/problems[/7] · #/quizzes[/5] · #/selftests[/ST4-02] · #/topics[/topic-12] · #/formulas
+  setRoute(route, { replace = false } = {}) {
+    const hash = `#/${route}`;
+    if (location.hash === hash) return;
+    try { history[replace ? 'replaceState' : 'pushState'](null, '', hash); } catch (e) {}
+  }
+
+  applyRoute(hash = location.hash) {
+    const [tab, a, b] = hash.replace(/^#\/?/, '').split('/').map(decodeURIComponent);
+    if (!tab || !document.getElementById(`tab-${tab}`)) return false;
+    const opts = { fromRoute: true };
+    if (tab === 'colloquium' && a === 'def' && b) this.openDefinition(b, opts);
+    else if (tab === 'problems' && a) this.openProblem(a, opts);
+    else if (tab === 'quizzes' && a) this.openQuizTopic(a, opts);
+    else if (tab === 'topics' && a) this.openTopic(a, opts);
+    else if (tab === 'selftests' && a) window.selfTestBank?.startTask(a, opts);
+    else this.switchTab(tab, opts);
+    return true;
+  }
+
+  setupRouting() {
+    window.addEventListener('popstate', () => this.applyRoute());
+    if (!this.applyRoute()) this.setRoute(this.currentTab || 'dashboard', { replace: true });
   }
 
   renderColloquiumSection() {
@@ -636,14 +732,13 @@ class AppController {
   }
 
   // Jump to a problem card from elsewhere (e.g. the dashboard mistakes panel)
-  openProblem(probId) {
-    this.switchTab('problems');
+  openProblem(probId, { fromRoute = false } = {}) {
+    this.switchTab('problems', { fromRoute });
     if (!document.getElementById(`prob-card-${probId}`)) {
       document.querySelector('[data-prob-filter="all"]')?.click(); // card is hidden by the active filter
     }
-    requestAnimationFrame(() => {
-      document.getElementById(`prob-card-${probId}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
+    if (!fromRoute) this.setRoute(`problems/${probId}`, { replace: true });
+    this.scrollToTarget(`prob-card-${probId}`);
   }
 
   // --- PROBLEM BANK WITH INTERACTIVE FINAL ANSWER SUBMISSION ---
@@ -814,7 +909,7 @@ class AppController {
       const pct = score !== undefined ? Math.round((score / total) * 100) : null;
 
       return `
-        <div class="topic-note-card p-6 rounded-2xl border ${isSolved ? 'border-emerald-800/80 bg-slate-900/80 shadow-emerald-950/20' : 'border-slate-800 bg-slate-900/60'} mb-6 shadow-xl">
+        <div id="topic-card-${t.id}" class="topic-note-card p-6 rounded-2xl border ${isSolved ? 'border-emerald-800/80 bg-slate-900/80 shadow-emerald-950/20' : 'border-slate-800 bg-slate-900/60'} mb-6 shadow-xl">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
             <h3 class="text-xl font-extrabold text-slate-100">${t.title}</h3>
             ${isSolved ? `

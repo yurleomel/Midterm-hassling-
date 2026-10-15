@@ -83,12 +83,16 @@ class PomodoroTimer {
     if (this.currentMode === 'work') {
       this.stats.sessionsCompleted++;
       this.stats.todaySessions++;
+      const d = new Date();
+      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      this.stats.sessionsByDate = { ...(this.stats.sessionsByDate || {}), [key]: ((this.stats.sessionsByDate || {})[key] || 0) + 1 };
       this.stats.totalMinutesStudied += Math.round(this.modes.work / 60);
       this.saveStats();
 
       // Readiness bonus hook — QuizManager doesn't implement it yet, so only call it when present
       // (calling the missing method threw a TypeError and the session never switched to a break)
       window.quizManager?.recordPomodoroSession?.();
+      window.rewards?.notify('pomodoro'); // rewards: points for a finished focus session (daily cap)
 
       // Switch to break
       if (this.stats.sessionsCompleted % 4 === 0) {
@@ -149,7 +153,7 @@ class PomodoroTimer {
     this.onTick();
     const btn = document.getElementById('pomodoro-toggle-btn');
     if (btn) {
-      const label = this.isRunning ? 'Пауза' : 'Почати фокус';
+      const label = this.isRunning ? 'Pause' : 'Start focus';
       btn.innerHTML = icon(this.isRunning ? 'pause' : 'play');
       btn.classList.toggle('is-running', this.isRunning);
       btn.title = label;

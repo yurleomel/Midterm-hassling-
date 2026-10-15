@@ -5,62 +5,100 @@ const SELFTEST_BANK = {
  "topics": [
   {
    "id": 4,
-   "label": "Тема 4 · Discrete random variables"
+   "label": "Topic 4 · Discrete random variables"
   },
   {
    "id": 5,
-   "label": "Тема 5 · Expectation"
+   "label": "Topic 5 · Expectation"
   },
   {
    "id": 6,
-   "label": "Тема 6 · Continuous random variables"
+   "label": "Topic 6 · Continuous random variables"
   }
  ],
  "types": [
   {
    "id": "rv-definitions",
-   "label": "Означення: в.в. і стандартні дискретні розподіли",
+   "label": "Definitions & standard laws",
+   "about": "Recall what a random variable is and name the standard discrete laws (Bernoulli, binomial, geometric, Poisson) from how they are described.",
    "lecture": "L4 p.10, 23–30",
+   "defs": [
+    1,
+    4,
+    5,
+    6
+   ],
    "topics": [
     4
    ]
   },
   {
    "id": "recognize-from-experiment",
-   "label": "Впізнати розподіл за описом експерименту",
+   "label": "Recognise the distribution",
+   "about": "A short experiment with dice, coins, urns or books is described: decide whether the count or the waiting time is binomial, geometric, Poisson — or none of them.",
    "lecture": "L4 p.25, 27, 30",
+   "defs": [
+    4,
+    5,
+    6
+   ],
    "topics": [
     4
    ]
   },
   {
    "id": "two-counts",
-   "label": "Дві кількості з тих самих випробувань: біноміальні? однаковий розподіл? незалежні?",
+   "label": "Two counts from the same trials",
+   "about": "Two counts are built from the same series of tosses or rolls: tick every statement that holds — each is binomial, they have the same law, they are independent.",
    "lecture": "L4 p.25, 39",
+   "defs": [
+    4,
+    15
+   ],
    "topics": [
     4
    ]
   },
   {
    "id": "pmf-cdf-equality",
-   "label": "pmf, cdf і рівність в.в. (правда / неправда)",
+   "label": "pmf & cdf: true or false",
+   "about": "True/false statements about what a pmf or a cdf determines — for example, the same distribution does not make two random variables equal.",
    "lecture": "L4 p.14, 16–17, 19–21",
+   "defs": [
+    2,
+    3
+   ],
    "topics": [
     4
    ]
   },
   {
    "id": "joint-conditional",
-   "label": "Спільний розподіл: умовна pmf з таблиці",
+   "label": "Conditional pmf from a table",
+   "about": "Read a joint pmf table and compute a conditional probability from it.",
    "lecture": "L4 p.37, 42",
+   "defs": [
+    15,
+    16,
+    17
+   ],
    "topics": [
     4
    ]
   },
   {
    "id": "match-formula",
-   "label": "Зіставити формулу pmf / pdf з розподілом",
+   "label": "Match formula ↔ distribution",
+   "about": "Match each pmf or pdf formula to the distribution it defines.",
    "lecture": "L4 p.25–30, L6 p.17, 21–27",
+   "defs": [
+    4,
+    5,
+    6,
+    9,
+    10,
+    11
+   ],
    "topics": [
     4,
     6
@@ -68,8 +106,13 @@ const SELFTEST_BANK = {
   },
   {
    "id": "moments-compute",
-   "label": "Моменти: E(X²), Var, E(aX+b) — обчислити або «не визначити»",
+   "label": "Compute moments",
+   "about": "From a mean and a variance (or less) compute E(X²), Var(X) or E(aX+b) — or recognise that the data cannot determine it.",
    "lecture": "L5 p.18–19, L6 p.13, 17",
+   "defs": [
+    12,
+    13
+   ],
    "topics": [
     5,
     6
@@ -77,56 +120,92 @@ const SELFTEST_BANK = {
   },
   {
    "id": "variance-covariance",
-   "label": "Дисперсія суми та коваріація",
+   "label": "Variance & covariance",
+   "about": "Variance of a linear combination of independent variables, and when a covariance is 0 or cannot be determined.",
    "lecture": "L5 p.24–25",
+   "defs": [
+    13,
+    14
+   ],
    "topics": [
     5
    ]
   },
   {
    "id": "independence-logic",
-   "label": "Що випливає (і що ні) з незалежності, Cov = 0, однакового розподілу",
+   "label": "What independence implies",
+   "about": "Which statements follow from independence, from Cov = 0 or from identical distribution — and which only look like they do.",
    "lecture": "L5 p.22–26, 32",
+   "defs": [
+    13,
+    14,
+    19
+   ],
    "topics": [
     5
    ]
   },
   {
    "id": "pgf-factorial",
-   "label": "Факторіальні моменти та p.g.f.",
+   "label": "p.g.f. & factorial moments",
+   "about": "Factorial moments and probability generating functions: read moments off G(s) by differentiating.",
    "lecture": "L5 p.18, 28",
+   "defs": [
+    20,
+    12
+   ],
    "topics": [
     5
    ]
   },
   {
    "id": "density",
-   "label": "Щільність: вимоги, нормувальна константа, впізнати розподіл за формулою",
+   "label": "Densities",
+   "about": "When a function is a pdf, how to find its normalising constant, and how to recognise a distribution from the shape of its density.",
    "lecture": "L6 p.6, 8, 17–27",
+   "defs": [
+    7,
+    8
+   ],
    "topics": [
     6
    ]
   },
   {
    "id": "normal-linear",
-   "label": "Нормальний: стандартизація, лінійні перетворення, суми незалежних",
+   "label": "Normal: linear transforms & sums",
+   "about": "Standardise a normal variable, find the law of aX + b, and of sums or differences of independent normals.",
    "lecture": "L6 p.24, 15, 40",
+   "defs": [
+    11,
+    18,
+    19
+   ],
    "topics": [
     6
    ]
   },
   {
    "id": "normal-phi",
-   "label": "Нормальний: ймовірності через Φ",
+   "label": "Normal: probabilities via Φ",
+   "about": "Express normal probabilities through Φ using standardisation and the symmetry Φ(−x) = 1 − Φ(x).",
    "lecture": "L6 p.21, 24",
+   "defs": [
+    11
+   ],
    "topics": [
     6
    ]
   },
   {
    "id": "exponential",
-   "label": "Експоненційний: відсутність пам’яті, масштаб, суми",
+   "label": "Exponential distribution",
+   "about": "Memorylessness, scaling an exponential variable, and why sums of exponentials are not exponential.",
    "lecture": "L6 p.27–28, 48",
+   "defs": [
+    10,
+    19
+   ],
    "topics": [
     6
    ]
