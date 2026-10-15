@@ -24,7 +24,7 @@ python3 server.py
 Open **`http://localhost:8080`**.
 
 ### Tests
-Pure logic (drill queue, ticket picker, self-test grading, rewards points/stickers/shop/merge) and the self-test bank data are covered by Node's built-in test runner — no dependencies:
+Pure logic (drill queue, ticket picker, self-test grading, rewards points/stickers/shop/merge, formula sheet shuffling and grading) and the self-test bank and formula sheet data are covered by Node's built-in test runner — no dependencies:
 ```bash
 node --test tests/*.test.js
 ```
@@ -35,7 +35,7 @@ node tools/ui-audit.mjs                  # both themes, every section and key st
 node tools/ui-audit.mjs --themes light --only quiz,selftest   # quick partial run
 ```
 * It serves a temporary copy of the site with the cloud-sync URL (`CLOUD_SYNC_ENDPOINT` in `js/user.js`) rewritten to an unroutable local port, runs its own headless Chrome with a fresh profile, lets only local + CDN GET requests out, and fails if anything ever tries to reach `amazonaws`. It never touches the real backend.
-* Logs in as guest and walks every sidebar section plus the key states (flashcard, definition drill, exam ticket, hints, filtered problems, quiz feedback, self-test type window and checks of every task format, running Pomodoro, Gemini drawer/key modal, mistakes panel, every tab of the profile & rewards modal and a reward toast, phone drawer).
+* Logs in as guest and walks every sidebar section plus the key states (flashcard, definition drill, exam ticket, hints, filtered problems, quiz feedback, self-test type window and checks of every task format, running Pomodoro, Gemini drawer/key modal, mistakes panel, every tab of the profile & rewards modal and a reward toast, the exam formula sheet card and dialog: study, as handed out without headers, rows drill checked, cell drill, phone drill; phone drawer).
 * Checks every visible text node against its composited background (WCAG AA 4.5:1, 3:1 for large text and for unavailable `disabled` + `cursor-not-allowed` controls, also while hovered), icon-only buttons and form-field outlines (3:1), `cursor: pointer`, a visible hover change, a visible focus indicator, filled buttons that blend into the surface behind them, labels touching/spilling out of buttons, mismatched button heights in a row and horizontal scrolling.
 * Writes `ui-audit-out/report.txt`, `report.json` and screenshots (`ui-audit-out/shots/<theme>/`). Exit code 1 when something is not covered by `tools/ui-audit-allowlist.json` — keep that list short, every entry needs a `reason`.
 
@@ -117,7 +117,7 @@ Tracks your real progress across 4 weighted pillars:
 * **Sidebar grouped by purpose** — Головне (Огляд) · Колоквіум 2 (Означення й усні) · Мідтерм 2 · практика (Задачі з іспитів, Тести за темами, Self-тести LMS) · Довідник (Теорія, Формули). Exam countdowns sit on top of it (click → schedule & grades); sync status, Gemini key and logout at the bottom.
 * **Slim top bar**: logo + current section, then only live widgets — Pomodoro, Readiness (click → Огляд), Gemini mentor, theme, profile.
 * **Phones**: the sidebar becomes a drawer (☰, closes on pick / backdrop / Esc), the Mastery Meter stacks, no horizontal scrolling at 390px. KaTeX's hidden MathML is kept inside `.katex` (`position: relative`), otherwise it widened pages on phones.
-* **Addresses**: the URL mirrors where you are — `#/problems/28`, `#/colloquium/def/3`, `#/quizzes/5`, `#/selftests/ST4-02`, `#/topics/topic-12` — so browser back/forward, refresh and shared links all land in the same place.
+* **Addresses**: the URL mirrors where you are — `#/problems/28`, `#/colloquium/def/3`, `#/quizzes/5`, `#/selftests/ST4-02`, `#/topics/topic-12`, `#/formulas/sheet` — so browser back/forward, refresh and shared links all land in the same place.
 * **Clickable study plan** (dashboard, `js/study-plan.js`): every day-by-day task opens the exact definition / problem / topic test / timer / grade form and checks itself off from the matching result (unmeasurable tasks get a manual tick). Days are dated back from your midterm date, so "Сьогодні" is the real today and opens by default. A day's +2% readiness bonus uses the same "all tasks done" rule.
 
 ### 7. 🌗 Light & Dark Themes
@@ -134,6 +134,16 @@ Tracks your real progress across 4 weighted pillars:
 ### 9. 📐 Master Distribution & Formula Matrix
 * Complete reference table for discrete ($B(1,p), B(n,p), G(p), P(\lambda)$) and continuous ($U(a,b), E(\lambda), N(\mu, \sigma^2), \text{Laplace}$) distributions.
 * Includes Supports, PMF/PDF, Means, Variances, PGFs, MGFs, and key exam pitfalls.
+
+### 9b. Exam formula sheet: comes without labels
+At Midterm 2 you get the printed table of distributions (binomial, Poisson, geometric; uniform, exponential, normal, gamma: p.m.f./p.d.f., m.g.f., mean, variance, plus the gamma function) **without the distribution names**. The card on top of the Formulas tab opens a dialog with three views:
+* **Study**: the sheet as printed, with the labels (both tables, two-line cells, cases as on paper).
+* **As handed out**: the Distribution column is empty; "Also hide the column headers" makes it harder.
+* **Drill**: level 1 *Name the rows* (rows shuffled within each table, never in the printed order; pick every name, Check marks each row and shows its label, Shuffle again) and level 2 *One cell at a time* (one formula: pick its distribution and its column, keep a streak; the Poisson mean and variance are both λ, so either column counts).
+* The best result per level stays in this browser (`localStorage`, key `stathustle_formula_sheet`), not in the synced readiness state.
+* Deep links `#/formulas/sheet`, `#/formulas/sheet-exam`, `#/formulas/sheet-drill`. Other sections call `window.formulaSheet.open({ mode: 'study' | 'exam' | 'drill', level: 'rows' | 'cells', hideHeaders, locked })` and `window.formulaSheet.close()`; it works before the app has initialised, and `locked: true` hides the view switch (the mock midterm's exam sheet).
+* A dialog (Esc, backdrop or X close it; focus moves in and back to the button that opened it; Tab stays inside). On phones it is a bottom sheet and every row becomes a card.
+* Data: `js/formula-sheet-data.js`, a verbatim transcription: change formulas only there. TeX such as `0<p<1` is escaped inside math before it reaches the page, otherwise the browser reads `<p` as a tag. Logic (shuffle, grading, cell picker) is DOM-free in `FormulaSheetLogic`, tested in `tests/formula-sheet.test.js`.
 
 ### 10. 🏅 Points, Stickers & Shop
 * **Points** come only from real learning: the first correct answer to a self-test task, passed topic tests, definitions and oral questions graded 6+, solved problems, finished Pomodoros (8 a day pay), and a small bonus for a streak of study days. Each award is paid once, so repeating something never earns more.
@@ -167,6 +177,8 @@ midterm2/
 │   ├── rewards-art.js    # Avatar, item and sticker inline SVG from shared shapes (DOM-free)
 │   ├── rewards.js        # Rewards logic: points, sticker rules, buy/wear, local⇄cloud merge (DOM-free)
 │   ├── rewards-ui.js     # Dashboard card, Avatar · Shop · Stickers modal, toasts, notify() hooks
+│   ├── formula-sheet-data.js # The Midterm 2 formula sheet, transcribed verbatim (data only)
+│   ├── formula-sheet.js  # Formula sheet dialog: study / as handed out / drill (+ DOM-free FormulaSheetLogic)
 │   └── app.js            # UI controller, routing & event handling
 ├── docs/gamification.md  # Rewards design: principles, points table, state, hooks, adding a module
 ├── tests/                # node --test unit tests for pure logic
