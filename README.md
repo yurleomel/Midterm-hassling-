@@ -107,6 +107,8 @@ Tracks your real progress across 4 weighted pillars:
 * **Sidebar grouped by purpose** — Головне (Огляд) · Колоквіум 2 (Означення й усні) · Мідтерм 2 · практика (Задачі з іспитів, Тести за темами, Self-тести LMS) · Довідник (Теорія, Формули). Exam countdowns sit on top of it (click → schedule & grades); sync status, Gemini key and logout at the bottom.
 * **Slim top bar**: logo + current section, then only live widgets — Pomodoro, Readiness (click → Огляд), Gemini mentor, theme, profile.
 * **Phones**: the sidebar becomes a drawer (☰, closes on pick / backdrop / Esc), the Mastery Meter stacks, no horizontal scrolling at 390px. KaTeX's hidden MathML is kept inside `.katex` (`position: relative`), otherwise it widened pages on phones.
+* **Addresses**: the URL mirrors where you are — `#/problems/28`, `#/colloquium/def/3`, `#/quizzes/5`, `#/selftests/ST4-02`, `#/topics/topic-12` — so browser back/forward, refresh and shared links all land in the same place.
+* **Clickable study plan** (dashboard, `js/study-plan.js`): every day-by-day task opens the exact definition / problem / topic test / timer / grade form and checks itself off from the matching result (unmeasurable tasks get a manual tick). Days are dated back from your midterm date, so "Сьогодні" is the real today and opens by default. A day's +2% readiness bonus uses the same "all tasks done" rule.
 
 ### 7. 🌗 Light & Dark Themes
 * Follows the system theme on first visit; the 🌙/☀️ button in the header switches and remembers the choice.
