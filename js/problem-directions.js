@@ -30,3 +30,30 @@ window.PS_DATA.PROBLEM_DIRECTIONS = {
   41: 'The battery type is unknown — condition on it (law of total probability) for (a) and (b). In (c) don\'t rely on memorylessness: a mixture of exponentials does not have it, so compute the conditional probability by definition.',
   42: 'Normalise with the correct limits ($0 \\le y \\le x \\le 1$), then the marginals with the same limits. The conditional density is the "slice" of the joint density at $y = 0.5$ divided by $f_Y(0.5)$; its support is $x$ from $0.5$ to $1$.'
 };
+
+// Theory behind each problem: colloquium definitions (DEFINITIONS_21 ids) and the topic notes to reread
+window.PS_DATA.PROBLEM_THEORY = {
+  1: { defs: [2, 15, 16], notes: 'topic-3' },
+  2: { defs: [2, 3, 18], notes: 'topic-2' },
+  3: { defs: [4], notes: 'topic-1' },
+  6: { defs: [6], notes: 'topic-1' },
+  7: { defs: [15, 16], notes: 'topic-3' },
+  9: { defs: [12, 13], notes: 'topic-4' },
+  12: { defs: [12, 17], notes: 'topic-4' },
+  14: { defs: [5, 12], notes: 'topic-4' },
+  18: { defs: [16, 13, 14], notes: 'topic-5' },
+  19: { defs: [11, 18], notes: 'topic-9' },
+  20: { defs: [9, 18], notes: 'topic-12' },
+  23: { defs: [10], notes: 'topic-8' },
+  24: { defs: [15, 16, 13], notes: 'topic-10' },
+  25: { defs: [4, 13, 17], notes: 'topic-5' },
+  26: { defs: [6, 4, 17], notes: 'topic-12' },
+  28: { defs: [17], notes: 'topic-12' },
+  32: { defs: [3, 8, 16], notes: 'topic-7' },
+  33: { defs: [3, 12], notes: 'topic-7' },
+  37: { defs: [13, 11, 8], notes: 'topic-8' },
+  39: { defs: [11, 18], notes: 'topic-9' },
+  40: { defs: [6, 20, 19, 17], notes: 'topic-6' },
+  41: { defs: [10, 17], notes: 'topic-8' },
+  42: { defs: [15, 16, 17], notes: 'topic-10' }
+};

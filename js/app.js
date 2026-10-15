@@ -754,6 +754,23 @@ class AppController {
       );
     }
 
+    const esc = v => String(v ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const defName = id => window.PS_DATA.DEFINITIONS_21.find(d => d.id === id)?.name || `Definition ${id}`;
+    const notes = id => window.PS_DATA.TOPICS_NOTES.find(t => t.id === id);
+    const linkCls = 'prob-theory-link inline-flex items-center gap-1 px-2 py-1 rounded-lg border border-slate-700 bg-slate-950/50 hover:border-indigo-500 text-slate-200 cursor-pointer transition';
+    // Definitions and topic notes behind each problem (PROBLEM_THEORY in js/problem-directions.js)
+    const theoryRow = prob => {
+      const t = window.PS_DATA?.PROBLEM_THEORY?.[prob.id];
+      if (!t) return '';
+      const note = notes(t.notes);
+      return `
+        <div class="flex flex-wrap items-center gap-1.5 text-xs">
+          <span class="font-semibold text-slate-400 mr-0.5">${icon('book-open')} Theory:</span>
+          ${t.defs.map(id => `<button type="button" class="${linkCls}" data-def="${id}"><span class="font-bold text-indigo-400">#${id}</span> ${esc(defName(id))}</button>`).join('')}
+          ${note ? `<button type="button" class="${linkCls}" data-notes="${note.id}" title="${esc(note.title)}">${icon('notebook-pen')} Topic ${note.number} notes</button>` : ''}
+        </div>`;
+    };
+
     container.innerHTML = problems.map(prob => {
       const isSolved = window.quizManager?.readinessState?.problemsMastered?.[prob.id] || false;
 
@@ -805,6 +822,7 @@ class AppController {
 
           <!-- Hints open one at a time; the full derivation stays collapsed until asked for -->
           <div class="space-y-3">
+            ${theoryRow(prob)}
             <div id="hint-ladder-${prob.id}">${this.renderHintLadder(prob)}</div>
 
             <details class="text-xs bg-slate-950/80 p-4 rounded-xl border border-indigo-900/50">
@@ -822,6 +840,11 @@ class AppController {
     if (!container.dataset.hintsBound) {
       container.dataset.hintsBound = 'true';
       container.addEventListener('click', (e) => {
+        const theory = e.target.closest('.prob-theory-link');
+        if (theory) {
+          if (theory.dataset.def) return this.openDefinition(Number(theory.dataset.def));
+          return this.openTopic(theory.dataset.notes);
+        }
         const btn = e.target.closest('.hint-next-btn');
         if (!btn) return;
         const pid = parseInt(btn.getAttribute('data-prob-id'), 10);
