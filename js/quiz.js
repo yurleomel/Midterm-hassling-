@@ -26,6 +26,7 @@ class QuizManager {
       problemsMastered: {},    // probId: bool -> remaining % for solving problems
       daysCompleted: {},       // dayNumber: bool -> bonus % per day
       selfTestStats: {},       // LMS self-test taskId: { attempts, correct, solved, ... } -> 1% per topic 80% solved
+      planChecks: {},          // study-plan taskId: true — tasks with nothing to measure, ticked by hand
       overallPercent: 0
     };
   }
@@ -59,6 +60,7 @@ class QuizManager {
       if (!this.readinessState.problemsMastered) this.readinessState.problemsMastered = {};
       if (!this.readinessState.daysCompleted) this.readinessState.daysCompleted = {};
       if (!this.readinessState.selfTestStats) this.readinessState.selfTestStats = {};
+      if (!this.readinessState.planChecks) this.readinessState.planChecks = {};
     } else {
       this.readinessState = defaultState;
     }
@@ -142,30 +144,18 @@ class QuizManager {
     return Object.values(this.readinessState.topicTestsSolved).filter(t => t?.solved).length;
   }
 
-  // --- DAY MILESTONES: Non-manual, verified from actual completed activities ---
+  // --- DAY MILESTONES: a plan day counts once every one of its tasks is done ---
+  // Same rule the dashboard plan shows (js/study-plan.js); only days 1–5 carry the +2% (day 6 is the exam itself)
   evaluateDayMilestones() {
-    const passDefs = this.getPassingDefinitionsCount();
-    const solvedProbs = this.getSolvedProblemsCount();
-    const solvedTests = this.getSolvedTopicTestsCount();
-    const studyHours = (window.userProfile?.profile?.studySeconds || 0) / 3600;
-
-    // Day 1: Defs 1-5 scored >= 6, and at least 1 topic test solved
-    const d1PassedDefs = [1, 2, 3, 4, 5].filter(id => (this.readinessState.definitionsScores[id] || 0) >= 6).length;
-    this.readinessState.daysCompleted[1] = d1PassedDefs >= 3 && solvedTests >= 1;
-
-    // Day 2: Defs 6-12 scored >= 6, and at least 3 problems solved
-    const d2PassedDefs = [6, 7, 8, 9, 10, 11, 12].filter(id => (this.readinessState.definitionsScores[id] || 0) >= 6).length;
-    this.readinessState.daysCompleted[2] = d2PassedDefs >= 4 && solvedProbs >= 3;
-
-    // Day 3 (Colloquium): Defs 13-21 scored >= 6, and at least 6 problems solved
-    const d3PassedDefs = [13, 14, 15, 16, 17, 18, 19, 20, 21].filter(id => (this.readinessState.definitionsScores[id] || 0) >= 6).length;
-    this.readinessState.daysCompleted[3] = d3PassedDefs >= 4 && solvedProbs >= 6;
-
-    // Day 4: At least 4 topic tests solved and 10 problems solved
-    this.readinessState.daysCompleted[4] = solvedTests >= 4 && solvedProbs >= 10;
-
-    // Day 5 (Midterm 2): At least 8 topic tests and 15 problems solved
-    this.readinessState.daysCompleted[5] = solvedTests >= 8 && solvedProbs >= 15;
+    const days = window.PS_DATA?.SCHEDULE_DAYS;
+    if (!days || typeof StudyPlan === 'undefined') return;
+    const ctx = StudyPlan.contextFromApp(this.readinessState);
+    const dates = StudyPlan.dayDates(StudyPlan.midtermDate(), days.map(d => d.day));
+    const done = {};
+    days.filter(d => d.day <= StudyPlan.BONUS_DAYS).forEach(day => {
+      done[day.day] = StudyPlan.dayDone(day, ctx, dates[day.day]);
+    });
+    this.readinessState.daysCompleted = done;
   }
 
   // --- CALCULATION FORMULA (Starts at 0% strictly) ---

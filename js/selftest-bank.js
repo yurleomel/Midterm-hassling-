@@ -204,10 +204,12 @@ class SelfTestBank {
     else this.renderSetup();
   }
 
-  startTask(taskId) {
+  startTask(taskId, { fromRoute = false } = {}) {
     const task = this.bank.tasks.find(t => t.id === taskId);
-    window.app?.switchTab('selftests');
-    if (task) this.start([task]);
+    window.app?.switchTab('selftests', { fromRoute });
+    if (!task) return;
+    this.start([task]);
+    if (!fromRoute) window.app?.setRoute(`selftests/${task.id}`, { replace: true });
   }
 
   get container() {

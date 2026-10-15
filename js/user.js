@@ -446,6 +446,9 @@ class UserProfileManager {
       }
     }
 
+    // Study-plan manual ticks: a task ticked on any device stays ticked
+    merged.readinessState.planChecks = Object.assign({}, lR.planChecks || {}, cR.planChecks || {});
+
     // LMS self-test progress: best of both per task
     merged.readinessState.selfTestStats = typeof SelfTestLogic !== 'undefined'
       ? SelfTestLogic.mergeStats(lR.selfTestStats, cR.selfTestStats)
@@ -652,6 +655,7 @@ class UserProfileManager {
   }
 
   loadExistingUser(userObj) {
+    const prevEmail = this.profile?.email || null;
     this.profile = userObj;
     this.isLoggedIn = true;
     localStorage.setItem(this.sessionKey, userObj.email);
@@ -677,7 +681,9 @@ class UserProfileManager {
       window.app.renderColloquiumSection();
       window.app.renderProblemsSection();
       window.app.renderTopicsSection();
-      window.selfTestBank?.renderSetup(); // drops a drill left open by the previous account
+      // Another account: drop the previous one's open drill. Same account (session restore, first login): keep it
+      if (prevEmail && prevEmail !== userObj.email) window.selfTestBank?.renderSetup();
+      else if (!window.selfTestBank?.session) window.selfTestBank?.renderSetup();
       window.app.renderAllMath();
     }
   }

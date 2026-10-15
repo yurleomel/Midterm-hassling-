@@ -83,6 +83,9 @@ class PomodoroTimer {
     if (this.currentMode === 'work') {
       this.stats.sessionsCompleted++;
       this.stats.todaySessions++;
+      const d = new Date();
+      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      this.stats.sessionsByDate = { ...(this.stats.sessionsByDate || {}), [key]: ((this.stats.sessionsByDate || {})[key] || 0) + 1 };
       this.stats.totalMinutesStudied += Math.round(this.modes.work / 60);
       this.saveStats();
 

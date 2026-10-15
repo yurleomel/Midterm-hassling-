@@ -343,7 +343,7 @@
         </div>
 
         <!-- Card 3: Built-in Pomodoro Focus Station -->
-        <div class="p-6 rounded-2xl border border-slate-800 bg-slate-900/80 shadow-xl flex flex-col justify-between">
+        <div id="pomodoro-card" class="p-6 rounded-2xl border border-slate-800 bg-slate-900/80 shadow-xl flex flex-col justify-between">
           <div class="flex justify-between items-start mb-2">
             <div>
               <span class="text-xs uppercase font-extrabold tracking-wider text-amber-400">Focus Station</span>
@@ -369,6 +369,19 @@
               Reset
             </button>
           </div>
+        </div>
+      </div>
+
+      <!-- ================= STUDY PLAN: day by day, every task links to where it is done ================= -->
+      <div class="mb-8">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-3 gap-1">
+          <div>
+            <h2 class="text-xl font-black text-slate-100 tracking-tight">План підготовки по днях</h2>
+            <p class="text-xs text-slate-400 mt-0.5">Натисни пункт, щоб одразу перейти до потрібного означення, задачі чи тесту. Більшість пунктів відмічаються самі за результатами; решту відмічай галочкою.</p>
+          </div>
+        </div>
+        <div id="dashboard-schedule-list" class="space-y-2">
+          <!-- Rendered by app.js (renderDashboardScheduleOnly) from js/study-plan.js -->
         </div>
       </div>
 
@@ -398,7 +411,7 @@
         </div>
 
         <!-- Tab 2: Mistakes & Weak Points Tracker -->
-        <div class="p-6 rounded-2xl border border-slate-800 bg-slate-900/80 shadow-xl flex flex-col justify-between">
+        <div id="mistakes-card" class="p-6 rounded-2xl border border-slate-800 bg-slate-900/80 shadow-xl flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
               <div>
@@ -611,22 +624,6 @@
         </div>
       </div>
 
-      <!-- Day-by-Day Study Roadmap (Non-manual: Automatically verified by performance) -->
-      <div class="mb-8">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
-          <div>
-            <h2 class="text-2xl font-black text-slate-100 tracking-tight">Structured Day-by-Day Study Plan</h2>
-            <p class="text-xs text-slate-400 mt-0.5">Tasks cannot be clicked manually; they automatically verify and check off as you solve problems and pass quizzes!</p>
-          </div>
-          <div class="text-xs text-emerald-400 font-semibold flex items-center gap-1.5 bg-emerald-950/60 px-3 py-1.5 rounded-xl border border-emerald-800">
-            <span><i data-icon="shield-check"></i> Automated Verification Active</span>
-          </div>
-        </div>
-
-        <div id="dashboard-schedule-list">
-          <!-- Dynamically populated by app.js with non-manual verified states -->
-        </div>
-      </div>
 
     </section>
 
@@ -649,7 +646,7 @@
         <div class="text-center mb-6">
           <h3 class="text-xl font-extrabold text-slate-100">Interactive Definition Flashcards (Score ≥6/10 for 1%)</h3>
           <p class="text-xs text-slate-400 mt-1">Practice with Gemini or self-verify to earn 1% per definition.</p>
-          <div class="inline-flex gap-1 p-1 mt-4 rounded-xl bg-slate-900 border border-slate-800 text-sm font-semibold">
+          <div id="colloquium-modes" class="inline-flex gap-1 p-1 mt-4 rounded-xl bg-slate-900 border border-slate-800 text-sm font-semibold">
             <button data-fc-mode="browse" class="px-4 py-1.5 rounded-lg tab-active cursor-pointer transition"><i data-icon="layers"></i> Перегляд карток</button>
             <button data-fc-mode="drill" class="px-4 py-1.5 rounded-lg tab-inactive cursor-pointer transition"><i data-icon="dices"></i> Рандомний тест</button>
             <button data-fc-mode="ticket" class="px-4 py-1.5 rounded-lg tab-inactive cursor-pointer transition"><i data-icon="ticket"></i> Білет колоквіуму</button>
@@ -1163,6 +1160,7 @@
   <script src="js/user.js"></script>
   <script src="js/gemini.js"></script>
   <script src="js/pomodoro.js"></script>
+  <script src="js/study-plan.js"></script>
   <script src="js/quiz.js"></script>
   <script src="js/definition-drill.js"></script>
   <script src="js/exam-ticket.js"></script>
