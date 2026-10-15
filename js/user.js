@@ -1221,18 +1221,20 @@ class UserProfileManager {
     if (tab === 'login') {
       loginForm?.classList.remove('hidden');
       registerForm?.classList.add('hidden');
-      loginTabBtn?.classList.add('border-indigo-500', 'text-white', 'bg-indigo-950/50');
+      loginTabBtn?.classList.add('border', 'border-indigo-500', 'text-white', 'bg-indigo-950/50');
       loginTabBtn?.classList.remove('text-slate-400');
-      regTabBtn?.classList.remove('border-indigo-500', 'text-white', 'bg-indigo-950/50');
+      regTabBtn?.classList.remove('border', 'border-indigo-500', 'text-white', 'bg-indigo-950/50');
       regTabBtn?.classList.add('text-slate-400');
     } else {
       registerForm?.classList.remove('hidden');
       loginForm?.classList.add('hidden');
-      regTabBtn?.classList.add('border-indigo-500', 'text-white', 'bg-indigo-950/50');
+      regTabBtn?.classList.add('border', 'border-indigo-500', 'text-white', 'bg-indigo-950/50');
       regTabBtn?.classList.remove('text-slate-400');
-      loginTabBtn?.classList.remove('border-indigo-500', 'text-white', 'bg-indigo-950/50');
+      loginTabBtn?.classList.remove('border', 'border-indigo-500', 'text-white', 'bg-indigo-950/50');
       loginTabBtn?.classList.add('text-slate-400');
     }
+    loginTabBtn?.setAttribute('aria-pressed', String(tab === 'login'));
+    regTabBtn?.setAttribute('aria-pressed', String(tab !== 'login'));
   }
 
   initGoogleAuth() {

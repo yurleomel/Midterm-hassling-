@@ -256,7 +256,7 @@ class SelfTestBank {
       active
         ? 'border-indigo-500 bg-indigo-950/60 text-white ring-1 ring-indigo-500/50'
         : 'border-slate-800 bg-slate-950/50 text-slate-300 hover:border-slate-600 hover:text-white'
-    }" data-group="${group}" data-value="${this.esc(value)}">${label}${extra}</button>`;
+    }" data-group="${group}" data-value="${this.esc(value)}" aria-pressed="${active}">${label}${extra}</button>`;
   }
 
   solvedOf(tasks) {
@@ -291,7 +291,7 @@ class SelfTestBank {
       const active = f.type === t.id;
       return `<button class="st-chip w-full text-left px-3 py-2 rounded-xl border text-xs cursor-pointer transition flex items-center justify-between gap-3 ${
         active ? 'border-indigo-500 bg-indigo-950/60 text-white ring-1 ring-indigo-500/50' : 'border-slate-800 bg-slate-950/50 text-slate-300 hover:border-slate-600 hover:text-white'
-      }" data-group="type" data-value="${t.id}">
+      }" data-group="type" data-value="${t.id}" aria-pressed="${active}">
         <span class="min-w-0"><span class="font-semibold">${this.esc(t.label)}</span>${t.lecture ? ` <span class="text-slate-500">· ${this.esc(t.lecture)}</span>` : ''}</span>
         <span class="shrink-0 flex items-center gap-2">
           ${solved ? `<span class="text-emerald-400 font-bold">${icon('check')} ${solved}</span>` : ''}
@@ -468,7 +468,7 @@ class SelfTestBank {
 
         <div class="flex items-center justify-between gap-3 pt-4 border-t border-slate-800">
           <span class="text-[11px] text-slate-500">${this.esc(task.id)} · траплялась у ${task.seenInAttempts} ${task.seenInAttempts === 1 ? 'спробі' : 'спробах'}</span>
-          <button id="st-check" class="px-5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm cursor-pointer transition disabled:opacity-40 disabled:cursor-not-allowed" disabled>Перевірити</button>
+          <button id="st-check" class="px-5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm cursor-pointer transition disabled:opacity-70 disabled:cursor-not-allowed" disabled>Перевірити</button>
         </div>
       </div>
     `;
@@ -623,7 +623,7 @@ class SelfTestBank {
         b.classList.add('border-rose-500', 'bg-rose-950/60');
         this.paintMark(b, 'wrong');
       } else {
-        b.classList.add('border-slate-800', 'bg-slate-950/70', 'opacity-70');
+        b.classList.add('border-slate-800', 'bg-slate-950/70', 'opacity-80');
       }
       const fb = task.options?.[Number(v)]?.feedback;
       if (chosen && fb) b.insertAdjacentHTML('beforeend', `<span class="text-xs text-amber-300 ml-2">${this.esc(fb)}</span>`);

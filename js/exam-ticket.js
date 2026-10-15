@@ -131,7 +131,7 @@ class ExamTicket {
     return `
       <div class="grid grid-cols-3 gap-2 mt-3">
         ${options.map(([grade, label, cls]) => `
-          <button data-ticket-grade="${key}:${grade}" class="px-2 py-1.5 rounded-lg border text-xs font-bold cursor-pointer transition ${cls} ${current === grade ? 'ring-2 ring-indigo-400 ring-offset-2 ring-offset-slate-900' : current ? 'opacity-60' : ''}">${label}</button>
+          <button data-ticket-grade="${key}:${grade}" class="px-2 py-1.5 rounded-lg border text-xs font-bold cursor-pointer transition ${current && current !== grade ? 'bg-slate-800/60 hover:bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200' : cls} ${current === grade ? 'ring-2 ring-indigo-400 ring-offset-2 ring-offset-slate-900' : ''}">${label}</button>
         `).join('')}
       </div>
     `;

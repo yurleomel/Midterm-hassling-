@@ -1,3 +1,17 @@
 {
-  "entries": []
+  "entries": [
+    {
+      "category": "text-contrast",
+      "sig": "from-indigo-600.to-violet-500",
+      "text": "AG",
+      "reason": "Logotype: the 'AG' brand mark, white on its indigo-to-violet gradient (top bar, phone drawer). WCAG 1.4.3 exempts text that is part of a logo; its worst stop is 4.2:1 (3.1:1 while the home link is hovered)."
+    },
+    {
+      "category": "text-contrast",
+      "theme": "light",
+      "variant": "hover",
+      "sig": "#auth-manual-sync-btn",
+      "reason": "Profile/wardrobe modal (#user-profile-modal, js/user.js updateUserUI) is being redesigned in another workstream and must not be edited here. Reported: hover:bg-indigo-800 is not remapped in light while text-indigo-200 becomes indigo-800, so the label disappears on hover. Remove this entry when the redesign lands."
+    }
+  ]
 }

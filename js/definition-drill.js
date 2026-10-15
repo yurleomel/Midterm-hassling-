@@ -300,9 +300,9 @@ class DefinitionDrill {
             </div>
             <div id="drill-suggestion" class="text-[11px] text-indigo-300 mb-2 hidden"></div>
             <div class="grid grid-cols-3 gap-2">
-              <button data-drill-grade="again" class="px-3 py-2.5 rounded-lg bg-rose-950/60 hover:bg-rose-900 border border-rose-800 text-rose-200 text-sm font-bold cursor-pointer transition">${icon('x')} Не знаю<span class="block text-[10px] font-normal opacity-75">повернеться за ${DrillQueue.AGAIN_OFFSET} картки</span></button>
-              <button data-drill-grade="hard" class="px-3 py-2.5 rounded-lg bg-amber-950/60 hover:bg-amber-900 border border-amber-800 text-amber-200 text-sm font-bold cursor-pointer transition">${icon('minus')} Частково<span class="block text-[10px] font-normal opacity-75">в кінець черги</span></button>
-              <button data-drill-grade="good" class="px-3 py-2.5 rounded-lg bg-emerald-950/60 hover:bg-emerald-900 border border-emerald-700 text-emerald-200 text-sm font-bold cursor-pointer transition">${icon('check')} Знаю<span class="block text-[10px] font-normal opacity-75">+8/10 у readiness</span></button>
+              <button data-drill-grade="again" class="px-3 py-2.5 rounded-lg bg-rose-950/60 hover:bg-rose-900 border border-rose-800 text-rose-200 text-sm font-bold cursor-pointer transition">${icon('x')} Не знаю<span class="block text-[10px] font-normal">повернеться за ${DrillQueue.AGAIN_OFFSET} картки</span></button>
+              <button data-drill-grade="hard" class="px-3 py-2.5 rounded-lg bg-amber-950/60 hover:bg-amber-900 border border-amber-800 text-amber-200 text-sm font-bold cursor-pointer transition">${icon('minus')} Частково<span class="block text-[10px] font-normal">в кінець черги</span></button>
+              <button data-drill-grade="good" class="px-3 py-2.5 rounded-lg bg-emerald-950/60 hover:bg-emerald-900 border border-emerald-700 text-emerald-200 text-sm font-bold cursor-pointer transition">${icon('check')} Знаю<span class="block text-[10px] font-normal">+8/10 у readiness</span></button>
             </div>
           </div>
         </div>

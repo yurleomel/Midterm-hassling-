@@ -120,7 +120,9 @@ Tracks your real progress across 4 weighted pillars:
 
 ### 7. 🌗 Light & Dark Themes
 * Follows the system theme on first visit; the 🌙/☀️ button in the header switches and remembers the choice.
-* Tailwind colors resolve through `--surface-*` / `--text-*` / `--line-*` CSS variables (config in `index.html`); the light remapping lives in `css/style.css`. Dark mode sets no overrides, so it renders exactly as Tailwind's palette.
+* Tailwind colors resolve through `--surface-*` / `--text-*` / `--line-*` CSS variables (config in `index.html`); the light remapping lives in `css/style.css`. Dark mode renders Tailwind's palette except the shades that fail WCAG AA in both themes ("Both themes" block in `css/style.css`): muted `text-slate-500/600` become slate-400, white labels on `bg-emerald-600` / `bg-amber-600` and the `hover:bg-indigo-500` of indigo buttons step one shade darker, and form fields get a 3:1 outline.
+* Buttons: `.btn` + `.btn-lg` + `.btn-primary` / `.btn-secondary` / `.btn-warning` (used by the Pomodoro card) are complete on their own, so swapping the variant never changes the size. Utility-styled buttons that show a selected state carry `aria-pressed`.
+* `node tools/ui-audit.mjs` (see Tests) checks contrast, hover/focus/cursor feedback and button shape in both themes.
 
 ### 8. 🧩 Icon System
 * UI icons are [Lucide](https://lucide.dev) (ISC license, v0.468.0 from jsDelivr) rendered as inline SVG — no emoji stickers in the interface.

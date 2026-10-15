@@ -365,7 +365,7 @@
             <button id="main-pomodoro-toggle" class="btn btn-primary px-6 py-2.5 text-sm font-bold shadow-lg shadow-indigo-600/20">
               <i data-icon="play"></i> Start Focus Session
             </button>
-            <button id="main-pomodoro-reset" class="px-4 py-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition">
+            <button id="main-pomodoro-reset" class="btn btn-secondary btn-lg">
               Reset
             </button>
           </div>
@@ -566,7 +566,7 @@
                 </div>
                 <div class="flex flex-wrap gap-1.5 pt-1">
                   <span class="text-[10px] text-slate-400 self-center mr-1">Швидкі пресети:</span>
-                  <button type="button" class="mid-slot-preset-btn px-2 py-0.5 rounded-lg bg-indigo-950 border border-indigo-800 text-indigo-300 text-[10px] font-bold transition" data-dt="2026-10-16T08:30">Пт 16.10, 08:30 (Київ - Офіційний)</button>
+                  <button type="button" class="mid-slot-preset-btn px-2 py-0.5 rounded-lg bg-indigo-950 hover:bg-indigo-900 border border-indigo-800 text-indigo-300 text-[10px] font-bold transition" data-dt="2026-10-16T08:30">Пт 16.10, 08:30 (Київ - Офіційний)</button>
                   <button type="button" class="mid-slot-preset-btn px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] transition" data-dt="2026-10-16T10:00">Пт 16.10, 10:00</button>
                 </div>
               </div>
@@ -650,9 +650,9 @@
           <h3 class="text-xl font-extrabold text-slate-100">Interactive Definition Flashcards (Score ≥6/10 for 1%)</h3>
           <p class="text-xs text-slate-400 mt-1">Practice with Gemini or self-verify to earn 1% per definition.</p>
           <div class="inline-flex gap-1 p-1 mt-4 rounded-xl bg-slate-900 border border-slate-800 text-sm font-semibold">
-            <button data-fc-mode="browse" class="px-4 py-1.5 rounded-lg tab-active cursor-pointer transition"><i data-icon="layers"></i> Перегляд карток</button>
-            <button data-fc-mode="drill" class="px-4 py-1.5 rounded-lg tab-inactive cursor-pointer transition"><i data-icon="dices"></i> Рандомний тест</button>
-            <button data-fc-mode="ticket" class="px-4 py-1.5 rounded-lg tab-inactive cursor-pointer transition"><i data-icon="ticket"></i> Білет колоквіуму</button>
+            <button data-fc-mode="browse" aria-pressed="true" class="px-4 py-1.5 rounded-lg tab-active cursor-pointer transition"><i data-icon="layers"></i> Перегляд карток</button>
+            <button data-fc-mode="drill" aria-pressed="false" class="px-4 py-1.5 rounded-lg tab-inactive cursor-pointer transition"><i data-icon="dices"></i> Рандомний тест</button>
+            <button data-fc-mode="ticket" aria-pressed="false" class="px-4 py-1.5 rounded-lg tab-inactive cursor-pointer transition"><i data-icon="ticket"></i> Білет колоквіуму</button>
           </div>
         </div>
 
@@ -709,12 +709,12 @@
         
         <!-- Topic Filters -->
         <div class="flex flex-wrap gap-2 text-xs font-semibold">
-          <button data-prob-filter="all" class="px-3 py-1.5 rounded-lg bg-indigo-600 text-white transition">All</button>
-          <button data-prob-filter="Seminar 4" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Seminar 4 (Discrete)</button>
-          <button data-prob-filter="Seminar 5" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Seminar 5 (Expectation)</button>
-          <button data-prob-filter="Seminar 6" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Seminar 6 (Continuous)</button>
-          <button data-prob-filter="Colloquium II New" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Colloquium Advanced</button>
-          <button data-prob-filter="Midterm Exam 2" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Midterm 2017</button>
+          <button data-prob-filter="all" aria-pressed="true" class="px-3 py-1.5 rounded-lg bg-indigo-600 text-white transition">All</button>
+          <button data-prob-filter="Seminar 4" aria-pressed="false" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Seminar 4 (Discrete)</button>
+          <button data-prob-filter="Seminar 5" aria-pressed="false" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Seminar 5 (Expectation)</button>
+          <button data-prob-filter="Seminar 6" aria-pressed="false" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Seminar 6 (Continuous)</button>
+          <button data-prob-filter="Colloquium II New" aria-pressed="false" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Colloquium Advanced</button>
+          <button data-prob-filter="Midterm Exam 2" aria-pressed="false" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Midterm 2017</button>
         </div>
       </div>
 
@@ -863,10 +863,10 @@
       <!-- Auth Selection Tabs: Login vs Register -->
       <div class="border-t border-slate-800 pt-5">
         <div class="flex rounded-xl bg-slate-950 p-1 mb-5 border border-slate-800">
-          <button id="auth-tab-btn-login" onclick="window.userProfile?.switchAuthTab('login')" class="flex-1 py-2 text-xs font-bold rounded-lg transition border border-indigo-500 text-white bg-indigo-950/50">
+          <button id="auth-tab-btn-login" onclick="window.userProfile?.switchAuthTab('login')" aria-pressed="true" class="flex-1 py-2 text-xs font-bold rounded-lg transition hover:text-white border border-indigo-500 text-white bg-indigo-950/50">
             Вхід в акаунт
           </button>
-          <button id="auth-tab-btn-register" onclick="window.userProfile?.switchAuthTab('register')" class="flex-1 py-2 text-xs font-bold rounded-lg transition text-slate-400 hover:text-white">
+          <button id="auth-tab-btn-register" onclick="window.userProfile?.switchAuthTab('register')" aria-pressed="false" class="flex-1 py-2 text-xs font-bold rounded-lg transition text-slate-400 hover:text-white">
             Реєстрація
           </button>
         </div>
