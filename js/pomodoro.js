@@ -92,6 +92,7 @@ class PomodoroTimer {
       // Readiness bonus hook — QuizManager doesn't implement it yet, so only call it when present
       // (calling the missing method threw a TypeError and the session never switched to a break)
       window.quizManager?.recordPomodoroSession?.();
+      window.rewards?.notify('pomodoro'); // rewards: points for a finished focus session (daily cap)
 
       // Switch to break
       if (this.stats.sessionsCompleted % 4 === 0) {

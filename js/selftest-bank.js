@@ -777,6 +777,7 @@ class SelfTestBank {
     s.results.push({ task, correct: res.correct, score: res.score });
     this.stats = SelfTestLogic.recordResult(this.stats, task.id, res.correct);
     this.saveStats();
+    window.rewards?.notify('selftest', { id: task.id, correct: res.correct }); // rewards: points + stickers
     // Same mistakes registry as the topic tests: a wrong answer shows up on the dashboard, a right one clears it
     const mistakeId = SelfTestBank.MISTAKE_PREFIX + task.id;
     if (res.correct) window.userProfile?.recordSuccess(mistakeId);

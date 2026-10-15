@@ -454,6 +454,11 @@ class UserProfileManager {
       ? SelfTestLogic.mergeStats(lR.selfTestStats, cR.selfTestStats)
       : Object.assign({}, lR.selfTestStats || {}, cR.selfTestStats || {});
 
+    // Points, stickers and purchases: union of both copies (js/rewards.js), never counted twice
+    if (typeof RewardsLogic !== 'undefined') {
+      merged.rewards = RewardsLogic.merge(local.rewards, cloud.rewards);
+    }
+
     // Preserve Gemini API Key if available in either
     merged.geminiApiKey = local.geminiApiKey || cloud.geminiApiKey || '';
 
@@ -806,7 +811,7 @@ class UserProfileManager {
   }
 
   logout() {
-    if (confirm('Ви впевнені, що хочете вийти з акаунту? Ваші досягнення збережені в хмарі.')) {
+    if (confirm('Log out of this account? Your progress, points and stickers are saved in the cloud.')) {
       this.saveProfile();
       localStorage.removeItem(this.sessionKey);
       this.isLoggedIn = false;
@@ -900,6 +905,7 @@ class UserProfileManager {
       delete this.profile.mistakesHistory[id];
       this.saveProfile();
       this.renderMistakesAnalytics();
+      window.rewards?.notify('fix'); // rewards: a fixed mistake counts towards the "Error Correction" sticker
     }
   }
 
@@ -1046,6 +1052,8 @@ class UserProfileManager {
 
   // --- AVATAR & WARDROBE GAMIFICATION ---
   renderWardrobeList() {
+    // The layered wardrobe, shop and stickers live in js/rewards-ui.js
+    if (window.rewards) return window.rewards.render();
     const container = document.getElementById('wardrobe-items-list') || document.getElementById('user-wardrobe-grid');
     if (!container) return;
 
@@ -1118,6 +1126,8 @@ class UserProfileManager {
   renderAvatar(targetContainerId = 'user-avatar-display') {
     const container = document.getElementById(targetContainerId);
     if (!container) return;
+    // Layered avatar (outfit + hat + face + prop + background) from js/rewards-ui.js
+    if (window.rewards) return window.rewards.renderAvatarInto(container);
 
     const outfit = this.getEquippedOutfit();
 
@@ -1171,6 +1181,7 @@ class UserProfileManager {
     this.renderWardrobeList();
     this.renderExamScheduleAndGrades();
     this.updateCloudStatusUI('synced');
+    window.rewards?.onProfileLoaded(); // rewards: catch up on progress made before / on another device
 
     // Google Account status in profile modal
     const gStatusEl = document.getElementById('google-account-status');
@@ -1180,11 +1191,11 @@ class UserProfileManager {
           <div class="p-3 rounded-xl bg-emerald-950/70 border border-emerald-800 text-emerald-200 text-xs flex items-center justify-between">
             <div class="flex items-center gap-2 truncate">
               ${icon('cloud', 'text-emerald-400')}
-              <span class="truncate">Синхронізовано: <strong>${this.profile.email}</strong></span>
+              <span class="truncate">Synced: <strong>${this.profile.email}</strong></span>
             </div>
             <div class="flex items-center gap-2 shrink-0 ml-2">
-              <button id="auth-manual-sync-btn" class="px-2 py-1 rounded bg-indigo-900/60 hover:bg-indigo-800 text-[10px] text-indigo-200 font-bold border border-indigo-700">${icon('refresh-cw')} Синхр</button>
-              <button id="auth-logout-btn-modal" class="text-[11px] text-rose-400 hover:text-rose-300 font-bold underline">Вийти</button>
+              <button id="auth-manual-sync-btn" class="px-2 py-1 rounded bg-indigo-900/60 hover:bg-indigo-800 text-[10px] text-indigo-200 font-bold border border-indigo-700 cursor-pointer transition">${icon('refresh-cw')} Sync</button>
+              <button id="auth-logout-btn-modal" class="text-[11px] text-rose-400 hover:text-rose-300 font-bold underline cursor-pointer">Log out</button>
             </div>
           </div>
         `;
@@ -1195,13 +1206,22 @@ class UserProfileManager {
           const btn = document.getElementById('auth-manual-sync-btn');
           if (btn) btn.textContent = '...';
           await this.syncUserToCloud(this.profile);
-          if (btn) btn.innerHTML = `${icon('check')} Збережено`;
-          setTimeout(() => { if (btn) btn.innerHTML = `${icon('refresh-cw')} Синхр`; }, 2000);
+          if (btn) btn.innerHTML = `${icon('check')} Saved`;
+          setTimeout(() => { if (btn) btn.innerHTML = `${icon('refresh-cw')} Sync`; }, 2000);
         });
       } else {
         gStatusEl.innerHTML = '';
       }
     }
+  }
+
+  // Name / photo from the profile modal (app.js setupProfileModal)
+  updateProfileDetails(name, photoUrl) {
+    if (!this.profile) return;
+    if (name) this.profile.name = name;
+    if (photoUrl) this.profile.photoUrl = photoUrl;
+    this.saveProfile();
+    this.updateUserUI();
   }
 
   // --- MANDATORY AUTH & ONBOARDING GATE MODAL ---
@@ -1277,7 +1297,8 @@ class UserProfileManager {
               text: 'continue_with',
               shape: 'rectangular',
               // Fit the container on phones (Google accepts 200–400px); a fixed 320 overflowed the profile card
-              width: Math.max(200, Math.min(320, gBtnContainer.clientWidth || 320))
+              width: Math.max(200, Math.min(320, gBtnContainer.clientWidth || 320)),
+              locale: 'en' // the site's copy is English; Google otherwise follows the browser language
             });
           }
         } catch (e) {

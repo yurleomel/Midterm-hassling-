@@ -486,3 +486,56 @@ html.light .plan-dot.is-done, html.light .plan-check.is-checked { border-color: 
 @media (prefers-reduced-motion: reduce) {
   .nav-landed { animation: none; outline: 2px solid #818cf8; outline-offset: 2px; }
 }
+
+/* ========================================================
+   Rewards (js/rewards-ui.js): avatar disc, toasts, stickers, "+N".
+   Light first; dark only swaps the avatar disc. All motion is off
+   under prefers-reduced-motion.
+   ======================================================== */
+:root { --rw-avatar-bg: #e0e7ff; }
+html.dark { --rw-avatar-bg: #272a5c; }
+
+.rw-sticker { display: block; width: 100%; height: 100%; overflow: visible; }
+/* Item art in shop / wardrobe tiles sits on a soft spotlight, so white and near-black items read in both themes */
+.rw-art { background: radial-gradient(closest-side, rgba(255, 255, 255, .95), rgba(255, 255, 255, 0)); }
+.rw-art svg { filter: drop-shadow(0 1px 1.5px rgba(15, 23, 42, .22)); }
+html.dark .rw-art { background: radial-gradient(closest-side, rgba(226, 232, 240, .62), rgba(226, 232, 240, .1) 75%, rgba(226, 232, 240, 0)); }
+.rw-stuck { transform: rotate(var(--rw-tilt, 0deg)); transition: transform .2s ease; }
+button:hover > .rw-stuck { transform: rotate(0deg) scale(1.06); }
+
+/* Toasts: bottom corner, never blocking. A future bottom bar can lift them with --rw-toast-offset. */
+.rw-toasts {
+  position: fixed;
+  right: 1rem;
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px) + var(--rw-toast-offset, 0px));
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  width: min(21rem, calc(100vw - 2rem));
+  pointer-events: none;
+}
+.rw-toast { pointer-events: auto; animation: rw-in .28s cubic-bezier(.2, .9, .3, 1.2); }
+.rw-toast.rw-out { animation: rw-out .22s ease-in forwards; }
+@keyframes rw-in { from { opacity: 0; transform: translateY(10px) scale(.97); } to { opacity: 1; transform: none; } }
+@keyframes rw-out { to { opacity: 0; transform: translateY(8px); } }
+
+.rw-pop { animation: rw-pop .55s cubic-bezier(.3, 1.6, .5, 1) .05s both; }
+@keyframes rw-pop { from { transform: scale(.4) rotate(-20deg); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* "+N" next to the dashboard balance */
+.rw-plus { opacity: 0; pointer-events: none; }
+.rw-plus.rw-float { animation: rw-float 1.5s ease-out forwards; }
+@keyframes rw-float {
+  0% { opacity: 0; transform: translateY(6px); }
+  15% { opacity: 1; transform: none; }
+  70% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-12px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rw-toast, .rw-toast.rw-out, .rw-pop { animation: none; }
+  .rw-plus.rw-float { animation: none; opacity: 1; }
+  .rw-stuck, .rw-tile { transition: none; }
+  button:hover > .rw-stuck { transform: rotate(var(--rw-tilt, 0deg)); }
+}
