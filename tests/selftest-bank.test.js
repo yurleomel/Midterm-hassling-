@@ -219,3 +219,10 @@ test('every task type links to colloquium definitions that exist', () => {
     type.defs.forEach(id => assert.ok(defIds.has(id), `${type.id}: definition ${id}`));
   }
 });
+
+test('every task type explains itself: a short chip label and an "about" text for the type window', () => {
+  for (const type of bank.types) {
+    assert.ok(type.label && type.label.length <= 34, `${type.id}: label "${type.label}" fits a chip`);
+    assert.ok(typeof type.about === 'string' && type.about.length >= 40, `${type.id}: has an "about" text`);
+  }
+});
