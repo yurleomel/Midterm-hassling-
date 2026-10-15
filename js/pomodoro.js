@@ -163,7 +163,7 @@ class PomodoroTimer {
     const mainBtn = document.getElementById('main-pomodoro-toggle');
     if (mainBtn) {
       mainBtn.innerHTML = this.isRunning ? `${icon('pause')} Pause` : `${icon('play')} Start Focus`;
-      mainBtn.className = this.isRunning ? 'btn btn-warning' : 'btn btn-primary btn-lg';
+      mainBtn.className = this.isRunning ? 'btn btn-warning btn-lg' : 'btn btn-primary btn-lg';
     }
 
     const statsEl = document.getElementById('pomodoro-stats-display');

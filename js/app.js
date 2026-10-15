@@ -455,6 +455,7 @@ class AppController {
       const active = btn.getAttribute('data-fc-mode') === mode;
       btn.classList.toggle('tab-active', active);
       btn.classList.toggle('tab-inactive', !active);
+      btn.setAttribute('aria-pressed', String(active));
     });
 
     const panels = { browse: 'flashcard-container', drill: 'definition-drill-container', ticket: 'exam-ticket-container' };
@@ -533,7 +534,7 @@ class AppController {
         <button id="fc-prev-btn" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-semibold transition">
           ${icon('chevron-left')} Previous
         </button>
-        <button id="fc-self-pass-btn" class="px-5 py-2 rounded-lg ${isMastered ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-emerald-400 border border-emerald-600'} text-sm font-semibold transition">
+        <button id="fc-self-pass-btn" class="px-5 py-2 rounded-lg ${isMastered ? 'bg-emerald-600 hover:bg-emerald-500 text-white' : 'bg-slate-800 hover:bg-emerald-950 text-emerald-400 border border-emerald-600'} text-sm font-semibold transition">
           ${isMastered ? `${icon('check')} Scored ${score}/10 (+1% Readiness)` : 'Self-Check: Score 8/10 (+1%)'}
         </button>
         <button id="fc-next-btn" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-semibold transition">
@@ -793,7 +794,7 @@ class AppController {
                      value="${isSolved ? prob.expectedAnswer : ''}" ${isSolved ? 'disabled' : ''}
                      class="flex-1 px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-xs text-slate-100 font-mono focus:outline-none focus:border-indigo-500">
               <button class="prob-submit-btn px-5 py-2 rounded-lg ${isSolved ? 'bg-emerald-600' : 'bg-indigo-600 hover:bg-indigo-500'} text-white font-bold text-xs transition" 
-                      data-prob-id="${prob.id}">
+                      data-prob-id="${prob.id}" ${isSolved ? 'disabled' : ''}>
                 ${isSolved ? `${icon('check')} Verified Correct` : `Submit & Check ${icon('arrow-right')}`}
               </button>
             </div>
@@ -884,6 +885,7 @@ class AppController {
       const submitBtn = document.querySelector(`.prob-submit-btn[data-prob-id="${probId}"]`);
       if (submitBtn) {
         submitBtn.className = 'prob-submit-btn px-5 py-2 rounded-lg bg-emerald-600 text-white font-bold text-xs';
+        submitBtn.disabled = true; // a solved problem's button is a status, not an action
         submitBtn.innerHTML = `${icon('check')} Verified Correct`;
       }
       window.quizManager?.recordProblemSolved(probId, true);
@@ -1242,8 +1244,13 @@ class AppController {
     // Problem filter buttons
     document.querySelectorAll('[data-prob-filter]').forEach(btn => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('[data-prob-filter]').forEach(b => b.classList.remove('bg-indigo-600', 'text-white'));
-        btn.classList.add('bg-indigo-600', 'text-white');
+        // Swap the whole look: equal-specificity Tailwind colours must not coexist (the grey used to win)
+        document.querySelectorAll('[data-prob-filter]').forEach(b => {
+          const on = b === btn;
+          ['bg-indigo-600', 'text-white'].forEach(c => b.classList.toggle(c, on));
+          ['bg-slate-800', 'text-slate-300', 'hover:bg-slate-700'].forEach(c => b.classList.toggle(c, !on));
+          b.setAttribute('aria-pressed', String(on));
+        });
         this.currentProbFilter = btn.getAttribute('data-prob-filter');
         this.renderProblemsSection();
       });

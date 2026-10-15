@@ -206,7 +206,7 @@ class RewardsUI {
 
   tile({ attrs = '', art, name, badge = '', on = false, locked = false }) {
     const tag = locked ? 'div' : 'button type="button"';
-    return `<${tag} ${attrs} class="rw-tile relative flex flex-col items-center gap-1 p-2 rounded-2xl border text-center ${on
+    return `<${tag} ${attrs} ${locked ? '' : `aria-pressed="${on}"`} class="rw-tile relative flex flex-col items-center gap-1 p-2 rounded-2xl border text-center ${on
       ? 'border-indigo-500 bg-indigo-950/40 ring-1 ring-indigo-500/50'
       : locked ? 'border-slate-800 bg-slate-950/40' : 'border-slate-800 bg-slate-950/60 hover:border-indigo-500 hover:-translate-y-0.5 cursor-pointer'} transition">
       <span class="rw-art block w-full aspect-square p-1 rounded-xl ${locked ? 'opacity-40 grayscale' : ''}">${art}</span>
@@ -221,7 +221,7 @@ class RewardsUI {
     const worn = this.worn();
     const mine = this.items.filter(i => i.tier || s.own[i.id] !== undefined);
     document.getElementById('rewards-slot-filter').innerHTML = this.data.SLOTS
-      .map(sl => this.chip('data-rw-slot', sl.id, `${sl.n} <span class="opacity-70">${mine.filter(i => i.slot === sl.id && RewardsLogic.canWear(s, i, ready)).length}</span>`, sl.id === this.slot))
+      .map(sl => this.chip('data-rw-slot', sl.id, `${sl.n} <span class="opacity-80">${mine.filter(i => i.slot === sl.id && RewardsLogic.canWear(s, i, ready)).length}</span>`, sl.id === this.slot))
       .join('');
 
     // bought first, then the readiness tiers you have, then the ones still locked
@@ -316,7 +316,7 @@ class RewardsUI {
           const secret = st.s && !has;
           const p = has || secret ? null : RewardsLogic.progress(st.rule, ctx, s);
           const isNew = has && s.stk[st.id] > this.seenBefore;
-          return `<button type="button" data-rw-sticker="${st.id}" class="relative flex flex-col items-center gap-1 p-1.5 rounded-2xl cursor-pointer transition hover:bg-slate-800/70 ${this.detail === st.id ? 'bg-slate-800/70 ring-1 ring-indigo-500/60' : ''}" aria-label="${secret ? 'Secret sticker' : esc(st.n)}${has ? '' : ' (not earned yet)'}">
+          return `<button type="button" data-rw-sticker="${st.id}" aria-pressed="${this.detail === st.id}" class="relative flex flex-col items-center gap-1 p-1.5 rounded-2xl cursor-pointer transition hover:bg-slate-800/70 ${this.detail === st.id ? 'bg-slate-800/70 ring-1 ring-indigo-500/60' : ''}" aria-label="${secret ? 'Secret sticker' : esc(st.n)}${has ? '' : ' (not earned yet)'}">
             <span class="block w-14 h-14 sm:w-16 sm:h-16 ${has ? 'rw-stuck' : 'opacity-40 grayscale'}" style="--rw-tilt:${tilt(st.id)}deg">${this.stickerSvg(st, secret)}</span>
             <span class="text-[11px] leading-tight font-semibold ${has ? 'text-slate-200' : 'text-slate-400'} line-clamp-2">${secret ? 'Secret' : esc(st.n)}</span>
             ${p && p.need > 1 ? `<span class="text-[10px] text-slate-400 tabular-nums">${Math.min(p.have, p.need)}/${p.need}</span>` : ''}
@@ -331,7 +331,7 @@ class RewardsUI {
           <div class="text-sm font-bold text-slate-100">${got.length} of ${all.length} stickers</div>
           <div class="text-xs text-slate-400">${hidden ? `${hidden} secret ${hidden === 1 ? 'one is' : 'ones are'} still waiting for the right moment` : 'All secrets found'}</div>
         </div>
-        <button type="button" data-rw-quiet role="switch" aria-checked="${!quiet}" class="shrink-0 inline-flex items-center gap-2 text-xs font-semibold text-slate-300 cursor-pointer" title="Pop-ups when you earn points or stickers">
+        <button type="button" data-rw-quiet role="switch" aria-checked="${!quiet}" class="shrink-0 inline-flex items-center gap-2 text-xs font-semibold text-slate-300 hover:text-slate-100 cursor-pointer transition" title="Pop-ups when you earn points or stickers">
           Notifications
           <span class="relative w-9 h-5 rounded-full transition ${quiet ? 'bg-slate-700' : 'bg-emerald-500'}"><span class="absolute top-0.5 ${quiet ? 'left-0.5' : 'left-[1.125rem]'} w-4 h-4 rounded-full bg-white shadow transition-all"></span></span>
         </button>

@@ -1,0 +1,10 @@
+{
+  "entries": [
+    {
+      "category": "text-contrast",
+      "sig": "from-indigo-600.to-violet-500",
+      "text": "AG",
+      "reason": "Logotype: the 'AG' brand mark, white on its indigo-to-violet gradient (top bar, phone drawer). WCAG 1.4.3 exempts text that is part of a logo; its worst stop is 4.2:1 (down to 3.1:1 while the home link is hovered)."
+    }
+  ]
+}

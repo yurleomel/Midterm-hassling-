@@ -344,7 +344,7 @@ class QuizManager {
         this.activeTopicId === mode
           ? 'border-indigo-500 bg-indigo-950/60 text-white ring-1 ring-indigo-500/50'
           : 'border-slate-800 bg-slate-950/50 text-slate-300 hover:border-slate-700 hover:text-white'
-      }" data-quiz-mode="${mode}">${label}</button>
+      }" data-quiz-mode="${mode}" aria-pressed="${this.activeTopicId === mode}">${label}</button>
     `;
 
     mainContainer.innerHTML = `
@@ -380,7 +380,7 @@ class QuizManager {
                   : isSolved
                   ? 'border-emerald-800/80 bg-emerald-950/20 text-slate-200 hover:border-emerald-600'
                   : 'border-slate-800 bg-slate-950/50 text-slate-300 hover:border-slate-700 hover:text-white'
-              }" data-topic-id="${t.id}">
+              }" data-topic-id="${t.id}" aria-pressed="${isSelected}">
                 <div class="truncate flex items-center gap-1.5">
                   ${isSolved ? `<span class="text-emerald-400 font-bold">${icon('check')}</span>` : '<span class="text-slate-500">•</span>'}
                   <span class="truncate">${t.title}</span>
@@ -508,7 +508,7 @@ class QuizManager {
         <!-- Question Navigation Bar & Quick-Jump Palette -->
         <div class="pt-4 border-t border-slate-800 space-y-4">
           <div class="flex items-center justify-between gap-3">
-            <button id="quiz-prev-btn" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs transition ${this.currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : ''}">
+            <button id="quiz-prev-btn" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs transition ${this.currentIndex === 0 ? 'opacity-70 cursor-not-allowed' : ''}" ${this.currentIndex === 0 ? 'disabled' : ''}>
               ${icon('chevron-left')} Previous
             </button>
             <div class="text-xs text-slate-400 font-medium">
@@ -576,7 +576,7 @@ class QuizManager {
         btn.disabled = true;
         if (idx === q.correctIndex) {
           btn.classList.add('bg-emerald-950/80', 'border-emerald-500', 'text-emerald-200');
-          btn.querySelector('span:first-child')?.classList.add('bg-emerald-600', 'text-white');
+          this.paintOptionMark(btn, 'bg-emerald-600');
         }
       });
       const expBox = host.querySelector('#quiz-explanation-box');
@@ -599,6 +599,14 @@ class QuizManager {
     }
 
     this.renderMath(host);
+  }
+
+  // Option letter badge turns green/red: drop its idle colours first (Tailwind utilities of equal
+  // specificity must not coexist — the idle grey used to win, leaving a white letter on grey)
+  paintOptionMark(btn, fill) {
+    const mark = btn.querySelector('span:first-child');
+    mark?.classList.remove('bg-slate-800', 'text-slate-300');
+    mark?.classList.add(fill, 'text-white');
   }
 
   submitAnswer(chosenIndex) {
@@ -625,10 +633,10 @@ class QuizManager {
       btn.disabled = true;
       if (idx === q.correctIndex) {
         btn.classList.add('bg-emerald-950/80', 'border-emerald-500', 'text-emerald-200');
-        btn.querySelector('span:first-child').classList.add('bg-emerald-600', 'text-white');
+        this.paintOptionMark(btn, 'bg-emerald-600');
       } else if (idx === chosenIndex) {
         btn.classList.add('bg-rose-950/80', 'border-rose-500', 'text-rose-200');
-        btn.querySelector('span:first-child').classList.add('bg-rose-600', 'text-white');
+        this.paintOptionMark(btn, 'bg-rose-600');
       }
     });
 

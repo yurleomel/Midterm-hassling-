@@ -367,7 +367,7 @@ class SelfTestBank {
     // 3 · difficulty (segmented) + only unsolved
     const diffCounts = SelfTestLogic.countBy(inType, 'difficulty');
     const diffSeg = [['all', 'Any', inType.length], ['easy', 'Easy', diffCounts.easy || 0], ['medium', 'Medium', diffCounts.medium || 0], ['hard', 'Hard', diffCounts.hard || 0]]
-      .map(([d, l, n]) => `<button class="st-diff px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition ${f.difficulty === d ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:bg-slate-800'}" data-diff="${d}" aria-pressed="${f.difficulty === d}">${l} <span class="${f.difficulty === d ? 'opacity-70' : 'text-slate-500'}">${n}</span></button>`)
+      .map(([d, l, n]) => `<button class="st-diff px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition ${f.difficulty === d ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:bg-slate-800'}" data-diff="${d}" aria-pressed="${f.difficulty === d}">${l} <span class="${f.difficulty === d ? 'opacity-80' : 'text-slate-500'}">${n}</span></button>`)
       .join('');
 
     host.innerHTML = `
@@ -408,7 +408,7 @@ class SelfTestBank {
           ${pool.length ? `
             <div class="flex flex-wrap items-center gap-2 text-xs text-slate-300">
               <span class="font-semibold">How many</span>
-              <div class="inline-flex items-center rounded-lg border border-slate-700 overflow-hidden">
+              <div class="inline-flex items-center rounded-lg border border-slate-500 overflow-hidden">
                 <button class="st-step-btn px-2.5 py-1.5 bg-slate-950/50 hover:bg-slate-800 text-slate-300 cursor-pointer transition" data-delta="-1" aria-label="Fewer">${icon('minus')}</button>
                 <input id="st-count" type="number" inputmode="numeric" min="1" max="${pool.length}" value="${count}" aria-label="Number of tasks" class="w-14 py-1.5 text-center bg-slate-950 border-x border-slate-700 text-slate-100 text-base sm:text-sm">
                 <button class="st-step-btn px-2.5 py-1.5 bg-slate-950/50 hover:bg-slate-800 text-slate-300 cursor-pointer transition" data-delta="1" aria-label="More">${icon('plus')}</button>
@@ -469,7 +469,7 @@ class SelfTestBank {
     const tasks = this.bank.tasks.filter(t => t.type === typeId);
     this.typeInfo = { type, tasks, index: 0, revealed: false, opener };
     const solved = this.solvedOf(tasks);
-    const navBtn = (step, label, name) => `<button class="p-1.5 rounded-lg text-slate-300 hover:bg-slate-800 cursor-pointer transition disabled:opacity-30 disabled:cursor-not-allowed" data-ex="${step}" aria-label="${label}">${icon(name)}</button>`;
+    const navBtn = (step, label, name) => `<button class="p-1.5 rounded-lg text-slate-300 hover:bg-slate-800 cursor-pointer transition disabled:opacity-60 disabled:cursor-not-allowed" data-ex="${step}" aria-label="${label}">${icon(name)}</button>`;
 
     const modal = document.createElement('div');
     modal.id = 'st-type-modal';
@@ -645,7 +645,7 @@ class SelfTestBank {
 
         <div class="flex items-center justify-between gap-3 pt-4 border-t border-slate-800">
           <span class="text-[11px] text-slate-500">${this.esc(task.id)} · seen in ${task.seenInAttempts} LMS ${task.seenInAttempts === 1 ? 'attempt' : 'attempts'}</span>
-          <button id="st-check" class="px-5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm cursor-pointer transition disabled:opacity-40 disabled:cursor-not-allowed" disabled>Check</button>
+          <button id="st-check" class="px-5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm cursor-pointer transition disabled:opacity-70 disabled:cursor-not-allowed" disabled>Check</button>
         </div>
       </div>
     `;
@@ -801,7 +801,7 @@ class SelfTestBank {
         b.classList.add('border-rose-500', 'bg-rose-950/60');
         this.paintMark(b, 'wrong');
       } else {
-        b.classList.add('border-slate-800', 'bg-slate-950/70', 'opacity-70');
+        b.classList.add('border-slate-800', 'bg-slate-950/70', 'opacity-80');
       }
       const fb = task.options?.[Number(v)]?.feedback;
       if (chosen && fb) b.insertAdjacentHTML('beforeend', `<span class="text-xs text-amber-300 ml-2">${this.esc(fb)}</span>`);

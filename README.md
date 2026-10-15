@@ -29,6 +29,16 @@ Pure logic (drill queue, ticket picker, self-test grading, rewards points/sticke
 node --test tests/*.test.js
 ```
 
+**UI audit (contrast + buttons, both themes)** — needs Google Chrome, still no npm dependencies:
+```bash
+node tools/ui-audit.mjs                  # both themes, every section and key state, 1440px + 390px
+node tools/ui-audit.mjs --themes light --only quiz,selftest   # quick partial run
+```
+* It serves a temporary copy of the site with the cloud-sync URL (`CLOUD_SYNC_ENDPOINT` in `js/user.js`) rewritten to an unroutable local port, runs its own headless Chrome with a fresh profile, lets only local + CDN GET requests out, and fails if anything ever tries to reach `amazonaws`. It never touches the real backend.
+* Logs in as guest and walks every sidebar section plus the key states (flashcard, definition drill, exam ticket, hints, filtered problems, quiz feedback, self-test type window and checks of every task format, running Pomodoro, Gemini drawer/key modal, mistakes panel, every tab of the profile & rewards modal and a reward toast, phone drawer).
+* Checks every visible text node against its composited background (WCAG AA 4.5:1, 3:1 for large text and for unavailable `disabled` + `cursor-not-allowed` controls, also while hovered), icon-only buttons and form-field outlines (3:1), `cursor: pointer`, a visible hover change, a visible focus indicator, filled buttons that blend into the surface behind them, labels touching/spilling out of buttons, mismatched button heights in a row and horizontal scrolling.
+* Writes `ui-audit-out/report.txt`, `report.json` and screenshots (`ui-audit-out/shots/<theme>/`). Exit code 1 when something is not covered by `tools/ui-audit-allowlist.json` — keep that list short, every entry needs a `reason`.
+
 ---
 
 ## 🌟 Key Features Built From Scratch
@@ -112,7 +122,9 @@ Tracks your real progress across 4 weighted pillars:
 
 ### 7. 🌗 Light & Dark Themes
 * Follows the system theme on first visit; the 🌙/☀️ button in the header switches and remembers the choice.
-* Tailwind colors resolve through `--surface-*` / `--text-*` / `--line-*` CSS variables (config in `index.html`); the light remapping lives in `css/style.css`. Dark mode sets no overrides, so it renders exactly as Tailwind's palette.
+* Tailwind colors resolve through `--surface-*` / `--text-*` / `--line-*` CSS variables (config in `index.html`); the light remapping lives in `css/style.css`. Dark mode renders Tailwind's palette except the shades that fail WCAG AA in both themes ("Both themes" block in `css/style.css`): muted `text-slate-500/600` become slate-400, white labels on `bg-emerald-600` / `bg-amber-600` and the `hover:bg-indigo-500` of indigo buttons step one shade darker, and form fields get a 3:1 outline.
+* Buttons: `.btn` + `.btn-lg` + `.btn-primary` / `.btn-secondary` / `.btn-warning` (used by the Pomodoro card) are complete on their own, so swapping the variant never changes the size. Utility-styled buttons that show a selected state carry `aria-pressed`.
+* `node tools/ui-audit.mjs` (see Tests) checks contrast, hover/focus/cursor feedback and button shape in both themes.
 
 ### 8. 🧩 Icon System
 * UI icons are [Lucide](https://lucide.dev) (ISC license, v0.468.0 from jsDelivr) rendered as inline SVG — no emoji stickers in the interface.
@@ -158,6 +170,7 @@ midterm2/
 │   └── app.js            # UI controller, routing & event handling
 ├── docs/gamification.md  # Rewards design: principles, points table, state, hooks, adding a module
 ├── tests/                # node --test unit tests for pure logic
+├── tools/                # ui-audit.mjs: contrast & button audit in headless Chrome (+ its allowlist)
 ├── vendor/
 │   └── katex/            # Offline KaTeX assets (css, js, auto-render)
 └── extracted_text/       # Clean text extractions from course PDFs
