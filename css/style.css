@@ -687,7 +687,7 @@ body.fs-lock { overflow: hidden; }
   color: rgb(var(--text-slate-300, 203 213 225));
   background: rgb(var(--surface-slate-950, 2 6 23) / .55);
 }
-.fs-sheet .fs-dist { width: 13rem; min-width: 11rem; text-align: left; }
+.fs-sheet .fs-dist { width: 14rem; min-width: 11rem; text-align: left; } /* fits the "Which distribution?" select */
 .fs-name { display: block; font-weight: 700; }
 .fs-main { display: block; white-space: nowrap; }
 .fs-sub { display: block; margin-top: .3rem; font-size: .8125rem; color: rgb(var(--text-slate-400, 148 163 184)); }

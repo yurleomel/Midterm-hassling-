@@ -720,7 +720,7 @@ class FormulaSheet {
       lines.push(`The same formula is ${g.answers.map(a => where(a.rowId, a.col)).join(' and ')}, so either counts.`);
     }
     return `
-      <div class="mt-5 p-3.5 rounded-xl border ${g.correct ? 'border-emerald-700 bg-emerald-950/50' : 'border-rose-700 bg-rose-950/50'} text-sm">
+      <div id="fs-cell-feedback" class="mt-5 p-3.5 rounded-xl border ${g.correct ? 'border-emerald-700 bg-emerald-950/50' : 'border-rose-700 bg-rose-950/50'} text-sm">
         <p class="font-bold ${g.correct ? 'text-emerald-300' : 'text-rose-300'}">${I(g.correct ? 'circle-check' : 'circle-x')} ${g.correct ? 'Right' : 'Not quite'}</p>
         ${lines.map(l => `<p class="mt-1 text-slate-200">${l}</p>`).join('')}
       </div>`;
@@ -812,6 +812,12 @@ class FormulaSheet {
     this.cellGraded = { ...grade, newBest };
     this.notice = '';
     this.render({ focus: '[data-fs-action="next"]' });
+    // On a phone the verdict lands below the chips: bring it into view once its styles have applied
+    // (the Tailwind CDN compiles classes it has not seen yet on the next frame)
+    const feedback = this.root.querySelector('#fs-cell-feedback');
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (feedback?.isConnected) feedback.scrollIntoView({ block: 'nearest' });
+    }));
     this.announce(`${grade.correct ? 'Right' : 'Not quite'}. Streak ${this.streak}.${newBest ? ' New best.' : ''}`);
   }
 }
