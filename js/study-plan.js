@@ -129,18 +129,18 @@ const StudyPlan = {
   linkLabel(link) {
     const range = ids => (ids.length > 2 && ids[ids.length - 1] - ids[0] === ids.length - 1 ? `${ids[0]}–${ids[ids.length - 1]}` : ids.join(', '));
     switch (link.kind) {
-      case 'definitions': return link.ids.length === 1 ? `Означення №${link.ids[0]}` : `Означення ${range(link.ids)}`;
-      case 'problems': return link.ids.length === 1 ? `Задача ${link.ids[0]}` : `Задачі ${range(link.ids)}`;
-      case 'quiz': return `Тести: теми ${range(link.topics)}`;
-      case 'oral': return 'Усні питання';
-      case 'drill': return 'Рандомний тест';
-      case 'ticket': return 'Білет колоквіуму';
-      case 'exam': return link.exam === 'midterm' ? 'Оцінка за мідтерм' : 'Оцінка за колоквіум';
-      case 'pomodoro': return 'Таймер';
-      case 'mistakes': return 'Мої помилки';
-      case 'selftests': return 'Self-тести LMS';
-      case 'formulas': return 'Формули';
-      case 'topic': return `Теорія: тема ${String(link.topic).replace('topic-', '')}`;
+      case 'definitions': return link.ids.length === 1 ? `Definition #${link.ids[0]}` : `Definitions ${range(link.ids)}`;
+      case 'problems': return link.ids.length === 1 ? `Problem ${link.ids[0]}` : `Problems ${range(link.ids)}`;
+      case 'quiz': return `Topic tests ${range(link.topics)}`;
+      case 'oral': return 'Oral questions';
+      case 'drill': return 'Random drill';
+      case 'ticket': return 'Colloquium ticket';
+      case 'exam': return link.exam === 'midterm' ? 'Midterm grade' : 'Colloquium grade';
+      case 'pomodoro': return 'Focus timer';
+      case 'mistakes': return 'My mistakes';
+      case 'selftests': return 'LMS self-tests';
+      case 'formulas': return 'Formulas';
+      case 'topic': return `Theory: topic ${String(link.topic).replace('topic-', '')}`;
       default: return '';
     }
   },

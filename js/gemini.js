@@ -42,7 +42,7 @@ class GeminiMentor {
     localStorage.setItem('stathustle_gemini_model', this.selectedModel);
   }
 
-  promptForApiKey(reason = "для роботи з нейромережею") {
+  promptForApiKey(reason = "to use the AI mentor") {
     const modal = document.getElementById('gemini-settings-modal') || document.getElementById('gemini-key-modal');
     if (modal) {
       modal.classList.remove('hidden');
@@ -54,7 +54,7 @@ class GeminiMentor {
       const feedback = document.getElementById('settings-test-status') || document.getElementById('gemini-key-test-feedback');
       if (feedback) {
         feedback.className = 'mt-2 text-xs text-amber-400 p-2 rounded bg-amber-950/60 border border-amber-800';
-        feedback.textContent = `Потрібен Gemini API ключ ${reason}. Отримайте його безкоштовно в Google AI Studio (ai.google.dev).`;
+        feedback.textContent = `A Gemini API key is needed ${reason}. Get one for free in Google AI Studio (ai.google.dev).`;
         feedback.classList.remove('hidden');
       }
     }
@@ -73,7 +73,7 @@ class GeminiMentor {
   async testConnection(candidateKey = null) {
     const keyToTest = candidateKey ? candidateKey.trim() : this.apiKey;
     if (!keyToTest || keyToTest.length < 5) {
-      return { success: false, message: "Будь ласка, введіть дійсний Gemini API ключ." };
+      return { success: false, message: "Please enter a valid Gemini API key." };
     }
 
     const modelsToTry = [
@@ -103,7 +103,7 @@ class GeminiMentor {
         if (res.ok) {
           this.setApiKey(keyToTest);
           this.setModel(m);
-          return { success: true, message: `Підключено успішно до Gemini API (${m})!` };
+          return { success: true, message: `Connected to the Gemini API (${m})!` };
         } else {
           const errData = await res.json().catch(() => ({}));
           const errMsg = errData.error?.message || `HTTP ${res.status}`;
@@ -116,15 +116,15 @@ class GeminiMentor {
             return { 
               success: true, 
               warning: true,
-              message: `Ключ дійсний для моделі ${m}! Проте Google повідомляє: 'Your prepayment credits are depleted' (RESOURCE_EXHAUSTED). Поповніть кредити в Google AI Studio або використайте інший проект. Локальний тьютор активний.` 
+              message: `The key is valid for ${m}, but Google reports 'Your prepayment credits are depleted' (RESOURCE_EXHAUSTED). Top up the credits in Google AI Studio or use another project. The built-in tutor stays active.` 
             };
           }
 
           if (res.status === 400 || res.status === 403) {
             if (errMsg.includes('API key not valid')) {
-              return { success: false, message: "Google API: Недійсний ключ. Перевірте, чи ви скопіювали ключ повністю з Google AI Studio." };
+              return { success: false, message: "Google API: invalid key. Check that you copied the whole key from Google AI Studio." };
             }
-            return { success: false, message: `Помилка Google API (${res.status}): ${errMsg}` };
+            return { success: false, message: `Google API error (${res.status}): ${errMsg}` };
           }
           // If 404 or other status, try next fallback model
         }
@@ -132,14 +132,14 @@ class GeminiMentor {
         continue;
       }
     }
-    return { success: false, message: "Не вдалося з'єднатися з Gemini API. Перевірте ключ та інтернет-з'єднання." };
+    return { success: false, message: "Could not reach the Gemini API. Check the key and your internet connection." };
   }
 
   // Generic call to Gemini API with model fallback
   async generateContent(prompt, systemInstruction = '', throwOnError = false) {
     if (!this.hasValidApiKey()) {
       this.promptForApiKey();
-      return this.getLocalFallbackResponse(prompt, "Введіть власний Gemini API ключ у вікні налаштувань для отримання відповіді штучного інтелекту.");
+      return this.getLocalFallbackResponse(prompt, "Add your own Gemini API key in the settings to get AI answers.");
     }
 
     const modelsToTry = [
@@ -191,7 +191,7 @@ class GeminiMentor {
           if (response.status === 402 || errorData.error?.status === 'RESOURCE_EXHAUSTED' || errMsg.includes('credits are depleted')) {
             return this.getLocalFallbackResponse(
               prompt, 
-              "Google AI Studio: Передплачені кредити для цього ключа вичерпано (RESOURCE_EXHAUSTED). Нижче надано розбір від вбудованої академічної бази знань УКУ."
+              "Google AI Studio: the prepaid credits for this key are used up (RESOURCE_EXHAUSTED). Below is guidance from the built-in UCU course knowledge base."
             );
           }
           continue; // Try next fallback model
@@ -226,7 +226,7 @@ class GeminiMentor {
     const systemPrompt = `You are "Gemini P&S Mentor", a dedicated AI tutor helping a Ukrainian Catholic University (UCU) student prepare for Probability and Statistics Midterm 2 and Colloquium 2.
 Your goal is to help them achieve 100% on their exams.
 Always format mathematical formulas in LaTeX using single $ for inline ($X \\sim B(n, p)$) and double $$ for block equations.
-Be mathematically rigorous, state required conditions (measurability, absolute integrability $\\sum |x|p(x) < \\infty$), highlight common exam traps, and offer practical advice. Reply in Ukrainian or English matching the student.`;
+Be mathematically rigorous, state required conditions (measurability, absolute integrability $\\sum |x|p(x) < \\infty$), highlight common exam traps, and offer practical advice. Always reply in English.`;
 
     let fullPrompt = userMessage;
     if (context) {
@@ -239,7 +239,7 @@ Be mathematically rigorous, state required conditions (measurability, absolute i
   // Colloquium Oral Exam Answer Evaluator
   async evaluateOralAnswer(questionTitle, studentAnswer, rubric) {
     if (!this.hasValidApiKey()) {
-      this.promptForApiKey("для суворої перевірки усного екзамену");
+      this.promptForApiKey("for a strict oral exam evaluation");
     }
 
     const systemPrompt = `You are an expert, strict but encouraging professor of Probability and Statistics at the Ukrainian Catholic University (UCU), specializing in preparing students for Colloquium 2 and Midterm 2.
@@ -252,7 +252,7 @@ Evaluate the student's answer with extreme academic rigor:
    - Missing mathematical conditions or nuances
    - The ideal model oral presentation with LaTeX formulas ($...$)
    - Impact on overall readiness.
-Format your response using Markdown and LaTeX ($...$ and $$...$$). Reply in Ukrainian or English matching the student.`;
+Format your response using Markdown and LaTeX ($...$ and $$...$$). Always reply in English.`;
 
     const prompt = `QUESTION FOR COLLOQUIUM 2:
 ${questionTitle}
@@ -294,52 +294,52 @@ Include:
 
     if (answerLower.length < 50) {
       score = 4;
-      missing.push("Відповідь занадто коротка. На Колоквіумі 2 викладачі очікують 3-4 хвилинну структуровану усну відповідь з доведенням.");
+      missing.push("The answer is too short. At Colloquium 2 examiners expect a structured 3–4 minute oral answer with a proof.");
     } else {
-      strengths.push("Хороша спроба покрити основні математичні аспекти теми.");
+      strengths.push("A good attempt at covering the main mathematical points of the topic.");
     }
 
-    if (answerLower.includes("measurable") || answerLower.includes("вимірн")) {
-      strengths.push("Чудово! Ви чітко зазначили вимогу вимірності відносно $\\sigma$-алгебри: $\\{\\omega: X(\\omega) \\le a\\} \\in \\mathcal{F}$.");
+    if (answerLower.includes("measurable")) {
+      strengths.push("Great — you clearly stated measurability with respect to the $\\sigma$-algebra: $\\{\\omega: X(\\omega) \\le a\\} \\in \\mathcal{F}$.");
       score += 1;
     } else if (questionTitle.toLowerCase().includes("random variable")) {
-      missing.push("Обов'язково вкажіть, що випадкова величина — це **вимірна функція** $X: \\Omega \\to \\mathbb{R}$.");
+      missing.push("Be sure to say that a random variable is a **measurable function** $X: \\Omega \\to \\mathbb{R}$.");
     }
 
-    if (answerLower.includes("right-continuous") || answerLower.includes("неперервна справа")) {
-      strengths.push("Правильно вказано властивість неперервності справа (càdlàg) для функції розподілу (CDF).");
+    if (answerLower.includes("right-continuous")) {
+      strengths.push("Correctly stated the right-continuity (càdlàg) of the distribution function (CDF).");
       score += 1;
     }
 
     if (answerLower.includes("independent") && (answerLower.includes("cov") || answerLower.includes("0"))) {
-      strengths.push("Коректно обговорено різницю між некорельованістю $\\text{Cov}(X,Y)=0$ та незалежністю.");
+      strengths.push("Correctly discussed the difference between uncorrelated ($\\text{Cov}(X,Y)=0$) and independent.");
     }
 
     score = Math.min(Math.max(score, 4), 9);
 
-    return `### ${icon('presentation')} Оцінка Gemini P&S Mentor (Офлайн-рубрика)
+    return `### ${icon('presentation')} Gemini P&S Mentor evaluation (offline rubric)
 
 **Score: ${score}/10**
 
-#### ${icon('circle-check')} Сильні сторони:
+#### ${icon('circle-check')} Strengths:
 ${strengths.map(s => `- ${s}`).join('\n')}
 
-#### ${icon('triangle-alert')} Критичні умови для отримання 10/10:
-${missing.length > 0 ? missing.map(m => `- ${m}`).join('\n') : '- Відразу пишіть ключові формули на папері, щоб екзаменатор бачив вашу структуру.'}
-- Завжди вказуйте область визначення та умови абсолютної збіжності: $\\sum |x|p_X(x) < \\infty$ або $\\int |x|f_X(x)dx < \\infty$.
-- Наводьте конкретний контрприклад (наприклад, $X \\sim U(-1, 1), Y = X^2$, де $\\text{Cov}(X,Y) = 0$, але змінні залежні!).
+#### ${icon('triangle-alert')} What a 10/10 answer needs:
+${missing.length > 0 ? missing.map(m => `- ${m}`).join('\n') : '- Write the key formulas on paper right away so the examiner sees your structure.'}
+- Always state the domain and the absolute convergence conditions: $\\sum |x|p_X(x) < \\infty$ or $\\int |x|f_X(x)dx < \\infty$.
+- Give a concrete counterexample (e.g. $X \\sim U(-1, 1), Y = X^2$, where $\\text{Cov}(X,Y) = 0$ but the variables are dependent!).
 
-> **Colloquium Readiness Impact**: +${Math.round(score * 1.5)}% до володіння темою!`;
+> **Colloquium Readiness Impact**: +${Math.round(score * 1.5)}% topic mastery!`;
   }
 
   getLocalFallbackResponse(prompt, errorMsg = '') {
     return `### ${icon('lightbulb')} Gemini P&S Mentor
 
-${errorMsg ? `*(${icon('triangle-alert')} ${errorMsg})*` : `*(Підключено)*`}
+${errorMsg ? `*(${icon('triangle-alert')} ${errorMsg})*` : `*(Connected)*`}
 
-**Поради за матеріалами курсу УКУ (Колоквіум 2 та Мідтерм 2):**
-- **Колоквіум**: Розпочинайте із формального означення, вкажіть усі технічні умови (вимірність, зліченний або неперервний носій, інтегровність), наведіть 3-4 ключові властивості та завершіть контрприкладом або типовим розподілом.
-- **Мідтерм**: Уважно перевіряйте межі інтегрування для сумісних розподілів (трикутні області $x+y < 1$), пам'ятайте, що $\\text{Var}(aX + bY) = a^2\\text{Var}(X) + b^2\\text{Var}(Y) + 2ab\\text{Cov}(X, Y)$, а сума двох рівномірних розподілів $U(0, 1)$ має трикутний, а не рівномірний розподіл!`;
+**Tips from the UCU course materials (Colloquium 2 and Midterm 2):**
+- **Colloquium**: Start with the formal definition, state every technical condition (measurability, countable or continuous support, integrability), give 3–4 key properties and finish with a counterexample or a typical distribution.
+- **Midterm**: Check the integration limits of joint distributions carefully (triangular regions $x+y < 1$), remember that $\\text{Var}(aX + bY) = a^2\\text{Var}(X) + b^2\\text{Var}(Y) + 2ab\\text{Cov}(X, Y)$, and that the sum of two uniform $U(0, 1)$ variables is triangular, not uniform!`;
   }
 }
 

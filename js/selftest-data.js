@@ -5,21 +5,21 @@ const SELFTEST_BANK = {
  "topics": [
   {
    "id": 4,
-   "label": "Тема 4 · Discrete random variables"
+   "label": "Topic 4 · Discrete random variables"
   },
   {
    "id": 5,
-   "label": "Тема 5 · Expectation"
+   "label": "Topic 5 · Expectation"
   },
   {
    "id": 6,
-   "label": "Тема 6 · Continuous random variables"
+   "label": "Topic 6 · Continuous random variables"
   }
  ],
  "types": [
   {
    "id": "rv-definitions",
-   "label": "Означення: в.в. і стандартні дискретні розподіли",
+   "label": "Definitions: random variables and standard discrete distributions",
    "lecture": "L4 p.10, 23–30",
    "defs": [
     1,
@@ -33,7 +33,7 @@ const SELFTEST_BANK = {
   },
   {
    "id": "recognize-from-experiment",
-   "label": "Впізнати розподіл за описом експерименту",
+   "label": "Recognise the distribution from the experiment",
    "lecture": "L4 p.25, 27, 30",
    "defs": [
     4,
@@ -46,7 +46,7 @@ const SELFTEST_BANK = {
   },
   {
    "id": "two-counts",
-   "label": "Дві кількості з тих самих випробувань: біноміальні? однаковий розподіл? незалежні?",
+   "label": "Two counts from the same trials: binomial? same law? independent?",
    "lecture": "L4 p.25, 39",
    "defs": [
     4,
@@ -58,7 +58,7 @@ const SELFTEST_BANK = {
   },
   {
    "id": "pmf-cdf-equality",
-   "label": "pmf, cdf і рівність в.в. (правда / неправда)",
+   "label": "pmf, cdf and equality of random variables (true / false)",
    "lecture": "L4 p.14, 16–17, 19–21",
    "defs": [
     2,
@@ -70,7 +70,7 @@ const SELFTEST_BANK = {
   },
   {
    "id": "joint-conditional",
-   "label": "Спільний розподіл: умовна pmf з таблиці",
+   "label": "Joint distribution: conditional pmf from a table",
    "lecture": "L4 p.37, 42",
    "defs": [
     15,
@@ -83,7 +83,7 @@ const SELFTEST_BANK = {
   },
   {
    "id": "match-formula",
-   "label": "Зіставити формулу pmf / pdf з розподілом",
+   "label": "Match a pmf / pdf formula to its distribution",
    "lecture": "L4 p.25–30, L6 p.17, 21–27",
    "defs": [
     4,
@@ -100,7 +100,7 @@ const SELFTEST_BANK = {
   },
   {
    "id": "moments-compute",
-   "label": "Моменти: E(X²), Var, E(aX+b) — обчислити або «не визначити»",
+   "label": "Moments: E(X²), Var, E(aX+b) — compute or \"cannot be determined\"",
    "lecture": "L5 p.18–19, L6 p.13, 17",
    "defs": [
     12,
@@ -113,7 +113,7 @@ const SELFTEST_BANK = {
   },
   {
    "id": "variance-covariance",
-   "label": "Дисперсія суми та коваріація",
+   "label": "Variance of a sum and covariance",
    "lecture": "L5 p.24–25",
    "defs": [
     13,
@@ -125,7 +125,7 @@ const SELFTEST_BANK = {
   },
   {
    "id": "independence-logic",
-   "label": "Що випливає (і що ні) з незалежності, Cov = 0, однакового розподілу",
+   "label": "What does (not) follow from independence, Cov = 0, identical distribution",
    "lecture": "L5 p.22–26, 32",
    "defs": [
     13,
@@ -138,7 +138,7 @@ const SELFTEST_BANK = {
   },
   {
    "id": "pgf-factorial",
-   "label": "Факторіальні моменти та p.g.f.",
+   "label": "Factorial moments and the p.g.f.",
    "lecture": "L5 p.18, 28",
    "defs": [
     20,
@@ -150,7 +150,7 @@ const SELFTEST_BANK = {
   },
   {
    "id": "density",
-   "label": "Щільність: вимоги, нормувальна константа, впізнати розподіл за формулою",
+   "label": "Densities: requirements, normalising constant, recognise the distribution",
    "lecture": "L6 p.6, 8, 17–27",
    "defs": [
     7,
@@ -162,7 +162,7 @@ const SELFTEST_BANK = {
   },
   {
    "id": "normal-linear",
-   "label": "Нормальний: стандартизація, лінійні перетворення, суми незалежних",
+   "label": "Normal: standardising, linear transformations, sums of independent normals",
    "lecture": "L6 p.24, 15, 40",
    "defs": [
     11,
@@ -175,7 +175,7 @@ const SELFTEST_BANK = {
   },
   {
    "id": "normal-phi",
-   "label": "Нормальний: ймовірності через Φ",
+   "label": "Normal: probabilities through Φ",
    "lecture": "L6 p.21, 24",
    "defs": [
     11
@@ -186,7 +186,7 @@ const SELFTEST_BANK = {
   },
   {
    "id": "exponential",
-   "label": "Експоненційний: відсутність пам’яті, масштаб, суми",
+   "label": "Exponential: memorylessness, scaling, sums",
    "lecture": "L6 p.27–28, 48",
    "defs": [
     10,

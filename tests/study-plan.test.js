@@ -45,8 +45,8 @@ test('targets from the data become the right links', () => {
   assert.deepEqual(P.linkFor(task('d1-t4')), { kind: 'quiz', topics: [1, 2, 3] });
   assert.deepEqual(P.linkFor(task('d1-t5')), { kind: 'pomodoro', sessions: 3 });
   assert.deepEqual(P.linkFor(task('d2-t6')), { kind: 'pomodoro', sessions: 4 });
-  assert.equal(P.linkLabel(P.linkFor(task('d1-t1'))), 'Означення 1–6');
-  assert.equal(P.linkLabel(P.linkFor(task('d1-t3'))), 'Задачі 1, 2, 7');
+  assert.equal(P.linkLabel(P.linkFor(task('d1-t1'))), 'Definitions 1–6');
+  assert.equal(P.linkLabel(P.linkFor(task('d1-t3'))), 'Problems 1, 2, 7');
 });
 
 test('task status follows real results', () => {

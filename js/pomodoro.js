@@ -152,7 +152,7 @@ class PomodoroTimer {
     this.onTick();
     const btn = document.getElementById('pomodoro-toggle-btn');
     if (btn) {
-      const label = this.isRunning ? 'Пауза' : 'Почати фокус';
+      const label = this.isRunning ? 'Pause' : 'Start focus';
       btn.innerHTML = icon(this.isRunning ? 'pause' : 'play');
       btn.classList.toggle('is-running', this.isRunning);
       btn.title = label;
