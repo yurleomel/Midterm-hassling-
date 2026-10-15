@@ -719,7 +719,7 @@ html.dark .gr-open:hover { background-color: rgb(255 255 255 / 0.05); }
 [aria-checked="true"] > .gr-box { background: #047857; border-color: #047857; }              /* emerald-700: white tick 5.5:1 */
 [aria-checked="true"] > .gr-box .lucide-icon { opacity: 1; }
 .gr-check[aria-checked="true"]:hover .gr-box, .gr-can[aria-checked="true"]:hover .gr-box { background: #065f46; border-color: #065f46; }
-html.dark .gr-box { background: transparent; }
+html.dark :not([aria-checked="true"]) > .gr-box { background: transparent; }
 html.dark :is(.gr-check, .gr-can):hover .gr-box { border-color: #818cf8; box-shadow: 0 0 0 3px rgb(129 140 248 / 0.22); }
 html.dark :is(.gr-check, .gr-can)[aria-checked="true"]:hover .gr-box { background: #059669; border-color: #059669; }
 
