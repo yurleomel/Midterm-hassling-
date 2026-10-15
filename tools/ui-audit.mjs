@@ -954,6 +954,22 @@ const ST = js(`
     }
   };`);
 
+// Exam formula sheet helpers (run inside the page): fill the "name the rows" selects from the dialog's own
+// shuffled order (count rows, the one at index `wrong` with a wrong name) and scroll the dialog to its end
+const FS = js(`
+  window.__fs = {
+    pick(count, wrong = -1) {
+      const fs = window.formulaSheet;
+      [...document.querySelectorAll('#fs-dialog select[data-fs-slot]')].slice(0, count).forEach((s, i) => {
+        const [table, k] = s.dataset.fsSlot.split(':');
+        const id = fs.order[table][Number(k)];
+        s.value = i === wrong ? (id === 'normal' ? 'gamma' : 'normal') : id;
+        s.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+    },
+    end() { const body = document.querySelector('#fs-dialog .fs-body'); body.scrollTop = body.scrollHeight; }
+  };`);
+
 const STATES = [
   { name: 'login', vp: DESKTOP, roots: ['#auth-gate-modal'], shot: 'viewport',
     run: js(`window.app.switchTab('dashboard')`) },
@@ -1045,6 +1061,26 @@ const STATES = [
   { name: 'selftest-results', vp: DESKTOP, roots: ['#tab-selftests'], shot: 'full', run: js(`__st.next()`) },
   { name: 'topics', vp: DESKTOP, roots: ['#tab-topics'], shot: 'full', run: tab('topics') },
   { name: 'formulas', vp: DESKTOP, roots: ['#tab-formulas'], shot: 'full', run: tab('formulas') },
+  // Exam formula sheet (js/formula-sheet.js): the card on the Formulas tab, then the dialog in every view
+  { name: 'formula-sheet-card', vp: DESKTOP, roots: ['#formula-sheet-card'], shot: 'root',
+    run: js(`${FS}; ${tab('formulas')}; window.scrollTo(0, 0)`) },
+  { name: 'formula-sheet-study', vp: DESKTOP, roots: ['#fs-dialog'], shot: 'viewport',
+    run: js(`document.querySelector('#formula-sheet-card [data-fs-open="study"]').click()`) },
+  { name: 'formula-sheet-study-end', vp: DESKTOP, roots: ['#fs-dialog'], shot: 'viewport', run: js(`__fs.end()`) },
+  { name: 'formula-sheet-exam', vp: DESKTOP, roots: ['#fs-dialog'], shot: 'viewport',
+    run: js(`window.formulaSheet.open({ mode: 'exam' }); document.getElementById('fs-hide-headers').click()`) },
+  { name: 'formula-sheet-drill-checked', vp: DESKTOP, roots: ['#fs-dialog'], shot: 'viewport',
+    run: js(`window.formulaSheet.open({ mode: 'drill', level: 'rows' }); __fs.pick(6, 1);
+      document.querySelector('#fs-dialog [data-fs-action="check"]').click()`) },
+  { name: 'formula-sheet-drill-checked-end', vp: DESKTOP, roots: ['#fs-dialog'], shot: 'viewport', run: js(`__fs.end()`) },
+  { name: 'formula-sheet-cell-picked', vp: DESKTOP, roots: ['#fs-dialog'], shot: 'viewport',
+    run: js(`(() => { window.formulaSheet.setLevel('cells');
+      const cell = window.formulaSheet.cell;
+      document.querySelector('[data-fs-pick-row="' + (cell.rowId === 'gamma' ? 'binomial' : 'gamma') + '"]').click();
+      document.querySelector('[data-fs-pick-col="' + cell.col + '"]').click(); })()`) },
+  { name: 'formula-sheet-cell-checked', vp: DESKTOP, roots: ['#fs-dialog'], shot: 'viewport',
+    run: js(`document.querySelector('#fs-dialog [data-fs-action="check-cell"]').click()`),
+    after: js(`window.formulaSheet.close()`) },
   { name: 'dashboard-progress', vp: DESKTOP, roots: ['#app-sidebar', '#tab-dashboard'], shot: 'full',
     run: js(`(() => {
       const up = window.userProfile;
@@ -1099,6 +1135,9 @@ const STATES = [
   { name: 'phone-exams', vp: PHONE, roots: ['#user-profile-modal'], shot: 'viewport',
     run: js(`window.rewards.open('exams')`),
     after: js(`window.rewards.close()`) },
+  { name: 'phone-formula-sheet-drill', vp: PHONE, roots: ['#fs-dialog'], shot: 'viewport',
+    run: js(`window.app.switchTab('formulas'); window.formulaSheet.open({ mode: 'drill', level: 'rows' }); __fs.pick(2)`),
+    after: js(`window.formulaSheet.close()`) },
   { name: 'phone-drawer', vp: PHONE, roots: ['#app-sidebar'], shot: 'viewport',
     run: js(`window.scrollTo(0, 0); document.getElementById('nav-open-btn').click()`),
     after: js(`document.getElementById('nav-close-btn').click()`) }
