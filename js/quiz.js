@@ -362,9 +362,9 @@ class QuizManager {
         </div>
 
         <div class="flex flex-wrap gap-2 mb-3">
-          ${modeButton('mistakes', `${icon('repeat')} Мої помилки (${mistakesCount})`)}
-          ${modeButton('mix', `${icon('dices')} Мікс: ${QuizManager.MIX_SIZE} випадкових з усіх тем`)}
-          ${window.SELFTEST_BANK ? `<button class="quiz-goto-selftests px-3 py-2 rounded-xl border border-violet-700/70 bg-violet-950/40 text-violet-200 hover:border-violet-500 hover:text-white text-xs font-semibold cursor-pointer transition">${icon('clipboard-check')} Self-тести з LMS (${window.SELFTEST_BANK.tasks.length} задач)</button>` : ''}
+          ${modeButton('mistakes', `${icon('repeat')} My mistakes (${mistakesCount})`)}
+          ${modeButton('mix', `${icon('dices')} Mix: ${QuizManager.MIX_SIZE} random from all topics`)}
+          ${window.SELFTEST_BANK ? `<button class="quiz-goto-selftests px-3 py-2 rounded-xl border border-violet-700/70 bg-violet-950/40 text-violet-200 hover:border-violet-500 hover:text-white text-xs font-semibold cursor-pointer transition">${icon('clipboard-check')} LMS self-tests (${window.SELFTEST_BANK.tasks.length} tasks)</button>` : ''}
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
@@ -434,9 +434,9 @@ class QuizManager {
         host.innerHTML = `
           <div class="p-8 rounded-2xl border border-emerald-700/60 bg-slate-900 text-center">
             <div class="text-4xl mb-2">${icon('party-popper', 'text-amber-400')}</div>
-            <h3 class="text-lg font-bold text-slate-100 mb-1">Помилок у тестах немає</h3>
-            <p class="text-xs text-slate-400 mb-4">Сюди потрапляють питання, на які відповідь була неправильна. Правильна відповідь прибирає питання зі списку.</p>
-            <button class="quiz-mode-btn px-5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold cursor-pointer transition" data-quiz-mode="mix">${icon('dices')} Мікс: ${QuizManager.MIX_SIZE} випадкових питань</button>
+            <h3 class="text-lg font-bold text-slate-100 mb-1">No test mistakes</h3>
+            <p class="text-xs text-slate-400 mb-4">Questions you answered wrongly land here. A correct answer removes a question from the list.</p>
+            <button class="quiz-mode-btn px-5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold cursor-pointer transition" data-quiz-mode="mix">${icon('dices')} Mix: ${QuizManager.MIX_SIZE} random questions</button>
           </div>
         `;
         host.querySelector('.quiz-mode-btn')?.addEventListener('click', () => this.startQuiz('mix'));
@@ -462,10 +462,10 @@ class QuizManager {
           <div class="mb-4 p-3.5 rounded-xl bg-emerald-950/70 border border-emerald-600/70 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
             <div class="flex items-center gap-2 text-emerald-200">
               <span class="text-base">${icon('circle-check')}</span>
-              <span><strong>Тест з цієї теми вже пройдено!</strong> Результат: <strong>${this.readinessState.topicTestsSolved[this.activeTopicId].score}/${this.readinessState.topicTestsSolved[this.activeTopicId].total || 50} (${Math.round((this.readinessState.topicTestsSolved[this.activeTopicId].score / (this.readinessState.topicTestsSolved[this.activeTopicId].total || 50)) * 100)}%)</strong>. Зараховано до прогресу.</span>
+              <span><strong>You have passed this topic test.</strong> Score: <strong>${this.readinessState.topicTestsSolved[this.activeTopicId].score}/${this.readinessState.topicTestsSolved[this.activeTopicId].total || 50} (${Math.round((this.readinessState.topicTestsSolved[this.activeTopicId].score / (this.readinessState.topicTestsSolved[this.activeTopicId].total || 50)) * 100)}%)</strong>. Counted towards readiness.</span>
             </div>
             <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-800 text-white shrink-0 self-start sm:self-center">
-              ПРОЙДЕНО ${icon('check')}
+              PASSED ${icon('check')}
             </span>
           </div>
         ` : ''}
@@ -515,7 +515,7 @@ class QuizManager {
               Click any circle below to jump to a question
             </div>
             <button id="quiz-next-btn" class="px-5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs transition">
-              ${this.currentIndex === this.currentQuiz.length - 1 ? (this.isPracticeMode() ? `Завершити ${icon('flag')}` : `Finish Topic Test ${icon('flag')}`) : `Next Question ${icon('chevron-right')}`}
+              ${this.currentIndex === this.currentQuiz.length - 1 ? (this.isPracticeMode() ? `Finish ${icon('flag')}` : `Finish Topic Test ${icon('flag')}`) : `Next Question ${icon('chevron-right')}`}
             </button>
           </div>
 
@@ -588,11 +588,11 @@ class QuizManager {
         expBox.innerHTML = `
           <div class="flex items-center gap-2 mb-2">
             <span class="px-2 py-0.5 rounded text-[10px] font-bold ${previousAnswer.correct ? 'bg-emerald-800 text-white' : 'bg-rose-800 text-white'}">
-              ${previousAnswer.correct ? `${icon('check')} ВІДПОВІДЬ ПРАВИЛЬНА` : `${icon('x')} ВІДПОВІДЬ ПОМИЛКОВА`}
+              ${previousAnswer.correct ? `${icon('check')} CORRECT` : `${icon('x')} INCORRECT`}
             </span>
-            <span class="text-xs text-slate-400">${this.sessionAnswers ? 'Відповідь у цій спробі вже є' : 'Питання вже розв\'язано раніше'}</span>
+            <span class="text-xs text-slate-400">${this.sessionAnswers ? 'Already answered in this attempt' : 'Already solved earlier'}</span>
           </div>
-          <div><strong>Пояснення:</strong> ${q.explanation}</div>
+          <div><strong>Explanation:</strong> ${q.explanation}</div>
         `;
         this.renderMath(expBox);
       }
@@ -680,18 +680,18 @@ class QuizManager {
 
     // Answers may have cleared mistakes — keep the selector's counter in sync
     const mistakesBtn = document.querySelector('.quiz-mode-btn[data-quiz-mode="mistakes"]');
-    if (mistakesBtn) mistakesBtn.innerHTML = `${icon('repeat')} Мої помилки (${this.getMistakeQuestions().length})`;
+    if (mistakesBtn) mistakesBtn.innerHTML = `${icon('repeat')} My mistakes (${this.getMistakeQuestions().length})`;
 
     const practice = {
       mistakes: {
-        title: 'Робота над помилками завершена',
-        text: `Правильні відповіді прибрано з реєстру помилок. Залишилось: <strong>${this.getMistakeQuestions().length}</strong>.`,
-        retry: `${icon('repeat')} Прорішати залишок`
+        title: 'Mistakes round complete',
+        text: `Correct answers were removed from your mistakes. Left: <strong>${this.getMistakeQuestions().length}</strong>.`,
+        retry: `${icon('repeat')} Practise the rest`
       },
       mix: {
-        title: 'Мікс-тест завершено',
-        text: 'Випадкові питання з усіх 12 тем — хороший спосіб перевірити, що теми не переплутались.',
-        retry: `${icon('dices')} Новий мікс`
+        title: 'Mix complete',
+        text: 'Random questions from all 12 topics: a good check that the topics have not blurred together.',
+        retry: `${icon('dices')} New mix`
       }
     }[this.activeTopicId];
 

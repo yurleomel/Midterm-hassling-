@@ -48,7 +48,7 @@ class AppController {
     const syncToggle = () => {
       if (!themeToggle) return;
       const isDark = root.classList.contains('dark');
-      const label = isDark ? 'Увімкнути світлу тему' : 'Увімкнути темну тему';
+      const label = isDark ? 'Switch to light theme' : 'Switch to dark theme';
       themeToggle.innerHTML = icon(isDark ? 'moon' : 'sun');
       themeToggle.title = label;
       themeToggle.setAttribute('aria-label', label);
@@ -154,8 +154,8 @@ class AppController {
 
     const DAY_MS = 86400000;
     const formatCountdown = (diffMs) => {
-      if (diffMs <= -DAY_MS) return 'Завершено';
-      if (diffMs <= 0) return 'Сьогодні!';
+      if (diffMs <= -DAY_MS) return 'Finished';
+      if (diffMs <= 0) return 'Today!';
       const totalSec = Math.floor(diffMs / 1000);
       const d = Math.floor(totalSec / 86400);
       const h = Math.floor((totalSec % 86400) / 3600);
@@ -194,23 +194,23 @@ class AppController {
         <span class="flex items-center gap-1.5 text-slate-300 font-medium whitespace-nowrap">${icon(iconName, iconClass)} ${label}</span>
         <span class="font-bold tabular-nums whitespace-nowrap ${valueClass}">${value}</span>`;
       // A day after the exam the timer has nothing left to count: invite to enter the grade instead
-      const pending = diff => (diff <= -DAY_MS ? ['Внести оцінку', 'text-slate-400 font-semibold'] : [formatCountdown(diff), '']);
+      const pending = diff => (diff <= -DAY_MS ? ['Add grade', 'text-slate-400 font-semibold'] : [formatCountdown(diff), '']);
 
       if (colEl) {
         if (grades.colloquium?.grade) {
-          colEl.innerHTML = row('target', 'text-amber-400', 'Колоквіум', grades.colloquium.grade, 'text-emerald-400');
+          colEl.innerHTML = row('target', 'text-amber-400', 'Colloquium', grades.colloquium.grade, 'text-emerald-400');
         } else {
           const [value, cls] = pending(colDiff);
-          colEl.innerHTML = row('zap', 'text-amber-400', 'Колоквіум', value, cls || 'text-amber-400');
+          colEl.innerHTML = row('zap', 'text-amber-400', 'Colloquium', value, cls || 'text-amber-400');
         }
       }
 
       if (midEl) {
         if (grades.midterm?.grade) {
-          midEl.innerHTML = row('trophy', 'text-emerald-400', 'Мідтерм', grades.midterm.grade, 'text-emerald-400');
+          midEl.innerHTML = row('trophy', 'text-emerald-400', 'Midterm', grades.midterm.grade, 'text-emerald-400');
         } else {
           const [value, cls] = pending(midDiff);
-          midEl.innerHTML = row('flame', 'text-rose-400', 'Мідтерм', value, cls || 'text-rose-400');
+          midEl.innerHTML = row('flame', 'text-rose-400', 'Midterm', value, cls || 'text-rose-400');
         }
       }
 
@@ -220,7 +220,7 @@ class AppController {
 
       if (colCardTimer) {
         if (grades.colloquium?.grade) {
-          colCardTimer.innerHTML = `<span class="text-emerald-400 text-lg">${icon('party-popper')} Складено (${grades.colloquium.grade})</span>`;
+          colCardTimer.innerHTML = `<span class="text-emerald-400 text-lg">${icon('party-popper')} Passed (${grades.colloquium.grade})</span>`;
         } else {
           colCardTimer.textContent = formatCountdown(colDiff);
         }
@@ -228,7 +228,7 @@ class AppController {
 
       if (midCardTimer) {
         if (grades.midterm?.grade) {
-          midCardTimer.innerHTML = `<span class="text-emerald-400 text-lg">${icon('trophy')} Складено (${grades.midterm.grade})</span>`;
+          midCardTimer.innerHTML = `<span class="text-emerald-400 text-lg">${icon('trophy')} Passed (${grades.midterm.grade})</span>`;
         } else {
           midCardTimer.textContent = formatCountdown(midDiff);
         }
@@ -255,7 +255,7 @@ class AppController {
     const { state, focus } = StudyPlan.timeline(dates, StudyPlan.dateKey(new Date()));
     if (!this.planOpenDays) this.planOpenDays = new Set([focus]);
     const esc = v => String(v ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-    const dateLabel = key => (key ? new Date(`${key}T12:00`).toLocaleDateString('uk-UA', { weekday: 'short', day: 'numeric', month: 'short' }) : '');
+    const dateLabel = key => (key ? new Date(`${key}T12:00`).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }) : '');
 
     host.innerHTML = days.map(day => {
       const key = dates[day.day];
@@ -265,18 +265,18 @@ class AppController {
       const when = state[day.day];
       const open = this.planOpenDays.has(day.day);
       const badge = allDone
-        ? `<span class="plan-badge bg-emerald-600 text-white">${icon('check')} Виконано</span>`
-        : when === 'today' ? `<span class="plan-badge bg-indigo-600 text-white">${icon('zap')} Сьогодні</span>`
-        : when === 'past' ? `<span class="plan-badge bg-slate-800 text-slate-400">Минув</span>`
-        : `<span class="plan-badge bg-slate-800 text-slate-300">День ${day.day}</span>`;
+        ? `<span class="plan-badge bg-emerald-600 text-white">${icon('check')} Done</span>`
+        : when === 'today' ? `<span class="plan-badge bg-indigo-600 text-white">${icon('zap')} Today</span>`
+        : when === 'past' ? `<span class="plan-badge bg-slate-800 text-slate-400">Past</span>`
+        : `<span class="plan-badge bg-slate-800 text-slate-300">Day ${day.day}</span>`;
 
       const tasks = day.tasks.map((task, i) => {
         const link = StudyPlan.linkFor(task);
         const st = statuses[i];
         const manual = StudyPlan.isManual(link);
         const mark = manual
-          ? `<button class="plan-check ${st.done ? 'is-checked' : ''}" role="checkbox" aria-checked="${st.done}" data-plan-check="${task.id}" title="${st.done ? 'Зняти позначку' : 'Позначити виконаним'}">${st.done ? icon('check') : ''}</button>`
-          : `<span class="plan-dot ${st.done ? 'is-done' : ''}" title="Відмічається автоматично за результатом">${st.done ? icon('check') : ''}</span>`;
+          ? `<button class="plan-check ${st.done ? 'is-checked' : ''}" role="checkbox" aria-checked="${st.done}" data-plan-check="${task.id}" title="${st.done ? 'Untick' : 'Mark as done'}">${st.done ? icon('check') : ''}</button>`
+          : `<span class="plan-dot ${st.done ? 'is-done' : ''}" title="Ticks itself off from your results">${st.done ? icon('check') : ''}</span>`;
         const progress = st.need ? `<span class="plan-progress ${st.done ? 'text-emerald-400' : 'text-slate-400'}">${st.have}/${st.need}</span>`
           : st.left ? `<span class="plan-progress text-rose-400">${st.left}</span>` : '';
         return `
@@ -304,8 +304,8 @@ class AppController {
               <p class="text-xs text-slate-400 mb-3 leading-relaxed">${esc(day.description)}</p>
               <div class="space-y-1">${tasks}</div>
               <div class="mt-3 p-2.5 rounded-lg bg-slate-950/60 border border-slate-800/80 text-xs text-amber-300/90 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                <span>${icon('flag')} <strong>Мета дня:</strong> ${esc(day.colloquiumGoal)}</span>
-                ${day.day <= StudyPlan.BONUS_DAYS ? `<span class="text-[11px] whitespace-nowrap ${allDone ? 'text-emerald-400 font-bold' : 'text-slate-400'}">${allDone ? `${icon('check')} +2% зараховано` : '+2% до готовності, коли все виконано'}</span>` : ''}
+                <span>${icon('flag')} <strong>Goal of the day:</strong> ${esc(day.colloquiumGoal)}</span>
+                ${day.day <= StudyPlan.BONUS_DAYS ? `<span class="text-[11px] whitespace-nowrap ${allDone ? 'text-emerald-400 font-bold' : 'text-slate-400'}">${allDone ? `${icon('check')} +2% earned` : '+2% readiness once everything is done'}</span>` : ''}
               </div>
             </div>` : ''}
         </div>`;
@@ -505,13 +505,13 @@ class AppController {
               <p><strong>Formal Definition:</strong> ${this.formatMd(def.definition)}</p>
               ${def.keyPoints?.length ? `
                 <div class="p-3 rounded-lg bg-indigo-950/40 border border-indigo-600/60">
-                  <div class="font-bold text-indigo-200 mb-1.5">${icon('pin')} Обов'язково знати (${def.keyPoints.length})</div>
+                  <div class="font-bold text-indigo-200 mb-1.5">${icon('pin')} Must know (${def.keyPoints.length})</div>
                   <ul class="list-disc pl-4 space-y-1 text-slate-200">
                     ${def.keyPoints.map(p => `<li>${this.formatMd(p)}</li>`).join('')}
                   </ul>
                 </div>
               ` : ''}
-              ${def.example ? `<p><strong>${icon('lightbulb')} Приклад:</strong> ${this.formatMd(def.example)}</p>` : ''}
+              ${def.example ? `<p><strong>${icon('lightbulb')} Example:</strong> ${this.formatMd(def.example)}</p>` : ''}
               <div class="p-2.5 rounded bg-amber-950/30 border border-amber-800/50 text-amber-200">
                 <strong>${icon('target')} Colloquium Oral Tip:</strong> ${this.formatMd(def.colloquiumTip)}
               </div>
@@ -595,7 +595,7 @@ class AppController {
           <h4 class="font-bold text-slate-100 text-sm mb-1">${def.name}</h4>
           <div class="text-xs text-slate-400 font-mono mb-2">$${def.latex}$</div>
           <p class="text-xs text-slate-300 line-clamp-3 mb-2">${this.formatMd(def.definition)}</p>
-          ${def.keyPoints?.length ? `<div class="text-[11px] font-semibold text-indigo-300 mb-3">${icon('pin')} Обов'язково знати: ${def.keyPoints.length}</div>` : ''}
+          ${def.keyPoints?.length ? `<div class="text-[11px] font-semibold text-indigo-300 mb-3">${icon('pin')} Must know: ${def.keyPoints.length}</div>` : ''}
           <div class="flex justify-between items-center text-[11px] pt-2 border-t border-slate-800/80">
             <span class="text-amber-400/90 font-medium truncate max-w-[160px]">${icon('triangle-alert')} ${this.formatMd(def.trap)}</span>
             <button class="def-jump-btn text-indigo-400 hover:text-indigo-300 font-semibold" data-def-index="${def.id - 1}">Test / Practice ${icon('arrow-right')}</button>
@@ -688,14 +688,14 @@ class AppController {
     const direction = window.PS_DATA?.PROBLEM_DIRECTIONS?.[prob.id];
     if (direction) {
       steps.push({
-        label: `${icon('compass')} Куди рухатись?`,
-        html: `<strong>${icon('compass')} Напрямок:</strong> ${direction}`,
+        label: `${icon('compass')} Where to start?`,
+        html: `<strong>${icon('compass')} Direction:</strong> ${direction}`,
         cls: 'p-2.5 rounded-lg bg-amber-950/30 border border-amber-800/50 text-amber-100'
       });
     }
     const hints = prob.hints || [];
     hints.forEach((h, i) => steps.push({
-      label: `${icon('lightbulb')} Підказка ${i + 1} з ${hints.length}`,
+      label: `${icon('lightbulb')} Hint ${i + 1} of ${hints.length}`,
       html: h,
       cls: 'text-slate-300'
     }));
@@ -711,10 +711,10 @@ class AppController {
     return `
       <div class="text-xs bg-slate-950/60 p-3 rounded-xl border border-slate-800">
         <div class="flex flex-wrap items-center justify-between gap-2">
-          <span class="font-semibold text-amber-300">${icon('lightbulb')} Підказки${shown ? ` · відкрито ${shown} з ${steps.length}` : ' — не розв\'язок, а поштовх'}</span>
+          <span class="font-semibold text-amber-300">${icon('lightbulb')} Hints${shown ? ` · ${shown} of ${steps.length} open` : ' — a nudge, not the solution'}</span>
           ${next
             ? `<button class="hint-next-btn px-3 py-1 rounded-lg bg-amber-950/60 hover:bg-amber-900 border border-amber-800 text-amber-200 font-semibold cursor-pointer transition" data-prob-id="${prob.id}">${next.label}</button>`
-            : '<span class="text-[11px] text-slate-500">Підказки закінчились — далі тільки повний розв\'язок нижче</span>'}
+            : '<span class="text-[11px] text-slate-500">No more hints: the full solution is below</span>'}
         </div>
         ${shown ? `
           <div class="mt-2.5 pt-2.5 border-t border-slate-800 space-y-2">
@@ -790,7 +790,7 @@ class AppController {
             </div>
             <p class="text-xs text-slate-300 mb-2">${prob.inputPrompt || 'Enter final answer:'}</p>
             <div class="flex flex-col sm:flex-row gap-2">
-              <input type="text" id="prob-input-${prob.id}" placeholder="Твоя відповідь…"
+              <input type="text" id="prob-input-${prob.id}" placeholder="Your answer…"
                      value="${isSolved ? prob.expectedAnswer : ''}" ${isSolved ? 'disabled' : ''}
                      class="flex-1 px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-xs text-slate-100 font-mono focus:outline-none focus:border-indigo-500">
               <button class="prob-submit-btn px-5 py-2 rounded-lg ${isSolved ? 'bg-emerald-600' : 'bg-indigo-600 hover:bg-indigo-500'} text-white font-bold text-xs transition" 
@@ -914,11 +914,11 @@ class AppController {
             <h3 class="text-xl font-extrabold text-slate-100">${t.title}</h3>
             ${isSolved ? `
               <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-950 text-emerald-300 border border-emerald-700 shrink-0 self-start sm:self-center">
-                ${icon('check')} Пройдено: ${score}/${total} (${pct}%)
+                ${icon('check')} Passed: ${score}/${total} (${pct}%)
               </span>
             ` : `
               <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-800 text-slate-400 shrink-0 self-start sm:self-center">
-                Не пройдено (50 Q)
+                Not passed yet (50 Q)
               </span>
             `}
           </div>
@@ -928,10 +928,10 @@ class AppController {
           </div>
           <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between">
             <div class="text-xs text-slate-400">
-              ${isSolved ? `<span class="text-emerald-400 font-semibold">${icon('check')} Зараховано до прогресу підготовки (+1%)</span>` : 'Пройдіть тест для зарахування +1% до готовності'}
+              ${isSolved ? `<span class="text-emerald-400 font-semibold">${icon('check')} Counted towards readiness (+1%)</span>` : 'Pass the test to add +1% readiness'}
             </div>
             <button class="topic-quiz-btn px-4 py-2 rounded-lg ${isSolved ? 'bg-indigo-700 hover:bg-indigo-600' : 'bg-indigo-600 hover:bg-indigo-500'} text-white font-semibold text-xs transition flex items-center gap-1.5" data-topic-id="${t.id}">
-              ${isSolved ? `${icon('rotate-ccw')} Пройти повторно (50 Q)` : `${icon('brain')} Quiz on this Topic (50 Q)`}
+              ${isSolved ? `${icon('rotate-ccw')} Retake (50 Q)` : `${icon('brain')} Quiz on this Topic (50 Q)`}
             </button>
           </div>
         </div>
@@ -1010,11 +1010,11 @@ class AppController {
         botBubble.className = 'p-3.5 rounded-xl bg-amber-950/80 text-amber-200 self-start max-w-[90%] text-xs border border-amber-800 leading-relaxed';
         botBubble.innerHTML = `
           <div class="font-bold text-amber-300 mb-1 flex items-center gap-1.5">
-            ${icon('triangle-alert')} <span>Потрібен Gemini API Key:</span>
+            ${icon('triangle-alert')} <span>Gemini API key needed:</span>
           </div>
-          <div>Для спілкування з Gemini AI Ментором введіть ваш персональний ключ Google AI Studio. Це безкоштовно та займає 10 секунд!</div>
+          <div>To chat with the Gemini mentor, add your own Google AI Studio key. It is free and takes 10 seconds.</div>
           <button id="chat-need-key-btn" class="mt-2.5 px-3 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs shadow transition">
-            ${icon('key-round')} Налаштувати API Key
+            ${icon('key-round')} Set up API key
           </button>
         `;
         messages?.appendChild(botBubble);
@@ -1092,12 +1092,12 @@ class AppController {
       if (!candidate) {
         if (statusBox) {
           statusBox.className = 'p-3 rounded-xl text-xs font-semibold bg-rose-950/80 border border-rose-800 text-rose-300';
-          statusBox.textContent = 'Будь ласка, введіть API ключ перед тестуванням!';
+          statusBox.textContent = 'Enter an API key before testing.';
           statusBox.classList.remove('hidden');
         }
         return;
       }
-      testBtn.innerHTML = `${icon('hourglass')} Перевірка...`;
+      testBtn.innerHTML = `${icon('hourglass')} Checking…`;
       const res = await window.geminiMentor?.testConnection(candidate);
       testBtn.innerHTML = `${icon('zap')} Test Connection`;
       if (statusBox) {
@@ -1124,16 +1124,16 @@ class AppController {
       window.geminiMentor?.setApiKey(key);
       modal?.classList.add('hidden');
       window.geminiMentor?.updateKeyStatusUI();
-      alert('Налаштування Gemini AI збережено!');
+      alert('Gemini settings saved.');
     });
 
     clearBtn?.addEventListener('click', () => {
-      if (confirm('Очистити збережений API ключ?')) {
+      if (confirm('Clear the saved API key?')) {
         window.geminiMentor?.setApiKey('');
         if (keyInput) keyInput.value = '';
         if (statusBox) {
           statusBox.className = 'p-3 rounded-xl text-xs font-semibold bg-amber-950/80 border border-amber-800 text-amber-300';
-          statusBox.textContent = 'Ключ очищено.';
+          statusBox.textContent = 'Key cleared.';
           statusBox.classList.remove('hidden');
         }
       }
@@ -1161,7 +1161,7 @@ class AppController {
       }
 
       if (!window.geminiMentor?.hasValidApiKey()) {
-        const wantsKey = confirm("Для строгої перевірки нейромережею Gemini підключіть ваш безкоштовний API Key.\nНатисніть 'OK' щоб ввести ключ, або 'Скасувати' для офлайн-оцінки.");
+        const wantsKey = confirm("For a strict check by Gemini, connect your free API key.\nPress OK to enter a key, or Cancel to grade offline.");
         if (wantsKey) {
           document.getElementById('gemini-settings-modal')?.classList.remove('hidden');
           return;

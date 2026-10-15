@@ -15,7 +15,7 @@ const WARDROBE_ITEMS = [
     icon: 'shirt',
     badge: '0% Required',
     color: '#3b82f6',
-    description: 'Класична біло-синя футболка першокурсника УКУ для старту підготовки до колоквіуму та мідтерму.',
+    description: 'The classic blue-and-white UCU freshman tee, where colloquium and midterm prep begins.',
     renderSvg: (color) => `
       <g id="outfit-freshman_tee">
         <path d="M30 65 L45 50 L55 58 L65 50 L80 65 L72 75 L65 70 L65 105 L45 105 L45 70 L38 75 Z" fill="${color}" stroke="#1e293b" stroke-width="2"/>
@@ -31,7 +31,7 @@ const WARDROBE_ITEMS = [
     icon: 'graduation-cap',
     badge: '15% Required',
     color: '#10b981',
-    description: 'Кепка фокусу та антивідблискові окуляри для тривалого вивчення формул і лекцій.',
+    description: 'A focus cap and anti-glare glasses for long sessions with formulas and lectures.',
     renderSvg: (color) => `
       <g id="outfit-focus_cap">
         <path d="M36 32 Q55 18 74 32 L83 34 Q55 24 32 34 Z" fill="${color}" stroke="#065f46" stroke-width="2"/>
@@ -50,7 +50,7 @@ const WARDROBE_ITEMS = [
     icon: 'laptop',
     badge: '25% APPS Merch',
     color: '#1e1b4b',
-    description: 'Офіційне темне худі Факультету прикладних наук (APPS / CS@UCU) з емблемою факультету та кодом </>. store.ucu.edu.ua',
+    description: 'The dark hoodie of the Faculty of Applied Sciences (APPS / CS@UCU) with the faculty emblem and </>. store.ucu.edu.ua',
     renderSvg: (color) => `
       <g id="outfit-apps_cs_hoodie">
         <path d="M28 65 L44 48 L55 56 L66 48 L82 65 L74 76 L66 70 L66 108 L44 108 L44 70 L36 76 Z" fill="#1e1b4b" stroke="#0f172a" stroke-width="2"/>
@@ -70,31 +70,31 @@ const WARDROBE_ITEMS = [
     icon: 'shirt',
     badge: '35% Required',
     color: '#4f46e5',
-    description: 'Тепле університетське худі насиченого індиго-кольору з гербом УКУ. Зручне для занять у Колегіумі.',
+    description: 'A warm deep-indigo hoodie with the UCU crest. Made for long days in the Collegium.',
     renderSvg: (color) => `
       <g id="outfit-ucu_hoodie">
         <path d="M28 65 L44 48 L55 56 L66 48 L82 65 L74 76 L66 70 L66 108 L44 108 L44 70 L36 76 Z" fill="${color}" stroke="#312e81" stroke-width="2"/>
         <path d="M44 48 Q55 62 66 48 Q55 42 44 48 Z" fill="#4338ca"/>
         <line x1="51" y1="56" x2="51" y2="72" stroke="#e2e8f0" stroke-width="1.5"/>
         <line x1="59" y1="56" x2="59" y2="72" stroke="#e2e8f0" stroke-width="1.5"/>
-        <text x="55" y="86" text-anchor="middle" font-size="7" font-weight="bold" fill="#fbbf24">УКУ CS</text>
+        <text x="55" y="86" text-anchor="middle" font-size="7" font-weight="bold" fill="#fbbf24">UCU CS</text>
       </g>
     `
   },
   {
     id: 'velykogo_raglan',
-    name: 'Реглан «Великого бажайте!»',
+    name: 'Desire Great Things Raglan',
     minReadiness: 45,
     icon: 'sparkles',
     badge: '45% UCU Icon',
     color: '#18181b',
-    description: 'Культовий чорний реглан з духовним гаслом патріарха Йосифа Сліпого «Великого бажайте!». store.ucu.edu.ua',
+    description: 'The black raglan with Patriarch Josyf Slipyj’s motto “Desire great things!”. store.ucu.edu.ua',
     renderSvg: (color) => `
       <g id="outfit-velykogo_raglan">
         <path d="M28 65 L44 48 L55 58 L66 48 L82 65 L74 76 L66 70 L66 108 L44 108 L44 70 L36 76 Z" fill="#18181b" stroke="#09090b" stroke-width="2"/>
         <path d="M50 58 Q55 64 60 58" fill="none" stroke="#27272a" stroke-width="2"/>
-        <text x="55" y="78" text-anchor="middle" font-size="5" font-family="sans-serif" font-weight="900" fill="#fafafa">ВЕЛИКОГО</text>
-        <text x="55" y="86" text-anchor="middle" font-size="5" font-family="sans-serif" font-weight="900" fill="#fafafa">БАЖАЙТЕ!</text>
+        <text x="55" y="78" text-anchor="middle" font-size="5" font-family="sans-serif" font-weight="900" fill="#fafafa">DESIRE</text>
+        <text x="55" y="86" text-anchor="middle" font-size="5" font-family="sans-serif" font-weight="900" fill="#fafafa">GREAT THINGS!</text>
         <circle cx="55" cy="95" r="2.5" fill="#eab308"/>
       </g>
     `
@@ -106,7 +106,7 @@ const WARDROBE_ITEMS = [
     icon: 'briefcase',
     badge: '55% Required',
     color: '#1e293b',
-    description: 'Діловий костюм з краваткою для урочистого захисту усних питань на середовому Колоквіумі 2.',
+    description: 'A suit and tie for defending your oral questions at Colloquium 2.',
     renderSvg: (color) => `
       <g id="outfit-colloquium_suit">
         <path d="M28 65 L45 48 L55 60 L65 48 L82 65 L74 76 L66 70 L66 108 L44 108 L44 70 L36 76 Z" fill="#0f172a" stroke="#020617" stroke-width="2"/>
@@ -119,29 +119,29 @@ const WARDROBE_ITEMS = [
   },
   {
     id: 'ucu_shmot_sweatshirt',
-    name: 'Світшот «Шмот» УКУ',
+    name: 'Shmot Sweatshirt',
     minReadiness: 65,
     icon: 'wine',
     badge: '65% Campus Classic',
     color: '#881337',
-    description: 'Фірмовий бордовий світшот «Шмот» з автентичної колекції одягу крамнички УКУ. store.ucu.edu.ua',
+    description: 'The burgundy “Shmot” sweatshirt from the UCU store. store.ucu.edu.ua',
     renderSvg: (color) => `
       <g id="outfit-ucu_shmot_sweatshirt">
         <path d="M28 65 L44 48 L55 58 L66 48 L82 65 L74 76 L66 70 L66 108 L44 108 L44 70 L36 76 Z" fill="#881337" stroke="#4c0519" stroke-width="2"/>
         <circle cx="55" cy="56" r="6" fill="#be123c"/>
-        <text x="55" y="81" text-anchor="middle" font-size="7" font-weight="900" fill="#ffffff">ШМОТ</text>
+        <text x="55" y="81" text-anchor="middle" font-size="7" font-weight="900" fill="#ffffff">SHMOT</text>
         <text x="55" y="93" text-anchor="middle" font-size="4.5" font-weight="bold" fill="#fecdd3">store.ucu</text>
       </g>
     `
   },
   {
     id: 'sheptytsky_blanket_socks',
-    name: 'Коцик і теплі шкарпетки Шептицького',
+    name: 'Sheptytsky Blanket & Socks',
     minReadiness: 75,
     icon: 'snowflake',
     badge: '75% Study Gear',
     color: '#065f46',
-    description: 'Набір витривалого студента з Центру Шептицького: затишний теплий коцик та в\'язані шкарпетки УКУ.',
+    description: 'A long-night survival kit from the Sheptytsky Center: a cosy blanket and knitted UCU socks.',
     renderSvg: (color) => `
       <g id="outfit-sheptytsky_blanket_socks">
         <path d="M26 62 L44 46 L55 56 L66 46 L84 62 L80 90 L68 85 L68 108 L42 108 L42 85 L30 90 Z" fill="#047857" stroke="#064e3b" stroke-width="2"/>
@@ -149,18 +149,18 @@ const WARDROBE_ITEMS = [
         <line x1="32" y1="78" x2="78" y2="78" stroke="#f59e0b" stroke-width="1" stroke-dasharray="2,2"/>
         <line x1="48" y1="52" x2="48" y2="105" stroke="#34d399" stroke-width="1"/>
         <line x1="62" y1="52" x2="62" y2="105" stroke="#34d399" stroke-width="1"/>
-        <text x="55" y="96" text-anchor="middle" font-size="5" font-weight="bold" fill="#fef08a">ШЕПТИЦЬКИЙ</text>
+        <text x="55" y="96" text-anchor="middle" font-size="5" font-weight="bold" fill="#fef08a">SHEPTYTSKY</text>
       </g>
     `
   },
   {
     id: 'tech_lab_vest',
-    name: 'Брендована жилетка інженера APPS Lab',
+    name: 'APPS Lab Vest',
     minReadiness: 85,
     icon: 'wrench',
     badge: '85% Sheptytsky Tech',
     color: '#0f172a',
-    description: 'Жилетка розробника та інженера Sheptytsky Tech Lab / APPS з фірмовою нашивкою для лабораторій.',
+    description: 'An engineer’s vest from the Sheptytsky Tech Lab / APPS, with the lab patch.',
     renderSvg: (color) => `
       <g id="outfit-tech_lab_vest">
         <path d="M28 65 L44 48 L55 58 L66 48 L82 65 L74 76 L66 70 L66 108 L44 108 L44 70 L36 76 Z" fill="#cbd5e1" stroke="#64748b" stroke-width="1.5"/>
@@ -178,7 +178,7 @@ const WARDROBE_ITEMS = [
     icon: 'wand-sparkles',
     badge: '95% Required',
     color: '#7e22ce',
-    description: 'Магічна фіолетова мантія з рунами густини та математичного сподівання для володарів Марковських процесів.',
+    description: 'A purple robe with density and expectation runes, for masters of Markov chains.',
     renderSvg: (color) => `
       <g id="outfit-wizard_robe">
         <path d="M24 68 L44 46 L55 56 L66 46 L86 68 L76 82 L68 74 L69 112 L41 112 L42 74 L34 82 Z" fill="#581c87" stroke="#3b0764" stroke-width="2"/>
@@ -197,7 +197,7 @@ const WARDROBE_ITEMS = [
     icon: 'crown',
     badge: '100% Master Grade',
     color: '#eab308',
-    description: 'Золота корона та тріумфальний трофей студента, який підкорив 100% готовності до Мідтерму 2 та Колоквіуму 2!',
+    description: 'A golden crown and trophy for whoever reaches 100% readiness for Midterm 2 and Colloquium 2.',
     renderSvg: (color) => `
       <g id="outfit-champion_crown">
         <path d="M38 32 L40 18 L48 26 L55 14 L62 26 L70 18 L72 32 Z" fill="#eab308" stroke="#a16207" stroke-width="1.5"/>
@@ -361,11 +361,11 @@ class UserProfileManager {
     if (!el) return;
 
     if (status === 'synced') {
-      el.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span><span class="text-emerald-400 font-semibold">Хмара синхронізована</span>`;
+      el.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400"></span><span class="text-emerald-400 font-semibold">Synced to the cloud</span>`;
     } else if (status === 'syncing') {
-      el.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span><span class="text-amber-400 font-semibold">Синхронізація...</span>`;
+      el.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span><span class="text-amber-400 font-semibold">Syncing…</span>`;
     } else {
-      el.innerHTML = `<span class="w-2 h-2 rounded-full bg-slate-500"></span><span class="text-slate-400 font-semibold">Офлайн-режим</span>`;
+      el.innerHTML = `<span class="w-2 h-2 rounded-full bg-slate-500"></span><span class="text-slate-400 font-semibold">Offline mode</span>`;
     }
   }
 
@@ -696,18 +696,18 @@ class UserProfileManager {
   // --- AUTHENTICATION ACTIONS ---
   async register(name, email, password, photoUrl = '') {
     if (!email || !email.includes('@')) {
-      alert('Будь ласка, введіть коректну електронну пошту!');
+      alert('Please enter a valid email address.');
       return false;
     }
     if (!password || password.length < 4) {
-      alert('Пароль має містити щонайменше 4 символи!');
+      alert('The password needs at least 4 characters.');
       return false;
     }
 
     const emailKey = email.toLowerCase().trim();
     const existing = this.getUserFromRegistry(emailKey) || await this.fetchUserFromCloud(emailKey);
     if (existing) {
-      alert('Користувач із цією поштою вже зареєстрований! Будь ласка, увійдіть.');
+      alert('An account with this email already exists. Please log in.');
       this.switchAuthTab('login');
       return false;
     }
@@ -723,13 +723,13 @@ class UserProfileManager {
     this.loadExistingUser(newUser);
     await this.syncUserToCloud(newUser);
 
-    alert(`Вітаємо, ${newUser.name}! Ваш акаунт успішно створено. Усі ваші досягнення та час зберігатимуться в хмарі.`);
+    alert(`Welcome, ${newUser.name}! Your account is ready. Your progress and study time will be saved to the cloud.`);
     return true;
   }
 
   async login(email, password) {
     if (!email || !password) {
-      alert('Введіть пошту та пароль!');
+      alert('Enter your email and password.');
       return false;
     }
 
@@ -744,13 +744,13 @@ class UserProfileManager {
     }
 
     if (!user) {
-      alert('Користувача з такою поштою не знайдено. Будь ласка, зареєструйтесь!');
+      alert('No account with this email. Please sign up.');
       this.switchAuthTab('register');
       return false;
     }
 
     if (user.passwordHash && user.passwordHash !== btoa(password)) {
-      alert('Невірний пароль! Спробуйте ще раз.');
+      alert('Wrong password. Try again.');
       return false;
     }
 
@@ -759,7 +759,7 @@ class UserProfileManager {
     this.loadExistingUser(user);
     await this.syncUserToCloud(user);
 
-    alert(`З поверненням, ${user.name}! Ваш прогрес успішно синхронізовано з хмари.`);
+    alert(`Welcome back, ${user.name}! Your progress has been synced from the cloud.`);
     return true;
   }
 
@@ -795,7 +795,7 @@ class UserProfileManager {
     this.loadExistingUser(user);
     await this.syncUserToCloud(user);
 
-    alert(`Авторизація через Google успішна! Вітаємо, ${user.name}. Усі ваші дані синхронізовано між вашими пристроями!`);
+    alert(`Signed in with Google. Welcome, ${user.name}! Your data is synced across your devices.`);
   }
 
   loginAsGuest() {
@@ -991,12 +991,12 @@ class UserProfileManager {
     // Most frequent first, as the panel footer promises
     const mistakes = Object.values(this.profile.mistakesHistory || {})
       .sort((a, b) => (b.count - a.count) || ((b.lastErrorAt || 0) - (a.lastErrorAt || 0)));
-    if (badge) badge.textContent = `Помилок: ${mistakes.length}`;
+    if (badge) badge.textContent = `Mistakes: ${mistakes.length}`;
 
     if (mistakes.length === 0) {
       container.innerHTML = `
         <div class="p-6 text-center rounded-xl bg-slate-950/60 border border-slate-800 text-slate-400 text-xs">
-          ${icon('party-popper', 'text-emerald-400')} Жодної помилки в реєстрі! Ви розв'язали всі поточні завдання безпомилково.
+          ${icon('party-popper', 'text-emerald-400')} No mistakes on record: everything you have tried so far is solved.
         </div>
       `;
       return;
@@ -1004,13 +1004,10 @@ class UserProfileManager {
 
     const quizMistakes = mistakes.filter(m => m.type === 'quiz').length;
     const selfTestMistakes = mistakes.filter(m => m.type === 'selftest').length;
-    const TYPE_LABEL = { quiz: 'Тест за темою', selftest: 'Self-тест LMS', problem: 'Задача' };
-    const errorsLabel = n => {
-      const d = n % 10, dd = n % 100;
-      if (d === 1 && dd !== 11) return `${n} помилка`;
-      if (d >= 2 && d <= 4 && (dd < 12 || dd > 14)) return `${n} помилки`;
-      return `${n} помилок`;
-    };
+    const TYPE_LABEL = { quiz: 'Topic test', selftest: 'LMS self-test', problem: 'Problem' };
+    const errorsLabel = n => `${n} ${n === 1 ? 'mistake' : 'mistakes'}`;
+    // Mistakes saved before the English UI carry the Ukrainian "Self-test · Tema N"; show them in English too
+    const topicLabel = t => String(t ?? '').replace(/^Self-test · \u0422\u0435\u043c\u0430 /, 'Self-test · Topic ');
     const practiceBtn = (id, iconName, label, count) => `
       <button id="${id}" class="flex-1 min-w-[9rem] flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold cursor-pointer transition">
         ${icon(iconName)} ${label} (${count})
@@ -1019,17 +1016,17 @@ class UserProfileManager {
     // Every row opens the exact item; the buttons above re-run all mistakes of one kind
     container.innerHTML = (quizMistakes || selfTestMistakes ? `
       <div class="space-y-1.5">
-        <div class="text-[11px] font-semibold text-slate-400">Прорішати помилки:</div>
+        <div class="text-[11px] font-semibold text-slate-400">Practise your mistakes:</div>
         <div class="flex flex-wrap gap-2">
-          ${quizMistakes ? practiceBtn('mistakes-practice-btn', 'repeat', 'Тести', quizMistakes) : ''}
-          ${selfTestMistakes ? practiceBtn('mistakes-selftest-btn', 'clipboard-check', 'Self-тести LMS', selfTestMistakes) : ''}
+          ${quizMistakes ? practiceBtn('mistakes-practice-btn', 'repeat', 'Topic tests', quizMistakes) : ''}
+          ${selfTestMistakes ? practiceBtn('mistakes-selftest-btn', 'clipboard-check', 'LMS self-tests', selfTestMistakes) : ''}
         </div>
       </div>
     ` : '') + mistakes.map(m => `
       <button class="mistake-row w-full text-left p-3 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-indigo-500/70 hover:bg-slate-900 cursor-pointer transition flex items-center gap-3 text-xs" data-type="${m.type}" data-id="${String(m.id)}">
         <span class="flex-1 min-w-0">
           <span class="block font-semibold text-slate-200 line-clamp-2">${m.title}</span>
-          <span class="block mt-0.5 text-[11px] text-slate-400 truncate">${m.topic} · ${TYPE_LABEL[m.type] || m.type}</span>
+          <span class="block mt-0.5 text-[11px] text-slate-400 truncate">${topicLabel(m.topic)} · ${TYPE_LABEL[m.type] || m.type}</span>
         </span>
         <span class="shrink-0 px-2 py-0.5 rounded-full bg-rose-950 text-rose-300 border border-rose-800 text-[10px] font-bold whitespace-nowrap">${errorsLabel(m.count)}</span>
         <span class="shrink-0 text-indigo-400">${icon('chevron-right')}</span>
@@ -1064,14 +1061,14 @@ class UserProfileManager {
       const isUnlocked = currentReadiness >= item.minReadiness;
       const isEquipped = equipped === item.id;
 
-      let btnLabel = `${icon('lock')} Заблоковано`;
+      let btnLabel = `${icon('lock')} Locked`;
       let btnClass = 'bg-slate-800 text-slate-500 cursor-not-allowed';
 
       if (isEquipped) {
-        btnLabel = `${icon('check')} Одягнено`;
+        btnLabel = `${icon('check')} Wearing`;
         btnClass = 'bg-emerald-600 text-white font-bold shadow-sm';
       } else if (isUnlocked) {
-        btnLabel = 'Одягнути';
+        btnLabel = 'Wear';
         btnClass = 'bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition';
       }
 
@@ -1112,7 +1109,7 @@ class UserProfileManager {
 
     const currentReadiness = window.quizManager?.readinessState?.overallPercent || 0;
     if (currentReadiness < outfit.minReadiness) {
-      alert(`Цей одяг вимагає ${outfit.minReadiness}% готовності! Ваш поточний рівень: ${currentReadiness}%.`);
+      alert(`This outfit needs ${outfit.minReadiness}% readiness. You are at ${currentReadiness}%.`);
       return false;
     }
 
@@ -1441,23 +1438,23 @@ class UserProfileManager {
         const badgeVal = document.getElementById('colloquium-grade-badge-val');
         const notesVal = document.getElementById('colloquium-grade-notes-val');
         if (badgeVal) badgeVal.textContent = colG.grade;
-        if (notesVal) notesVal.textContent = colG.notes || 'Без додаткового коментаря';
+        if (notesVal) notesVal.textContent = colG.notes || 'No note';
       }
       if (colStatusBadge) {
         colStatusBadge.className = 'px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-700 shrink-0';
-        colStatusBadge.innerHTML = `${icon('circle-check')} Складено: `;
+        colStatusBadge.innerHTML = `${icon('circle-check')} Passed: `;
         colStatusBadge.append(colG.grade); // user input: added as text, never as HTML
       }
       if (colDateLabel && colG.updatedAt) {
         const d = new Date(colG.updatedAt);
-        colDateLabel.textContent = `Збережено: ${d.toLocaleDateString('uk-UA')} ${d.toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' })}`;
+        colDateLabel.textContent = `Saved: ${d.toLocaleDateString('en-GB')} ${d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}`;
       }
     } else {
       if (colGradeDisplay) colGradeDisplay.classList.add('hidden');
       if (colGradeForm) colGradeForm.classList.remove('hidden');
       if (colStatusBadge) {
         colStatusBadge.className = 'px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-950 text-amber-300 border border-amber-800 shrink-0';
-        colStatusBadge.innerHTML = `${icon('zap')} Очікується`;
+        colStatusBadge.innerHTML = `${icon('zap')} Upcoming`;
       }
       if (colDateLabel) colDateLabel.textContent = '';
     }
@@ -1476,23 +1473,23 @@ class UserProfileManager {
         const badgeVal = document.getElementById('midterm-grade-badge-val');
         const notesVal = document.getElementById('midterm-grade-notes-val');
         if (badgeVal) badgeVal.textContent = midG.grade;
-        if (notesVal) notesVal.textContent = midG.notes || 'Без додаткового коментаря';
+        if (notesVal) notesVal.textContent = midG.notes || 'No note';
       }
       if (midStatusBadge) {
         midStatusBadge.className = 'px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-700 shrink-0';
-        midStatusBadge.innerHTML = `${icon('trophy')} Оцінка: `;
+        midStatusBadge.innerHTML = `${icon('trophy')} Grade: `;
         midStatusBadge.append(midG.grade); // user input: added as text, never as HTML
       }
       if (midDateLabel && midG.updatedAt) {
         const d = new Date(midG.updatedAt);
-        midDateLabel.textContent = `Збережено: ${d.toLocaleDateString('uk-UA')} ${d.toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' })}`;
+        midDateLabel.textContent = `Saved: ${d.toLocaleDateString('en-GB')} ${d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}`;
       }
     } else {
       if (midGradeDisplay) midGradeDisplay.classList.add('hidden');
       if (midGradeForm) midGradeForm.classList.remove('hidden');
       if (midStatusBadge) {
         midStatusBadge.className = 'px-2.5 py-1 rounded-full text-[11px] font-bold bg-indigo-950 text-indigo-300 border border-indigo-800 shrink-0';
-        midStatusBadge.innerHTML = `${icon('flame')} Пт, 08:30 Київ`;
+        midStatusBadge.innerHTML = `${icon('flame')} Fri, 08:30 Kyiv`;
       }
       if (midDateLabel) midDateLabel.textContent = '';
     }
@@ -1506,22 +1503,22 @@ class UserProfileManager {
     document.getElementById('save-colloquium-datetime-btn')?.addEventListener('click', () => {
       const input = document.getElementById('colloquium-datetime-input');
       if (!input || !input.value) {
-        alert('Будь ласка, оберіть дату та час для колоквіуму!');
+        alert('Pick a date and time for the colloquium.');
         return;
       }
       this.saveExamSchedule(input.value, null);
-      alert(`Час колоквіуму успішно збережено: ${input.value.replace('T', ' ')}! Таймер оновлено.`);
+      alert(`Colloquium time saved: ${input.value.replace('T', ' ')}. The countdown is updated.`);
     });
 
     // Midterm save time
     document.getElementById('save-midterm-datetime-btn')?.addEventListener('click', () => {
       const input = document.getElementById('midterm-datetime-input');
       if (!input || !input.value) {
-        alert('Будь ласка, оберіть дату та час для мідтерму!');
+        alert('Pick a date and time for the midterm.');
         return;
       }
       this.saveExamSchedule(null, input.value);
-      alert(`Час мідтерму успішно збережено: ${input.value.replace('T', ' ')}! Таймер оновлено.`);
+      alert(`Midterm time saved: ${input.value.replace('T', ' ')}. The countdown is updated.`);
     });
 
     // Colloquium preset buttons
@@ -1554,11 +1551,11 @@ class UserProfileManager {
       const notesInput = document.getElementById('colloquium-notes-input');
       const val = gradeInput?.value?.trim();
       if (!val) {
-        alert('Будь ласка, введіть отриману оцінку за колоквіум (наприклад, 10/10 або 9.5)!');
+        alert('Enter your colloquium grade (e.g. 10/10 or 9.5).');
         return;
       }
       this.saveExamGrade('colloquium', val, notesInput?.value || '');
-      alert(`Оцінку за колоквіум збережено: ${val}! Вітаємо зі складанням!`);
+      alert(`Colloquium grade saved: ${val}. Congratulations!`);
     });
 
     // Colloquium edit grade
@@ -1579,11 +1576,11 @@ class UserProfileManager {
       const notesInput = document.getElementById('midterm-notes-input');
       const val = gradeInput?.value?.trim();
       if (!val) {
-        alert('Будь ласка, введіть отриману оцінку за мідтерм (наприклад, 95/100 або 24/25)!');
+        alert('Enter your midterm grade (e.g. 95/100 or 24/25).');
         return;
       }
       this.saveExamGrade('midterm', val, notesInput?.value || '');
-      alert(`Оцінку за мідтерм збережено: ${val}! Чудовий результат!`);
+      alert(`Midterm grade saved: ${val}. Great result!`);
     });
 
     // Midterm edit grade
@@ -1602,7 +1599,7 @@ class UserProfileManager {
     const colHeader = document.getElementById('colloquium-countdown-text');
     if (colHeader) {
       colHeader.style.cursor = 'pointer';
-      colHeader.setAttribute('title', 'Натисніть, щоб налаштувати дату або внести оцінку за колоквіум');
+      colHeader.setAttribute('title', 'Set the date or add your colloquium grade');
       colHeader.onclick = () => {
         window.app?.switchTab('dashboard');
         setTimeout(() => {
@@ -1613,7 +1610,7 @@ class UserProfileManager {
     const midHeader = document.getElementById('midterm-countdown-text');
     if (midHeader) {
       midHeader.style.cursor = 'pointer';
-      midHeader.setAttribute('title', 'Натисніть, щоб переглянути розклад або внести оцінку за мідтерм');
+      midHeader.setAttribute('title', 'See the schedule or add your midterm grade');
       midHeader.onclick = () => {
         window.app?.switchTab('dashboard');
         setTimeout(() => {

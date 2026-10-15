@@ -203,15 +203,15 @@ class DefinitionDrill {
     return `
       <div class="flex flex-wrap items-center justify-between gap-3 mb-3 text-xs">
         <div class="flex items-center gap-2">
-          <label for="drill-scope-select" class="text-slate-400">Набір:</label>
+          <label for="drill-scope-select" class="text-slate-400">Set:</label>
           <select id="drill-scope-select" class="px-2 py-1 rounded-lg bg-slate-800 border border-slate-700 text-slate-200 cursor-pointer">
-            <option value="all" ${this.scope === 'all' ? 'selected' : ''}>Усі 21 визначення</option>
-            <option value="weak" ${this.scope === 'weak' ? 'selected' : ''}>Тільки ще не здані (&lt;6/10)</option>
+            <option value="all" ${this.scope === 'all' ? 'selected' : ''}>All 21 definitions</option>
+            <option value="weak" ${this.scope === 'weak' ? 'selected' : ''}>Only not passed yet (&lt;6/10)</option>
           </select>
-          <button id="drill-restart-btn" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 cursor-pointer transition">${icon('rotate-cw')} Перемішати заново</button>
+          <button id="drill-restart-btn" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 cursor-pointer transition">${icon('rotate-cw')} Reshuffle</button>
         </div>
         <div class="flex items-center gap-3 font-semibold">
-          <span class="text-slate-300">Пройдено ${s.done} / ${s.total}</span>
+          <span class="text-slate-300">Done ${s.done} / ${s.total}</span>
           <span class="text-emerald-400">${icon('check')} ${s.good}</span>
           <span class="text-amber-400">${icon('minus')} ${s.hard}</span>
           <span class="text-rose-400">${icon('x')} ${s.again}</span>
@@ -229,10 +229,10 @@ class DefinitionDrill {
 
     const prompt = `
       <div class="flex justify-between items-center text-xs text-slate-400 mb-2">
-        <span class="px-2 py-0.5 rounded bg-indigo-900/60 text-indigo-300 font-bold">${icon('dices')} Визначення #${def.id}</span>
-        ${seenBefore ? `<span class="text-amber-400 font-semibold">${icon('rotate-ccw')} Повтор — минулого разу не вдалося</span>` : ''}
+        <span class="px-2 py-0.5 rounded bg-indigo-900/60 text-indigo-300 font-bold">${icon('dices')} Definition #${def.id}</span>
+        ${seenBefore ? `<span class="text-amber-400 font-semibold">${icon('rotate-ccw')} Repeat: missed last time</span>` : ''}
       </div>
-      <h3 class="text-2xl font-extrabold text-slate-100 mb-1">${def.nameUa}</h3>
+      <h3 class="text-2xl font-extrabold text-slate-100 mb-1">${def.name}</h3>
       <div class="text-sm font-semibold text-indigo-400 mb-4">${def.name}</div>
     `;
 
@@ -245,13 +245,13 @@ class DefinitionDrill {
             ${this.hintShown ? `
               <div class="p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-center text-indigo-200 mb-4 overflow-x-auto">$$${def.latex}$$</div>
             ` : ''}
-            <label for="drill-answer-input" class="block text-xs font-bold text-slate-300 mb-1">Сформулюй визначення (можна й усно — тоді просто відкрий відповідь):</label>
-            <textarea id="drill-answer-input" rows="5" placeholder="Напр.: Випадкова величина X: Ω → ℝ називається дискретною, якщо…" class="w-full p-3 rounded-xl bg-slate-800 border border-slate-700 text-sm text-slate-100 focus:outline-none focus:border-indigo-500">${this.escapeHtml(this.lastAnswer)}</textarea>
+            <label for="drill-answer-input" class="block text-xs font-bold text-slate-300 mb-1">State the definition (out loud is fine too, then just reveal the answer):</label>
+            <textarea id="drill-answer-input" rows="5" placeholder="E.g.: A random variable X: Ω → ℝ is called discrete if…" class="w-full p-3 rounded-xl bg-slate-800 border border-slate-700 text-sm text-slate-100 focus:outline-none focus:border-indigo-500">${this.escapeHtml(this.lastAnswer)}</textarea>
             <div class="flex flex-wrap items-center justify-between gap-3 mt-4">
-              <button id="drill-hint-btn" class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold cursor-pointer transition ${this.hintShown ? 'hidden' : ''}">${icon('lightbulb', 'text-amber-400')} Підказка: формула</button>
+              <button id="drill-hint-btn" class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold cursor-pointer transition ${this.hintShown ? 'hidden' : ''}">${icon('lightbulb', 'text-amber-400')} Hint: formula</button>
               <div class="flex items-center gap-3 ml-auto">
                 <span class="text-[11px] text-slate-500 hidden sm:inline">Ctrl/⌘ + Enter</span>
-                <button id="drill-reveal-btn" class="px-5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold cursor-pointer transition">Показати відповідь</button>
+                <button id="drill-reveal-btn" class="px-5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold cursor-pointer transition">Show answer</button>
               </div>
             </div>
           </div>
@@ -268,16 +268,16 @@ class DefinitionDrill {
           ${prompt}
           ${answer ? `
             <div class="mb-4">
-              <div class="text-xs font-bold text-slate-400 mb-1">Твоя відповідь:</div>
+              <div class="text-xs font-bold text-slate-400 mb-1">Your answer:</div>
               <div class="p-3 rounded-xl bg-slate-950/60 border border-slate-800 text-sm text-slate-200 whitespace-pre-wrap">${this.escapeHtml(answer)}</div>
             </div>
           ` : ''}
           <div class="p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-center text-indigo-200 mb-4 overflow-x-auto">$$${def.latexFull || def.latex}$$</div>
           <div class="text-sm text-slate-300 space-y-3">
-            <p><strong>Еталон:</strong> ${this.md(def.definition)}</p>
+            <p><strong>Reference:</strong> ${this.md(def.definition)}</p>
             ${keyPoints.length ? `
               <div>
-                <div class="text-xs font-bold text-slate-400 mb-1.5">Познач, що вдалося згадати (${keyPoints.length} ключових пунктів):</div>
+                <div class="text-xs font-bold text-slate-400 mb-1.5">Tick what you remembered (${keyPoints.length} key points):</div>
                 <div class="space-y-1.5">
                   ${keyPoints.map((p, i) => `
                     <label class="flex items-start gap-2 p-2 rounded-lg bg-slate-950/40 border border-slate-800 hover:border-slate-600 text-xs cursor-pointer transition">
@@ -295,14 +295,14 @@ class DefinitionDrill {
 
           <div class="pt-4 mt-4 border-t border-slate-800">
             <div class="flex items-center justify-between mb-2">
-              <span class="text-xs text-slate-400">Наскільки добре знаєш? <span class="text-slate-500">(клавіші 1 / 2 / 3)</span></span>
-              ${answer ? `<button id="drill-gemini-btn" class="text-xs font-semibold text-indigo-400 hover:text-indigo-300 cursor-pointer transition">${icon('bot')} Оцінити Gemini</button>` : ''}
+              <span class="text-xs text-slate-400">How well do you know it? <span class="text-slate-500">(keys 1 / 2 / 3)</span></span>
+              ${answer ? `<button id="drill-gemini-btn" class="text-xs font-semibold text-indigo-400 hover:text-indigo-300 cursor-pointer transition">${icon('bot')} Grade with Gemini</button>` : ''}
             </div>
             <div id="drill-suggestion" class="text-[11px] text-indigo-300 mb-2 hidden"></div>
             <div class="grid grid-cols-3 gap-2">
-              <button data-drill-grade="again" class="px-3 py-2.5 rounded-lg bg-rose-950/60 hover:bg-rose-900 border border-rose-800 text-rose-200 text-sm font-bold cursor-pointer transition">${icon('x')} Не знаю<span class="block text-[10px] font-normal">повернеться за ${DrillQueue.AGAIN_OFFSET} картки</span></button>
-              <button data-drill-grade="hard" class="px-3 py-2.5 rounded-lg bg-amber-950/60 hover:bg-amber-900 border border-amber-800 text-amber-200 text-sm font-bold cursor-pointer transition">${icon('minus')} Частково<span class="block text-[10px] font-normal">в кінець черги</span></button>
-              <button data-drill-grade="good" class="px-3 py-2.5 rounded-lg bg-emerald-950/60 hover:bg-emerald-900 border border-emerald-700 text-emerald-200 text-sm font-bold cursor-pointer transition">${icon('check')} Знаю<span class="block text-[10px] font-normal">+8/10 у readiness</span></button>
+              <button data-drill-grade="again" class="px-3 py-2.5 rounded-lg bg-rose-950/60 hover:bg-rose-900 border border-rose-800 text-rose-200 text-sm font-bold cursor-pointer transition">${icon('x')} Don't know<span class="block text-[10px] font-normal">back in ${DrillQueue.AGAIN_OFFSET} cards</span></button>
+              <button data-drill-grade="hard" class="px-3 py-2.5 rounded-lg bg-amber-950/60 hover:bg-amber-900 border border-amber-800 text-amber-200 text-sm font-bold cursor-pointer transition">${icon('minus')} Partly<span class="block text-[10px] font-normal">to the end of the queue</span></button>
+              <button data-drill-grade="good" class="px-3 py-2.5 rounded-lg bg-emerald-950/60 hover:bg-emerald-900 border border-emerald-700 text-emerald-200 text-sm font-bold cursor-pointer transition">${icon('check')} Know it<span class="block text-[10px] font-normal">+8/10 to readiness</span></button>
             </div>
           </div>
         </div>
@@ -315,7 +315,7 @@ class DefinitionDrill {
     const def = this.getDef(DrillQueue.current(this.state));
     const total = def?.keyPoints?.length || 0;
     const suggested = DrillQueue.suggestGrade(this.checkedPoints.size, total);
-    const labels = { again: 'Не знаю', hard: 'Частково', good: 'Знаю' };
+    const labels = { again: "Don't know", hard: 'Partly', good: 'Know it' };
 
     container.querySelectorAll('[data-drill-grade]').forEach(btn => {
       const isSuggested = btn.getAttribute('data-drill-grade') === suggested;
@@ -324,7 +324,7 @@ class DefinitionDrill {
 
     const hint = container.querySelector('#drill-suggestion');
     if (hint && suggested) {
-      hint.textContent = `За чеклістом: ${this.checkedPoints.size}/${total} пунктів → рекомендую «${labels[suggested]}»`;
+      hint.textContent = `Checklist: ${this.checkedPoints.size}/${total} points → suggested: “${labels[suggested]}”`;
       hint.classList.remove('hidden');
     }
   }
@@ -338,9 +338,9 @@ class DefinitionDrill {
           ${this.renderHeader()}
           <div class="rounded-2xl border border-emerald-500/40 bg-slate-900 p-6 text-center">
             <div class="text-3xl mb-2">${icon('trophy', 'text-amber-400')}</div>
-            <h3 class="text-lg font-bold text-slate-100 mb-1">Усі визначення вже здані на ≥6/10</h3>
-            <p class="text-xs text-slate-400 mb-4">У цьому наборі нічого не лишилось. Прогони всі 21 для закріплення.</p>
-            <button id="drill-all-btn" class="px-5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold cursor-pointer transition">${icon('dices')} Усі 21 визначення</button>
+            <h3 class="text-lg font-bold text-slate-100 mb-1">All definitions already passed at ≥6/10</h3>
+            <p class="text-xs text-slate-400 mb-4">Nothing left in this set. Run all 21 to keep them fresh.</p>
+            <button id="drill-all-btn" class="px-5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold cursor-pointer transition">${icon('dices')} All 21 definitions</button>
           </div>
         </div>
       `;
@@ -351,24 +351,24 @@ class DefinitionDrill {
       <div class="w-full max-w-2xl mx-auto">
         ${this.renderHeader()}
         <div class="rounded-2xl border border-indigo-500/40 bg-gradient-to-br from-slate-900 to-indigo-950/40 p-6 shadow-2xl">
-          <h3 class="text-xl font-extrabold text-slate-100 mb-1">Раунд завершено ${icon('party-popper', 'text-amber-400')}</h3>
-          <p class="text-xs text-slate-400 mb-4">${s.total} визначень, ${s.reviews} показів. З першої спроби:</p>
+          <h3 class="text-xl font-extrabold text-slate-100 mb-1">Round complete ${icon('party-popper', 'text-amber-400')}</h3>
+          <p class="text-xs text-slate-400 mb-4">${s.total} definitions, ${s.reviews} reviews. On the first try:</p>
           <div class="grid grid-cols-3 gap-2 mb-5 text-center">
-            <div class="p-3 rounded-xl bg-emerald-950/40 border border-emerald-800"><div class="text-2xl font-black text-emerald-300">${s.good}</div><div class="text-[11px] text-emerald-200/80">знаю</div></div>
-            <div class="p-3 rounded-xl bg-amber-950/40 border border-amber-800"><div class="text-2xl font-black text-amber-300">${s.hard}</div><div class="text-[11px] text-amber-200/80">частково</div></div>
-            <div class="p-3 rounded-xl bg-rose-950/40 border border-rose-800"><div class="text-2xl font-black text-rose-300">${s.again}</div><div class="text-[11px] text-rose-200/80">не знаю</div></div>
+            <div class="p-3 rounded-xl bg-emerald-950/40 border border-emerald-800"><div class="text-2xl font-black text-emerald-300">${s.good}</div><div class="text-[11px] text-emerald-200/80">know it</div></div>
+            <div class="p-3 rounded-xl bg-amber-950/40 border border-amber-800"><div class="text-2xl font-black text-amber-300">${s.hard}</div><div class="text-[11px] text-amber-200/80">partly</div></div>
+            <div class="p-3 rounded-xl bg-rose-950/40 border border-rose-800"><div class="text-2xl font-black text-rose-300">${s.again}</div><div class="text-[11px] text-rose-200/80">don't know</div></div>
           </div>
           ${weakList.length ? `
             <div class="mb-5">
-              <div class="text-xs font-bold text-slate-400 mb-2">Варто повторити:</div>
+              <div class="text-xs font-bold text-slate-400 mb-2">Worth repeating:</div>
               <div class="flex flex-wrap gap-1.5">
-                ${weakList.map(d => `<span class="px-2 py-1 rounded-lg bg-slate-800 text-xs text-slate-200">#${d.id} ${d.nameUa}</span>`).join('')}
+                ${weakList.map(d => `<span class="px-2 py-1 rounded-lg bg-slate-800 text-xs text-slate-200">#${d.id} ${d.name}</span>`).join('')}
               </div>
             </div>
-          ` : '<p class="text-sm text-emerald-300 mb-5">Усе з першої спроби — чисто!</p>'}
+          ` : '<p class="text-sm text-emerald-300 mb-5">Everything on the first try. Clean!</p>'}
           <div class="flex flex-wrap justify-end gap-2">
-            ${weakList.length ? `<button id="drill-weak-btn" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-700 text-sm font-semibold cursor-pointer transition">${icon('rotate-ccw')} Прогнати слабкі (${weakList.length})</button>` : ''}
-            <button id="drill-new-round-btn" class="px-5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold cursor-pointer transition">${icon('dices')} Новий раунд</button>
+            ${weakList.length ? `<button id="drill-weak-btn" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-700 text-sm font-semibold cursor-pointer transition">${icon('rotate-ccw')} Drill the weak ones (${weakList.length})</button>` : ''}
+            <button id="drill-new-round-btn" class="px-5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold cursor-pointer transition">${icon('dices')} New round</button>
           </div>
         </div>
       </div>

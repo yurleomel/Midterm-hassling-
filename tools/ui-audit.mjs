@@ -975,7 +975,7 @@ const STATES = [
   { name: 'drill', vp: DESKTOP, roots: ['[data-fc-mode]', '#definition-drill-container'], shot: 'root', shotRoot: '#definition-drill-container',
     run: js(`document.querySelector('[data-fc-mode="drill"]').click()`) },
   { name: 'drill-revealed', vp: DESKTOP, roots: ['#definition-drill-container'], shot: 'root',
-    run: js(`document.getElementById('drill-answer-input').value = 'Випадкова величина — це вимірна функція з Ω у ℝ';
+    run: js(`document.getElementById('drill-answer-input').value = 'A random variable is a measurable function from Ω to ℝ';
       document.getElementById('drill-reveal-btn').click();
       document.querySelector('#definition-drill-container [data-kp-index="0"]')?.click()`) },
   { name: 'drill-summary', vp: DESKTOP, roots: ['#definition-drill-container'], shot: 'root',
@@ -1052,10 +1052,10 @@ const STATES = [
       const st = window.SELFTEST_BANK.tasks[1];
       const p = window.PS_DATA.PROBLEMS_BANK[2];
       if (q.id) up.recordMistake(q.id, q.question, q.topic, 'quiz');
-      up.recordMistake('st_' + st.id, st.question, 'Self-test · Тема ' + st.topic, 'selftest');
+      up.recordMistake('st_' + st.id, st.question, 'Self-test · Topic ' + st.topic, 'selftest');
       up.recordMistake('prob_' + p.id, p.title, p.topic, 'problem');
       up.recordMistake('prob_' + p.id, p.title, p.topic, 'problem');
-      up.saveExamGrade('colloquium', '10/10', 'Білет 7: усне питання 3');
+      up.saveExamGrade('colloquium', '10/10', 'Ticket 7: oral question 3');
       up.saveExamGrade('midterm', '95/100', '');
       window.app.renderDashboard();
       window.app.switchTab('dashboard');
@@ -1064,7 +1064,7 @@ const STATES = [
   { name: 'gemini-drawer', vp: DESKTOP, roots: ['#gemini-drawer'], shot: 'viewport',
     run: js(`document.getElementById('gemini-open-drawer-btn').click()`) },
   { name: 'gemini-no-key', vp: DESKTOP, roots: ['#gemini-drawer'], shot: 'viewport',
-    run: js(`document.getElementById('gemini-chat-input').value = 'Що таке дисперсія?'; document.getElementById('gemini-chat-send-btn').click()`) },
+    run: js(`document.getElementById('gemini-chat-input').value = 'What is variance?'; document.getElementById('gemini-chat-send-btn').click()`) },
   { name: 'api-key-modal', vp: DESKTOP, roots: ['#gemini-settings-modal'], shot: 'viewport',
     run: js(`document.getElementById('drawer-api-key-btn').click()`) },
   { name: 'api-key-error', vp: DESKTOP, roots: ['#gemini-settings-modal'], shot: 'viewport',

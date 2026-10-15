@@ -67,7 +67,7 @@
 
   <!-- Google Identity Services (Sign-In with Google) -->
   <meta name="google-signin-client_id" content="794609556919-4ac9ftru7l363jbqcjpgovn9kb3vbkjm.apps.googleusercontent.com">
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="https://accounts.google.com/gsi/client?hl=en" async defer></script>
 
   <!-- KaTeX for crisp LaTeX formulas -->
   <link rel="stylesheet" href="vendor/katex/katex.min.css">
@@ -101,28 +101,28 @@
   <header class="sticky top-0 z-40 h-14 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
     <div class="h-full px-3 sm:px-4 lg:px-6 flex items-center gap-2 sm:gap-3">
 
-      <button id="nav-open-btn" class="lg:hidden p-2 -ml-1 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer transition" aria-label="Відкрити меню" aria-controls="app-sidebar" aria-expanded="false">
+      <button id="nav-open-btn" class="lg:hidden p-2 -ml-1 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer transition" aria-label="Open menu" aria-controls="app-sidebar" aria-expanded="false">
         <i data-icon="menu" class="text-lg"></i>
       </button>
 
-      <button id="brand-home-btn" class="flex items-center gap-2 min-w-0 rounded-lg cursor-pointer" title="На головну">
+      <button id="brand-home-btn" class="flex items-center gap-2 min-w-0 rounded-lg cursor-pointer" title="Home">
         <span class="w-8 h-8 shrink-0 rounded-lg bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center font-black text-white text-sm shadow-md shadow-indigo-500/20">AG</span>
         <span class="hidden sm:inline font-extrabold tracking-tight text-white whitespace-nowrap">StatHustle</span>
       </button>
       <span class="hidden sm:inline text-slate-600">/</span>
-      <span id="current-section-title" class="text-sm font-semibold text-slate-300 truncate min-w-0">Огляд</span>
+      <span id="current-section-title" class="text-sm font-semibold text-slate-300 truncate min-w-0">Overview</span>
 
       <div class="ml-auto flex items-center gap-1.5 sm:gap-2 shrink-0">
         <!-- Pomodoro -->
-        <div class="hidden md:flex items-center gap-1.5 pl-3 pr-1 py-1 rounded-full bg-slate-800/80 border border-slate-700" title="Pomodoro: 25 хв фокусу">
+        <div class="hidden md:flex items-center gap-1.5 pl-3 pr-1 py-1 rounded-full bg-slate-800/80 border border-slate-700" title="Pomodoro: 25 min of focus">
           <i data-icon="timer" class="text-slate-400"></i>
           <span id="header-pomodoro-time" class="text-xs font-mono font-bold text-amber-300 tabular-nums">25:00</span>
-          <button id="pomodoro-toggle-btn" class="header-pomo-btn" aria-label="Почати фокус" title="Почати фокус"><i data-icon="play"></i></button>
+          <button id="pomodoro-toggle-btn" class="header-pomo-btn" aria-label="Start focus" title="Start focus"><i data-icon="play"></i></button>
         </div>
 
         <!-- Readiness (click: dashboard) -->
-        <button id="header-readiness-btn" class="flex items-center gap-2 px-2.5 py-1.5 rounded-full bg-slate-800/80 border border-slate-700 hover:border-slate-500 cursor-pointer transition" title="Готовність до іспитів — відкрити огляд">
-          <span class="hidden sm:inline text-[11px] text-slate-400 font-medium">Готовність</span>
+        <button id="header-readiness-btn" class="flex items-center gap-2 px-2.5 py-1.5 rounded-full bg-slate-800/80 border border-slate-700 hover:border-slate-500 cursor-pointer transition" title="Exam readiness: open the overview">
+          <span class="hidden sm:inline text-[11px] text-slate-400 font-medium">Readiness</span>
           <span id="header-readiness-percent" class="text-xs font-black text-emerald-400 tabular-nums">0%</span>
           <span class="hidden sm:block w-12 h-1.5 rounded-full bg-slate-700 overflow-hidden">
             <span id="bar-readiness-header" class="block h-full bg-emerald-500 transition-all duration-500" style="width: 0%"></span>
@@ -130,17 +130,17 @@
         </button>
 
         <button id="gemini-open-drawer-btn" class="flex items-center gap-1.5 p-2 xl:px-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold whitespace-nowrap shadow-md shadow-indigo-600/20 cursor-pointer transition" aria-label="Gemini AI Mentor" title="Gemini AI Mentor">
-          <i data-icon="bot"></i><span class="hidden xl:inline">Ментор</span>
+          <i data-icon="bot"></i><span class="hidden xl:inline">Mentor</span>
         </button>
 
-        <button id="theme-toggle-btn" class="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer transition" title="Змінити тему" aria-label="Змінити тему">
+        <button id="theme-toggle-btn" class="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer transition" title="Switch theme" aria-label="Switch theme">
           <i data-icon="moon"></i>
         </button>
 
         <!-- Profile & wardrobe -->
-        <button id="header-user-profile-btn" class="flex items-center gap-2 p-1 xl:pr-3 rounded-xl hover:bg-slate-800 border border-transparent hover:border-slate-700 cursor-pointer transition" title="Профіль, статистика й гардероб">
+        <button id="header-user-profile-btn" class="flex items-center gap-2 p-1 xl:pr-3 rounded-xl hover:bg-slate-800 border border-transparent hover:border-slate-700 cursor-pointer transition" title="Profile, points and stickers">
           <span class="w-8 h-8 rounded-lg overflow-hidden bg-indigo-900 border border-indigo-700 flex items-center justify-center text-white shrink-0">
-            <img id="user-header-photo" class="w-full h-full object-cover hidden" alt="Профіль" />
+            <img id="user-header-photo" class="w-full h-full object-cover hidden" alt="Profile" />
             <span id="user-header-default-avatar" class="mini-avatar-icon text-sm"><i data-icon="shirt"></i></span>
           </span>
           <span class="text-left hidden xl:block">
@@ -159,14 +159,14 @@
   <div class="flex flex-1 w-full">
 
     <!-- ================= SIDEBAR: sections grouped by purpose (drawer on phones) ================= -->
-    <aside id="app-sidebar" class="fixed lg:sticky inset-y-0 left-0 lg:top-14 z-50 lg:z-20 w-72 lg:w-60 h-full lg:h-[calc(100vh-3.5rem)] shrink-0 bg-slate-900 lg:bg-slate-900/40 border-r border-slate-800 flex flex-col -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-out" aria-label="Навігація">
+    <aside id="app-sidebar" class="fixed lg:sticky inset-y-0 left-0 lg:top-14 z-50 lg:z-20 w-72 lg:w-60 h-full lg:h-[calc(100vh-3.5rem)] shrink-0 bg-slate-900 lg:bg-slate-900/40 border-r border-slate-800 flex flex-col -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-out" aria-label="Navigation">
 
       <div class="lg:hidden h-14 px-4 flex items-center justify-between border-b border-slate-800 shrink-0">
         <span class="flex items-center gap-2">
           <span class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center font-black text-white text-sm">AG</span>
           <span class="font-extrabold tracking-tight text-white">StatHustle</span>
         </span>
-        <button id="nav-close-btn" class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 cursor-pointer transition" aria-label="Закрити меню"><i data-icon="x" class="text-lg"></i></button>
+        <button id="nav-close-btn" class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 cursor-pointer transition" aria-label="Close menu"><i data-icon="x" class="text-lg"></i></button>
       </div>
 
       <div class="flex-1 overflow-y-auto px-3 py-4 space-y-5">
@@ -176,37 +176,37 @@
           <button id="midterm-countdown-text" class="countdown-row"></button>
         </div>
 
-        <nav class="space-y-5" aria-label="Розділи">
+        <nav class="space-y-5" aria-label="Sections">
           <div>
-            <div class="nav-group">Головне</div>
-            <button data-tab-target="dashboard" class="nav-item tab-active"><i data-icon="layout-dashboard"></i><span class="nav-label">Огляд</span></button>
+            <div class="nav-group">Start</div>
+            <button data-tab-target="dashboard" class="nav-item tab-active"><i data-icon="layout-dashboard"></i><span class="nav-label">Overview</span></button>
           </div>
           <div>
-            <div class="nav-group">Колоквіум 2</div>
-            <button data-tab-target="colloquium" class="nav-item tab-inactive"><i data-icon="target"></i><span class="nav-label">Означення й усні</span><span class="nav-meta">21 · 12</span></button>
+            <div class="nav-group">Colloquium 2</div>
+            <button data-tab-target="colloquium" class="nav-item tab-inactive"><i data-icon="target"></i><span class="nav-label">Definitions &amp; oral</span><span class="nav-meta">21 · 12</span></button>
           </div>
           <div>
-            <div class="nav-group">Мідтерм 2 · практика</div>
-            <button data-tab-target="problems" class="nav-item tab-inactive"><i data-icon="notebook-pen"></i><span class="nav-label">Задачі з іспитів</span><span class="nav-meta">23</span></button>
-            <button data-tab-target="quizzes" class="nav-item tab-inactive"><i data-icon="brain"></i><span class="nav-label">Тести за темами</span><span class="nav-meta">600</span></button>
-            <button data-tab-target="selftests" class="nav-item tab-inactive"><i data-icon="clipboard-check"></i><span class="nav-label">Self-тести LMS</span><span class="nav-meta">69</span></button>
+            <div class="nav-group">Midterm 2 · practice</div>
+            <button data-tab-target="problems" class="nav-item tab-inactive"><i data-icon="notebook-pen"></i><span class="nav-label">Exam problems</span><span class="nav-meta">23</span></button>
+            <button data-tab-target="quizzes" class="nav-item tab-inactive"><i data-icon="brain"></i><span class="nav-label">Topic tests</span><span class="nav-meta">600</span></button>
+            <button data-tab-target="selftests" class="nav-item tab-inactive"><i data-icon="clipboard-check"></i><span class="nav-label">LMS self-tests</span><span class="nav-meta">69</span></button>
           </div>
           <div>
-            <div class="nav-group">Довідник</div>
-            <button data-tab-target="topics" class="nav-item tab-inactive"><i data-icon="book-open"></i><span class="nav-label">Теорія за темами</span><span class="nav-meta">12</span></button>
-            <button data-tab-target="formulas" class="nav-item tab-inactive"><i data-icon="ruler"></i><span class="nav-label">Формули й розподіли</span></button>
+            <div class="nav-group">Reference</div>
+            <button data-tab-target="topics" class="nav-item tab-inactive"><i data-icon="book-open"></i><span class="nav-label">Theory by topic</span><span class="nav-meta">12</span></button>
+            <button data-tab-target="formulas" class="nav-item tab-inactive"><i data-icon="ruler"></i><span class="nav-label">Formulas &amp; distributions</span></button>
           </div>
         </nav>
       </div>
 
       <!-- Account: sync status, Gemini key, logout -->
       <div class="border-t border-slate-800 p-3 space-y-2 shrink-0">
-        <div id="cloud-sync-status-indicator" class="flex items-center gap-1.5 px-1 text-[11px]" title="Статус синхронізації прогресу">
-          <span class="w-2 h-2 rounded-full bg-slate-500"></span><span class="text-slate-400 font-semibold">Офлайн-режим</span>
+        <div id="cloud-sync-status-indicator" class="flex items-center gap-1.5 px-1 text-[11px]" title="Progress sync status">
+          <span class="w-2 h-2 rounded-full bg-slate-500"></span><span class="text-slate-400 font-semibold">Offline mode</span>
         </div>
         <div class="flex gap-2">
-          <button id="open-api-key-settings" class="flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white text-xs font-semibold cursor-pointer transition" title="Налаштувати Gemini API ключ"><i data-icon="key-round"></i> Ключ Gemini</button>
-          <button onclick="window.userProfile?.logout()" class="flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-rose-950/70 border border-slate-700 hover:border-rose-800 text-slate-300 hover:text-rose-200 text-xs font-semibold cursor-pointer transition" title="Вийти з акаунту / змінити користувача"><i data-icon="log-out"></i> Вийти</button>
+          <button id="open-api-key-settings" class="flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white text-xs font-semibold cursor-pointer transition" title="Set up the Gemini API key"><i data-icon="key-round"></i> Gemini key</button>
+          <button onclick="window.userProfile?.logout()" class="flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-rose-950/70 border border-slate-700 hover:border-rose-800 text-slate-300 hover:text-rose-200 text-xs font-semibold cursor-pointer transition" title="Log out or switch user"><i data-icon="log-out"></i> Log out</button>
         </div>
       </div>
     </aside>
@@ -373,8 +373,8 @@
       <div class="mb-8">
         <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-3 gap-1">
           <div>
-            <h2 class="text-xl font-black text-slate-100 tracking-tight">План підготовки по днях</h2>
-            <p class="text-xs text-slate-400 mt-0.5">Натисни пункт, щоб одразу перейти до потрібного означення, задачі чи тесту. Більшість пунктів відмічаються самі за результатами; решту відмічай галочкою.</p>
+            <h2 class="text-xl font-black text-slate-100 tracking-tight">Day-by-day study plan</h2>
+            <p class="text-xs text-slate-400 mt-0.5">Tap a task to jump straight to the definition, problem or test it needs. Most tasks tick themselves off from your results; tick the rest by hand.</p>
           </div>
         </div>
         <div id="dashboard-schedule-list" class="space-y-2">
@@ -390,10 +390,10 @@
           <div>
             <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
               <div>
-                <span class="text-xs uppercase font-extrabold tracking-wider text-indigo-400">Час у вкладках</span>
-                <h3 class="text-lg font-bold text-slate-100">Аналітика фокус-часу по розділах</h3>
+                <span class="text-xs uppercase font-extrabold tracking-wider text-indigo-400">Time per section</span>
+                <h3 class="text-lg font-bold text-slate-100">Focus time by section</h3>
               </div>
-              <span class="text-xs text-slate-400 font-mono">Авто-трекінг</span>
+              <span class="text-xs text-slate-400 font-mono">Auto-tracked</span>
             </div>
             
             <div id="tab-time-analytics-grid" class="space-y-2.5">
@@ -402,8 +402,8 @@
           </div>
 
           <div class="pt-3 border-t border-slate-800/80 mt-4 text-[11px] text-slate-400 flex justify-between items-center">
-            <span><i data-icon="timer"></i> Фіксується окремо для кожної вкладки</span>
-            <button onclick="window.userProfile?.resetStudyTimer();" class="text-rose-400 hover:underline">Скинути таймер</button>
+            <span><i data-icon="timer"></i> Tracked separately for each section</span>
+            <button onclick="window.userProfile?.resetStudyTimer();" class="text-rose-400 hover:underline">Reset timer</button>
           </div>
         </div>
 
@@ -412,10 +412,10 @@
           <div>
             <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
               <div>
-                <span class="text-xs uppercase font-extrabold tracking-wider text-rose-400">Слабкі місця</span>
-                <h3 class="text-lg font-bold text-slate-100">Часті помилки та невдалі спроби</h3>
+                <span class="text-xs uppercase font-extrabold tracking-wider text-rose-400">Weak spots</span>
+                <h3 class="text-lg font-bold text-slate-100">Frequent mistakes</h3>
               </div>
-              <span id="user-mistakes-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-950 text-rose-300 border border-rose-800">Помилок: 0</span>
+              <span id="user-mistakes-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-950 text-rose-300 border border-rose-800">Mistakes: 0</span>
             </div>
 
             <div id="mistakes-analytics-list" class="space-y-2 max-h-72 overflow-y-auto">
@@ -424,7 +424,7 @@
           </div>
 
           <div class="pt-3 border-t border-slate-800/80 mt-4 text-[11px] text-slate-400">
-            <i data-icon="lightbulb"></i> Завдання сортуються за кількістю помилок. Повторіть їх перед іспитом!
+            <i data-icon="lightbulb"></i> Sorted by how often you got them wrong. Review them before the exam.
           </div>
         </div>
 
@@ -435,16 +435,16 @@
         <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-800 gap-3 mb-6">
           <div>
             <div class="flex items-center gap-2">
-              <span class="text-xs uppercase font-extrabold tracking-wider text-indigo-400">Індивідуальний розклад & Оцінки</span>
+              <span class="text-xs uppercase font-extrabold tracking-wider text-indigo-400">Your schedule &amp; grades</span>
               <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-950 text-indigo-300 border border-indigo-800">AWS Cloud Sync</span>
             </div>
-            <h2 class="text-xl sm:text-2xl font-black text-slate-100 mt-1"><i data-icon="calendar"></i> Розклад іспитів та Внесення оцінок</h2>
-            <p class="text-xs text-slate-400 mt-0.5">Встановіть дату і час свого індивідуального слоту колоквіуму (20 хв), перевіряйте таймер до мідтерму (пт, 08:30) та запишіть свої оцінки після складання!</p>
+            <h2 class="text-xl sm:text-2xl font-black text-slate-100 mt-1"><i data-icon="calendar"></i> Exam schedule and grades</h2>
+            <p class="text-xs text-slate-400 mt-0.5">Set the date and time of your colloquium slot (20 min), keep an eye on the midterm countdown (Fri, 08:30) and record your grades afterwards.</p>
           </div>
           <div class="flex items-center gap-2">
             <span id="exam-schedule-cloud-indicator" class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-slate-800/90 text-emerald-400 border border-slate-700 flex items-center gap-1.5 shadow-sm">
               <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-              <span>Зберігається в акаунті</span>
+              <span>Saved to your account</span>
             </span>
           </div>
         </div>
@@ -459,18 +459,18 @@
                     <i data-icon="target" class="text-amber-400"></i>
                   </div>
                   <div>
-                    <h3 class="text-lg font-bold text-slate-100 leading-tight">Колоквіум 2 (Colloquium 2)</h3>
-                    <p class="text-[11px] text-slate-400">Усна співбесіда (20 хв) • 21 означення + 12 усних запитань</p>
+                    <h3 class="text-lg font-bold text-slate-100 leading-tight">Colloquium 2</h3>
+                    <p class="text-[11px] text-slate-400">Oral exam (20 min) • 21 definitions + 12 oral questions</p>
                   </div>
                 </div>
                 <span id="colloquium-status-badge" class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-950 text-amber-300 border border-amber-800 shrink-0">
-                  <i data-icon="zap"></i> Очікується
+                  <i data-icon="zap"></i> Upcoming
                 </span>
               </div>
 
               <!-- Live Countdown Display -->
               <div class="p-3.5 rounded-xl bg-slate-900/90 border border-amber-900/40 mb-4 text-center">
-                <span class="text-[11px] uppercase tracking-wider text-slate-400 font-bold block mb-1">Зворотний відлік до Колоквіуму:</span>
+                <span class="text-[11px] uppercase tracking-wider text-slate-400 font-bold block mb-1">Countdown to the colloquium:</span>
                 <div id="colloquium-card-countdown" class="text-2xl font-mono font-extrabold text-amber-300">
                   --:--:--
                 </div>
@@ -479,27 +479,27 @@
               <!-- Date & Time Picker -->
               <div class="space-y-2 mb-5">
                 <label for="colloquium-datetime-input" class="block text-xs font-bold text-slate-300">
-                  <i data-icon="clock"></i> Дата та час вашої здачі (індивідуальний слот):
+                  <i data-icon="clock"></i> Your slot (date and time):
                 </label>
                 <div class="flex flex-col sm:flex-row gap-2">
                   <input type="datetime-local" id="colloquium-datetime-input" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 font-mono focus:border-amber-500 focus:outline-none transition">
                   <button id="save-colloquium-datetime-btn" class="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold text-xs transition whitespace-nowrap shadow-sm">
-                    <i data-icon="save"></i> Зберегти час
+                    <i data-icon="save"></i> Save time
                   </button>
                 </div>
                 <div class="flex flex-wrap gap-1.5 pt-1">
-                  <span class="text-[10px] text-slate-400 self-center mr-1">Швидкі слоти:</span>
-                  <button type="button" class="col-slot-preset-btn px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] transition" data-dt="2026-10-14T09:00">Ср 14.10, 09:00</button>
-                  <button type="button" class="col-slot-preset-btn px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] transition" data-dt="2026-10-14T11:20">Ср 14.10, 11:20</button>
-                  <button type="button" class="col-slot-preset-btn px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] transition" data-dt="2026-10-14T14:00">Ср 14.10, 14:00</button>
-                  <button type="button" class="col-slot-preset-btn px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] transition" data-dt="2026-10-14T16:30">Ср 14.10, 16:30</button>
+                  <span class="text-[10px] text-slate-400 self-center mr-1">Quick slots:</span>
+                  <button type="button" class="col-slot-preset-btn px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] transition" data-dt="2026-10-14T09:00">Wed 14.10, 09:00</button>
+                  <button type="button" class="col-slot-preset-btn px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] transition" data-dt="2026-10-14T11:20">Wed 14.10, 11:20</button>
+                  <button type="button" class="col-slot-preset-btn px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] transition" data-dt="2026-10-14T14:00">Wed 14.10, 14:00</button>
+                  <button type="button" class="col-slot-preset-btn px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] transition" data-dt="2026-10-14T16:30">Wed 14.10, 16:30</button>
                 </div>
               </div>
 
               <!-- Post-Exam Grade Container -->
               <div class="pt-4 border-t border-slate-800/80">
                 <div class="flex items-center justify-between mb-2">
-                  <span class="text-xs font-bold text-slate-200"><i data-icon="trophy"></i> Оцінка після колоквіуму:</span>
+                  <span class="text-xs font-bold text-slate-200"><i data-icon="trophy"></i> Colloquium grade:</span>
                   <span id="colloquium-grade-saved-date" class="text-[10px] text-slate-400"></span>
                 </div>
 
@@ -509,25 +509,25 @@
                     <span class="text-3xl"><i data-icon="party-popper" class="text-amber-400"></i></span>
                     <div>
                       <div class="flex items-center gap-2">
-                        <span class="text-xs text-slate-400">Отримано:</span>
+                        <span class="text-xs text-slate-400">Score:</span>
                         <span id="colloquium-grade-badge-val" class="text-lg font-black text-amber-300 font-mono">10/10</span>
                       </div>
-                      <div id="colloquium-grade-notes-val" class="text-[11px] text-slate-300 italic truncate max-w-[200px] sm:max-w-[280px]">Відмінна відповідь!</div>
+                      <div id="colloquium-grade-notes-val" class="text-[11px] text-slate-300 italic truncate max-w-[200px] sm:max-w-[280px]">Excellent answer!</div>
                     </div>
                   </div>
                   <button id="edit-colloquium-grade-btn" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition shrink-0">
-                    <i data-icon="pencil"></i> Змінити
+                    <i data-icon="pencil"></i> Edit
                   </button>
                 </div>
 
                 <!-- Edit / Input Form Mode -->
                 <div id="colloquium-grade-form" class="space-y-2">
                   <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                    <input type="text" id="colloquium-grade-input" placeholder="Оцінка (напр. 10/10 або 9.5)" class="sm:col-span-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 font-bold focus:border-amber-500 focus:outline-none">
-                    <input type="text" id="colloquium-notes-input" placeholder="Коментар: номер білета, питання..." class="sm:col-span-2 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:border-amber-500 focus:outline-none">
+                    <input type="text" id="colloquium-grade-input" placeholder="Grade (e.g. 10/10 or 9.5)" class="sm:col-span-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 font-bold focus:border-amber-500 focus:outline-none">
+                    <input type="text" id="colloquium-notes-input" placeholder="Note: ticket number, questions…" class="sm:col-span-2 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:border-amber-500 focus:outline-none">
                   </div>
                   <button id="save-colloquium-grade-btn" class="w-full py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold text-xs transition shadow-sm">
-                    <i data-icon="circle-check"></i> Зберегти оцінку за колоквіум
+                    <i data-icon="circle-check"></i> Save colloquium grade
                   </button>
                 </div>
               </div>
@@ -543,18 +543,18 @@
                     <i data-icon="flame" class="text-rose-400"></i>
                   </div>
                   <div>
-                    <h3 class="text-lg font-bold text-slate-100 leading-tight">Мідтерм 2 (Midterm 2)</h3>
-                    <p class="text-[11px] text-slate-400">Письмовий іспит (closed-book) • П'ятниця о 08:30 (Київ)</p>
+                    <h3 class="text-lg font-bold text-slate-100 leading-tight">Midterm 2</h3>
+                    <p class="text-[11px] text-slate-400">Written exam (closed book) • Friday 08:30 (Kyiv)</p>
                   </div>
                 </div>
                 <span id="midterm-status-badge" class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-indigo-950 text-indigo-300 border border-indigo-800 shrink-0">
-                  <i data-icon="flame"></i> Пт, 08:30 Київ
+                  <i data-icon="flame"></i> Fri, 08:30 Kyiv
                 </span>
               </div>
 
               <!-- Live Countdown Display -->
               <div class="p-3.5 rounded-xl bg-slate-900/90 border border-indigo-900/40 mb-4 text-center">
-                <span class="text-[11px] uppercase tracking-wider text-slate-400 font-bold block mb-1">Зворотний відлік до Мідтерму 2:</span>
+                <span class="text-[11px] uppercase tracking-wider text-slate-400 font-bold block mb-1">Countdown to Midterm 2:</span>
                 <div id="midterm-card-countdown" class="text-2xl font-mono font-extrabold text-rose-400">
                   --:--:--
                 </div>
@@ -564,27 +564,27 @@
               <div class="space-y-2 mb-5">
                 <div class="flex items-center justify-between">
                   <label for="midterm-datetime-input" class="block text-xs font-bold text-slate-300">
-                    <i data-icon="clock"></i> Точний час мідтерму:
+                    <i data-icon="clock"></i> Exact midterm time:
                   </label>
-                  <span class="text-[10px] text-indigo-400 font-bold">Офіційно: Пт 08:30 (Київ)</span>
+                  <span class="text-[10px] text-indigo-400 font-bold">Official: Fri 08:30 (Kyiv)</span>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-2">
                   <input type="datetime-local" id="midterm-datetime-input" value="2026-10-16T08:30" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 font-mono focus:border-indigo-500 focus:outline-none transition">
                   <button id="save-midterm-datetime-btn" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition whitespace-nowrap shadow-sm">
-                    <i data-icon="save"></i> Зберегти час
+                    <i data-icon="save"></i> Save time
                   </button>
                 </div>
                 <div class="flex flex-wrap gap-1.5 pt-1">
-                  <span class="text-[10px] text-slate-400 self-center mr-1">Швидкі пресети:</span>
-                  <button type="button" class="mid-slot-preset-btn px-2 py-0.5 rounded-lg bg-indigo-950 hover:bg-indigo-900 border border-indigo-800 text-indigo-300 text-[10px] font-bold transition" data-dt="2026-10-16T08:30">Пт 16.10, 08:30 (Київ - Офіційний)</button>
-                  <button type="button" class="mid-slot-preset-btn px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] transition" data-dt="2026-10-16T10:00">Пт 16.10, 10:00</button>
+                  <span class="text-[10px] text-slate-400 self-center mr-1">Quick presets:</span>
+                  <button type="button" class="mid-slot-preset-btn px-2 py-0.5 rounded-lg bg-indigo-950 hover:bg-indigo-900 border border-indigo-800 text-indigo-300 text-[10px] font-bold transition" data-dt="2026-10-16T08:30">Fri 16.10, 08:30 (Kyiv, official)</button>
+                  <button type="button" class="mid-slot-preset-btn px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] transition" data-dt="2026-10-16T10:00">Fri 16.10, 10:00</button>
                 </div>
               </div>
 
               <!-- Post-Exam Grade Container -->
               <div class="pt-4 border-t border-slate-800/80">
                 <div class="flex items-center justify-between mb-2">
-                  <span class="text-xs font-bold text-slate-200"><i data-icon="trophy"></i> Оцінка після мідтерму:</span>
+                  <span class="text-xs font-bold text-slate-200"><i data-icon="trophy"></i> Midterm grade:</span>
                   <span id="midterm-grade-saved-date" class="text-[10px] text-slate-400"></span>
                 </div>
 
@@ -594,25 +594,25 @@
                     <span class="text-3xl"><i data-icon="trophy" class="text-amber-400"></i></span>
                     <div>
                       <div class="flex items-center gap-2">
-                        <span class="text-xs text-slate-400">Отримано:</span>
+                        <span class="text-xs text-slate-400">Score:</span>
                         <span id="midterm-grade-badge-val" class="text-lg font-black text-emerald-400 font-mono">95/100</span>
                       </div>
-                      <div id="midterm-grade-notes-val" class="text-[11px] text-slate-300 italic truncate max-w-[200px] sm:max-w-[280px]">Максимальний бал за всі задачі!</div>
+                      <div id="midterm-grade-notes-val" class="text-[11px] text-slate-300 italic truncate max-w-[200px] sm:max-w-[280px]">Full marks on every problem!</div>
                     </div>
                   </div>
                   <button id="edit-midterm-grade-btn" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition shrink-0">
-                    <i data-icon="pencil"></i> Змінити
+                    <i data-icon="pencil"></i> Edit
                   </button>
                 </div>
 
                 <!-- Edit / Input Form Mode -->
                 <div id="midterm-grade-form" class="space-y-2">
                   <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                    <input type="text" id="midterm-grade-input" placeholder="Оцінка (напр. 95/100, 24/25 або 96%)" class="sm:col-span-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 font-bold focus:border-indigo-500 focus:outline-none">
-                    <input type="text" id="midterm-notes-input" placeholder="Коментар: розбивка по задачах, бали..." class="sm:col-span-2 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:border-indigo-500 focus:outline-none">
+                    <input type="text" id="midterm-grade-input" placeholder="Grade (e.g. 95/100, 24/25 or 96%)" class="sm:col-span-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 font-bold focus:border-indigo-500 focus:outline-none">
+                    <input type="text" id="midterm-notes-input" placeholder="Note: points per problem…" class="sm:col-span-2 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 focus:border-indigo-500 focus:outline-none">
                   </div>
                   <button id="save-midterm-grade-btn" class="w-full py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition shadow-sm">
-                    <i data-icon="circle-check"></i> Зберегти оцінку за мідтерм
+                    <i data-icon="circle-check"></i> Save midterm grade
                   </button>
                 </div>
               </div>
@@ -644,9 +644,9 @@
           <h3 class="text-xl font-extrabold text-slate-100">Interactive Definition Flashcards (Score ≥6/10 for 1%)</h3>
           <p class="text-xs text-slate-400 mt-1">Practice with Gemini or self-verify to earn 1% per definition.</p>
           <div id="colloquium-modes" class="inline-flex gap-1 p-1 mt-4 rounded-xl bg-slate-900 border border-slate-800 text-sm font-semibold">
-            <button data-fc-mode="browse" aria-pressed="true" class="px-4 py-1.5 rounded-lg tab-active cursor-pointer transition"><i data-icon="layers"></i> Перегляд карток</button>
-            <button data-fc-mode="drill" aria-pressed="false" class="px-4 py-1.5 rounded-lg tab-inactive cursor-pointer transition"><i data-icon="dices"></i> Рандомний тест</button>
-            <button data-fc-mode="ticket" aria-pressed="false" class="px-4 py-1.5 rounded-lg tab-inactive cursor-pointer transition"><i data-icon="ticket"></i> Білет колоквіуму</button>
+            <button data-fc-mode="browse" aria-pressed="true" class="px-4 py-1.5 rounded-lg tab-active cursor-pointer transition"><i data-icon="layers"></i> Browse cards</button>
+            <button data-fc-mode="drill" aria-pressed="false" class="px-4 py-1.5 rounded-lg tab-inactive cursor-pointer transition"><i data-icon="dices"></i> Random drill</button>
+            <button data-fc-mode="ticket" aria-pressed="false" class="px-4 py-1.5 rounded-lg tab-inactive cursor-pointer transition"><i data-icon="ticket"></i> Colloquium ticket</button>
           </div>
         </div>
 
@@ -813,9 +813,9 @@
         <div class="inline-flex w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-500 items-center justify-center font-black text-white text-2xl shadow-indigo-500/20 shadow-xl mb-3">
           AG
         </div>
-        <h2 class="text-2xl sm:text-3xl font-black text-slate-100 tracking-tight">Ласкаво просимо до UCU StatHustle!</h2>
+        <h2 class="text-2xl sm:text-3xl font-black text-slate-100 tracking-tight">Welcome to UCU StatHustle!</h2>
         <p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-lg mx-auto">
-          Автономна платформа для підготовки до <strong>Colloquium 2 (Середа)</strong> та <strong>Midterm 2 (П'ятниця)</strong> з теорії ймовірностей та статистики в УКУ.
+          A self-contained platform for <strong>Colloquium 2 (Wednesday)</strong> and <strong>Midterm 2 (Friday)</strong> in Probability &amp; Statistics at UCU.
         </p>
       </div>
 
@@ -824,32 +824,32 @@
         <div class="p-3.5 rounded-2xl bg-slate-950/70 border border-slate-800 flex items-start gap-3 text-xs">
           <span class="text-xl"><i data-icon="target" class="text-indigo-300"></i></span>
           <div>
-            <strong class="text-indigo-300 font-bold">Колоквіум 2 (Середа):</strong>
-            <p class="text-slate-300 mt-0.5">21 офіційне означення та 12 усних питань. Здай кожне штучному інтелекту Gemini на ≥6/10, щоб заробити готовність.</p>
+            <strong class="text-indigo-300 font-bold">Colloquium 2 (Wednesday):</strong>
+            <p class="text-slate-300 mt-0.5">21 official definitions and 12 oral questions. Pass each one at ≥6/10 (with Gemini or the self-check) to earn readiness.</p>
           </div>
         </div>
 
         <div class="p-3.5 rounded-2xl bg-slate-950/70 border border-slate-800 flex items-start gap-3 text-xs">
           <span class="text-xl"><i data-icon="brain" class="text-emerald-300"></i></span>
           <div>
-            <strong class="text-emerald-300 font-bold">Мідтерм 2 (П'ятниця):</strong>
-            <p class="text-slate-300 mt-0.5">600 інтерактивних тестових завдань (по 50 на кожну з 12 тем) з KaTeX формулами та 23 офіційні задачі з вводом кінцевої відповіді.</p>
+            <strong class="text-emerald-300 font-bold">Midterm 2 (Friday):</strong>
+            <p class="text-slate-300 mt-0.5">600 interactive test questions (50 for each of the 12 topics), 69 tasks from the LMS self-tests and 23 official problems with a final-answer check.</p>
           </div>
         </div>
 
         <div class="p-3.5 rounded-2xl bg-slate-950/70 border border-slate-800 flex items-start gap-3 text-xs">
           <span class="text-xl"><i data-icon="timer" class="text-amber-300"></i></span>
           <div>
-            <strong class="text-amber-300 font-bold">Аналітика фокус-часу та помилок:</strong>
-            <p class="text-slate-300 mt-0.5">Платформа фіксує час у кожній вкладці, зберігає ваші помилки та показує слабкі місця. Усі ваші досягнення зберігаються у вашому персональному акаунті.</p>
+            <strong class="text-amber-300 font-bold">Focus time and mistakes:</strong>
+            <p class="text-slate-300 mt-0.5">The app tracks your time in each section, keeps your mistakes and shows your weak spots. All progress is saved to your account.</p>
           </div>
         </div>
 
         <div class="p-3.5 rounded-2xl bg-slate-950/70 border border-slate-800 flex items-start gap-3 text-xs">
           <span class="text-xl"><i data-icon="shirt" class="text-violet-300"></i></span>
           <div>
-            <strong class="text-violet-300 font-bold">Аватар та 7 рівнів гардеробу:</strong>
-            <p class="text-slate-300 mt-0.5">Відкривайте новий одяг для свого аватара (від футболки першокурсника до золотого вінця 100/100) з ростом відсотка готовності!</p>
+            <strong class="text-violet-300 font-bold">Points, stickers and an avatar:</strong>
+            <p class="text-slate-300 mt-0.5">Real progress earns points and stickers; spend them on outfits for your avatar, from the freshman tee to the champion crown.</p>
           </div>
         </div>
       </div>
@@ -858,63 +858,63 @@
       <div class="border-t border-slate-800 pt-5">
         <div class="flex rounded-xl bg-slate-950 p-1 mb-5 border border-slate-800">
           <button id="auth-tab-btn-login" onclick="window.userProfile?.switchAuthTab('login')" aria-pressed="true" class="flex-1 py-2 text-xs font-bold rounded-lg transition hover:text-white border border-indigo-500 text-white bg-indigo-950/50">
-            Вхід в акаунт
+            Log in
           </button>
           <button id="auth-tab-btn-register" onclick="window.userProfile?.switchAuthTab('register')" aria-pressed="false" class="flex-1 py-2 text-xs font-bold rounded-lg transition text-slate-400 hover:text-white">
-            Реєстрація
+            Sign up
           </button>
         </div>
 
         <!-- Google Sign-In Option -->
         <div class="mb-4">
-          <div class="text-[11px] font-bold text-slate-400 mb-2 text-center uppercase tracking-wider">Швидкий вхід через Google:</div>
+          <div class="text-[11px] font-bold text-slate-400 mb-2 text-center uppercase tracking-wider">Quick sign-in with Google:</div>
           <div id="auth-gate-google-btn-container" class="flex justify-center my-2"></div>
         </div>
 
         <div class="flex items-center gap-3 my-4">
           <div class="flex-1 h-px bg-slate-800"></div>
-          <span class="text-[11px] text-slate-500 uppercase font-semibold">Або через пошту</span>
+          <span class="text-[11px] text-slate-500 uppercase font-semibold">Or with email</span>
           <div class="flex-1 h-px bg-slate-800"></div>
         </div>
 
         <!-- Login Form -->
         <form id="auth-gate-login-form" onsubmit="event.preventDefault(); window.userProfile?.login(document.getElementById('gate-login-email').value, document.getElementById('gate-login-pass').value);" class="space-y-3">
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Електронна пошта:</label>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Email:</label>
             <input type="email" id="gate-login-email" required placeholder="student@ucu.edu.ua" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-slate-100 focus:outline-none focus:border-indigo-500">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Пароль:</label>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Password:</label>
             <input type="password" id="gate-login-pass" required placeholder="••••••••" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-slate-100 focus:outline-none focus:border-indigo-500">
           </div>
           <button type="submit" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition shadow-lg shadow-indigo-600/20">
-            Увійти та продовжити навчання <i data-icon="arrow-right"></i>
+            Log in and keep studying <i data-icon="arrow-right"></i>
           </button>
         </form>
 
         <!-- Register Form -->
         <form id="auth-gate-register-form" onsubmit="event.preventDefault(); window.userProfile?.register(document.getElementById('gate-reg-name').value, document.getElementById('gate-reg-email').value, document.getElementById('gate-reg-pass').value);" class="space-y-3 hidden">
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Ваше ім'я та прізвище:</label>
-            <input type="text" id="gate-reg-name" required placeholder="Ігор (UCU Student)" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-slate-100 focus:outline-none focus:border-indigo-500">
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Your name:</label>
+            <input type="text" id="gate-reg-name" required placeholder="First and last name" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-slate-100 focus:outline-none focus:border-indigo-500">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Електронна пошта:</label>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Email:</label>
             <input type="email" id="gate-reg-email" required placeholder="student@ucu.edu.ua" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-slate-100 focus:outline-none focus:border-indigo-500">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Створіть пароль:</label>
-            <input type="password" id="gate-reg-pass" required placeholder="Мінімум 4 символи" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-slate-100 focus:outline-none focus:border-indigo-500">
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Create a password:</label>
+            <input type="password" id="gate-reg-pass" required placeholder="At least 4 characters" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-slate-100 focus:outline-none focus:border-indigo-500">
           </div>
           <button type="submit" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition shadow-lg shadow-emerald-600/20">
-            Зареєструватись та зберегти профіль <i data-icon="arrow-right"></i>
+            Sign up and save my profile <i data-icon="arrow-right"></i>
           </button>
         </form>
 
         <!-- Guest / Quick Access -->
         <div class="mt-4 pt-3 border-t border-slate-800/80 text-center">
           <button type="button" onclick="window.userProfile?.loginAsGuest();" class="text-xs text-slate-400 hover:text-indigo-300 font-semibold underline">
-            <i data-icon="rocket"></i> Швидкий старт як гість (Ihor UCU Guest)
+            <i data-icon="rocket"></i> Quick start as a guest
           </button>
         </div>
 
@@ -1015,7 +1015,7 @@
         <h3 class="font-bold text-sm text-slate-100">Gemini P&S Mentor</h3>
       </div>
       <div class="flex items-center gap-2">
-        <button id="drawer-api-key-btn" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] font-bold text-amber-300 border border-slate-700 flex items-center gap-1 transition" title="Налаштувати Gemini API ключ">
+        <button id="drawer-api-key-btn" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] font-bold text-amber-300 border border-slate-700 flex items-center gap-1 transition" title="Set up the Gemini API key">
           <i data-icon="key-round"></i> <span id="gemini-key-status-label">API Key</span>
         </button>
         <button id="gemini-close-drawer-btn" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 text-xs">
@@ -1027,7 +1027,7 @@
     <!-- Message History -->
     <div id="gemini-chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 flex flex-col text-xs">
       <div class="p-3 rounded-xl bg-slate-800/80 text-slate-200 self-start max-w-[85%] border border-slate-700/80 leading-relaxed">
-        <i data-icon="hand"></i> Привіт! I am your <strong>Gemini P&S Mentor</strong> for Midterm 2 and Colloquium 2. Ask me any definition, request a hint for a seminar problem, or let me evaluate your oral exam proof!
+        <i data-icon="hand"></i> Hi! I am your <strong>Gemini P&S Mentor</strong> for Midterm 2 and Colloquium 2. Ask me any definition, request a hint for a seminar problem, or let me evaluate your oral exam proof!
       </div>
     </div>
 
@@ -1099,28 +1099,28 @@
       <div class="space-y-4 mb-5">
         <div class="p-3.5 rounded-xl bg-indigo-950/40 border border-indigo-800 text-xs text-indigo-200 leading-relaxed">
           <div class="font-bold flex items-center gap-1.5 mb-1">
-            <span><i data-icon="key-round"></i></span> <span>Як отримати безкоштовний Gemini API ключ:</span>
+            <span><i data-icon="key-round"></i></span> <span>How to get a free Gemini API key:</span>
           </div>
           <ol class="list-decimal list-inside space-y-1 text-[11px] text-slate-300">
-            <li>Перейдіть на <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="text-indigo-400 font-bold underline hover:text-indigo-300">Google AI Studio (aistudio.google.com) <i data-icon="arrow-up-right"></i></a></li>
-            <li>Натисніть <strong>Create API Key</strong></li>
-            <li>Скопіюйте ключ і вставте в поле нижче</li>
+            <li>Go to <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="text-indigo-400 font-bold underline hover:text-indigo-300">Google AI Studio (aistudio.google.com) <i data-icon="arrow-up-right"></i></a></li>
+            <li>Click <strong>Create API Key</strong></li>
+            <li>Copy the key and paste it below</li>
           </ol>
         </div>
 
         <div>
           <label class="block text-xs font-semibold text-slate-300 mb-1">Gemini API Key:</label>
           <div class="relative">
-            <input id="settings-api-key-input" type="password" placeholder="Вставте ваш Gemini API ключ..." class="w-full px-3 py-2 pr-16 rounded-xl bg-slate-800 border border-slate-700 text-xs text-slate-100 font-mono focus:outline-none focus:border-indigo-500">
+            <input id="settings-api-key-input" type="password" placeholder="Paste your Gemini API key…" class="w-full px-3 py-2 pr-16 rounded-xl bg-slate-800 border border-slate-700 text-xs text-slate-100 font-mono focus:outline-none focus:border-indigo-500">
             <button id="toggle-key-visibility-btn" class="absolute right-2 top-2 text-[11px] font-semibold text-indigo-400 hover:text-indigo-300">Show</button>
           </div>
-          <p class="text-[11px] text-slate-400 mt-1">Зберігається в браузері та автоматично синхронізується з вашим акаунтом.</p>
+          <p class="text-[11px] text-slate-400 mt-1">Stored in this browser and synced with your account.</p>
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-300 mb-1">Модель нейромережі:</label>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Model:</label>
           <select id="settings-model-select" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-slate-100 focus:outline-none focus:border-indigo-500">
-            <option value="gemini-3.8-flash" selected>gemini-3.8-flash (Gemini 3.8 - За замовчуванням)</option>
+            <option value="gemini-3.8-flash" selected>gemini-3.8-flash (Gemini 3.8, default)</option>
             <option value="gemini-3.5-flash">gemini-3.5-flash (Gemini 3.5)</option>
             <option value="gemini-2.5-flash">gemini-2.5-flash (Gemini 2.5)</option>
             <option value="gemini-flash-latest">gemini-flash-latest</option>
