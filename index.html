@@ -305,41 +305,38 @@
           </div>
         </div>
 
-        <!-- Card 2: Student Avatar & Real-time Live Stats Gamification -->
-        <div class="p-6 rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-900 via-indigo-950/30 to-slate-900 shadow-xl flex flex-col justify-between">
-          <div class="flex justify-between items-start mb-2">
+        <!-- Card 2: Rewards — avatar, points balance, latest stickers. Filled by js/rewards-ui.js -->
+        <div id="rewards-card" class="p-6 rounded-2xl border border-slate-800 bg-slate-900/80 shadow-xl flex flex-col justify-between">
+          <div class="flex justify-between items-start gap-3 mb-3">
             <div>
-              <span class="text-xs uppercase font-extrabold tracking-wider text-amber-400">Student Profile & Wardrobe</span>
-              <h2 class="text-xl font-bold text-slate-100">Study Gamification</h2>
+              <span class="text-xs uppercase font-extrabold tracking-wider text-amber-400">Points &amp; stickers</span>
+              <h2 class="text-xl font-bold text-slate-100">My avatar</h2>
             </div>
-            <button onclick="document.getElementById('header-user-profile-btn').click()" class="px-2.5 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition">
-              <i data-icon="shirt"></i> Wardrobe
+            <button type="button" data-rewards-open="shop" class="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs cursor-pointer transition">
+              <i data-icon="shopping-bag"></i> Shop
             </button>
           </div>
 
-          <!-- Avatar Display & Real-time Hours Studied -->
-          <div class="flex items-center gap-4 my-2 p-3 rounded-xl bg-slate-950/60 border border-slate-800/80">
-            <div id="user-avatar-display" class="w-20 h-24 shrink-0 flex items-center justify-center">
-              <!-- Dynamically populated SVG with equipped clothes -->
-            </div>
-            <div class="flex-1 space-y-1.5 text-xs">
-              <div class="font-bold text-slate-100 flex items-center gap-2">
-                <span><i data-icon="timer"></i> Real-time Studied:</span>
-                <span id="user-dash-study-time" class="font-mono text-amber-300 font-extrabold">0m 00s</span>
+          <div class="flex items-center gap-4 my-1">
+            <button type="button" id="user-avatar-display" data-rewards-open="avatar" class="w-24 h-28 shrink-0 rounded-2xl cursor-pointer transition hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500" title="Open avatar" aria-label="Open avatar"></button>
+            <div class="flex-1 min-w-0">
+              <div class="relative flex items-baseline gap-1.5">
+                <span id="rewards-balance" class="text-3xl font-black text-slate-100 tabular-nums">0</span>
+                <span id="rewards-balance-label" class="text-sm font-semibold text-slate-400">points</span>
+                <span id="rewards-plus" class="rw-plus text-sm font-extrabold text-emerald-400" aria-hidden="true"></span>
               </div>
-              <div class="text-slate-400 text-[11px]">
-                Total Focus Time: <strong id="user-dash-study-hours" class="text-slate-200">0.0 hrs</strong>
-              </div>
-              <div class="p-1.5 rounded bg-slate-900 text-[11px] text-indigo-300 font-medium">
-                <i data-icon="shirt"></i> Equip clothes by hitting readiness % thresholds!
-              </div>
+              <div id="rewards-meta" class="text-[11px] text-slate-400 mt-0.5"></div>
+              <div id="rewards-recent" class="flex items-center gap-1.5 mt-2 min-h-[2.5rem]"></div>
             </div>
           </div>
 
-          <div class="flex justify-between items-center pt-2 border-t border-slate-800/80 text-xs">
-            <span class="text-slate-400">7 Unlockable Tiers</span>
-            <button onclick="document.getElementById('header-user-profile-btn').click()" class="text-indigo-400 hover:text-indigo-300 font-bold">
-              View Wardrobe & Custom Photo <i data-icon="arrow-right"></i>
+          <div class="flex justify-between items-center gap-3 pt-3 mt-3 border-t border-slate-800 text-xs">
+            <span class="text-slate-400 truncate" title="Time studied in the app">
+              <i data-icon="timer"></i> <span id="user-dash-study-time" class="font-semibold text-slate-300 tabular-nums">0m 0s</span>
+              <span class="hidden sm:inline">· <span id="user-dash-study-hours">0.0 hrs</span></span>
+            </span>
+            <button type="button" data-rewards-open="stickers" class="shrink-0 inline-flex items-center gap-1 text-indigo-400 hover:text-indigo-300 font-bold cursor-pointer transition">
+              <span id="rewards-new-dot" class="hidden w-2 h-2 rounded-full bg-rose-500" title="New stickers"></span> All stickers <i data-icon="arrow-right"></i>
             </button>
           </div>
         </div>
@@ -929,88 +926,87 @@
     </div>
   </div>
 
-  <!-- ================= USER PROFILE, GOOGLE AUTH & WARDROBE MODAL ================= -->
-  <div id="user-profile-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
-    <div class="bg-slate-900 border border-slate-700 rounded-3xl max-w-3xl w-full p-6 shadow-2xl overflow-y-auto max-h-[92vh]">
-      
-      <!-- Modal Header -->
-      <div class="flex justify-between items-start mb-6 border-b border-slate-800 pb-4">
-        <div>
-          <span class="text-xs uppercase font-extrabold text-indigo-400">Student Profile & Wardrobe</span>
-          <h3 class="text-2xl font-black text-slate-100 mt-1">Google Account, Avatar & Clothes</h3>
+  <!-- ================= PROFILE & REWARDS MODAL: Avatar · Shop · Stickers · Account (js/rewards-ui.js) ================= -->
+  <div id="user-profile-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center sm:p-4 hidden" role="dialog" aria-modal="true" aria-labelledby="rewards-modal-title">
+    <div id="rewards-dialog" tabindex="-1" class="bg-slate-900 border border-slate-700 rounded-t-3xl sm:rounded-3xl max-w-3xl w-full shadow-2xl overflow-y-auto max-h-[92vh] focus:outline-none">
+
+      <!-- Header: who, balance, tabs -->
+      <div class="sticky top-0 z-10 bg-slate-900 px-4 sm:px-6 pt-4 pb-3 border-b border-slate-800">
+        <div class="flex items-center gap-3">
+          <div id="rewards-modal-mini" class="w-11 h-12 shrink-0"></div>
+          <div class="flex-1 min-w-0">
+            <h3 id="rewards-modal-title" class="text-lg font-black text-slate-100 truncate">Profile &amp; rewards</h3>
+            <div class="text-xs text-slate-400 tabular-nums"><strong id="rewards-modal-balance" class="text-amber-400">0 points</strong> · <span id="rewards-modal-count">0 stickers</span></div>
+          </div>
+          <button type="button" id="close-profile-modal-btn" class="text-slate-400 hover:text-slate-100 p-2 rounded-lg hover:bg-slate-800 cursor-pointer transition" title="Close" aria-label="Close"><i data-icon="x"></i></button>
         </div>
-        <button id="close-profile-modal-btn" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 text-sm" title="Close" aria-label="Close"><i data-icon="x"></i></button>
+        <div role="tablist" aria-label="Profile sections" class="mt-3 grid grid-cols-4 gap-1 p-1 rounded-xl bg-slate-950/70 border border-slate-800 text-xs font-bold">
+          <button type="button" role="tab" data-rewards-tab="avatar" class="py-2 rounded-lg cursor-pointer transition">Avatar</button>
+          <button type="button" role="tab" data-rewards-tab="shop" class="py-2 rounded-lg cursor-pointer transition">Shop</button>
+          <button type="button" role="tab" data-rewards-tab="stickers" class="py-2 rounded-lg cursor-pointer transition">Stickers</button>
+          <button type="button" role="tab" data-rewards-tab="account" class="py-2 rounded-lg cursor-pointer transition">Account</button>
+        </div>
       </div>
 
-      <!-- Grid: Left side Profile & Google Sign-In, Right side Avatar Preview & Wardrobe -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        
-        <!-- Left: Google Auth & Name/Photo Edit -->
-        <div class="space-y-4">
-          
-          <!-- Google Sign-In Container -->
+      <div class="px-4 sm:px-6 py-5">
+        <!-- Avatar: what you wear -->
+        <section data-rewards-panel="avatar" role="tabpanel" class="grid grid-cols-1 sm:grid-cols-[11rem_1fr] gap-5">
+          <div class="flex sm:flex-col items-center gap-3 sm:gap-2">
+            <div id="modal-avatar-preview" class="w-28 h-32 sm:w-40 sm:h-44 shrink-0"></div>
+            <p class="text-xs text-slate-400 sm:text-center">Tap an item to put it on or take it off. Your first outfits unlock with readiness; the rest are in the shop.</p>
+          </div>
+          <div>
+            <div id="rewards-slot-filter" class="flex flex-wrap gap-1.5 mb-3"></div>
+            <div id="rewards-wardrobe" class="grid grid-cols-3 sm:grid-cols-4 gap-2"></div>
+          </div>
+        </section>
+
+        <!-- Shop: spend points -->
+        <section data-rewards-panel="shop" role="tabpanel" class="hidden">
+          <div class="flex items-center gap-4 p-3 rounded-2xl bg-slate-950/60 border border-slate-800 mb-4">
+            <div id="rewards-shop-preview" class="w-24 h-28 shrink-0"></div>
+            <div id="rewards-shop-detail" class="flex-1 min-w-0"></div>
+          </div>
+          <div id="rewards-shop-filter" class="flex flex-wrap gap-1.5 mb-3"></div>
+          <div id="rewards-shop-grid" class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-2"></div>
+        </section>
+
+        <!-- Stickers: the collection -->
+        <section data-rewards-panel="stickers" role="tabpanel" class="hidden">
+          <div id="rewards-stickers"></div>
+        </section>
+
+        <!-- Account: sign-in, name, photo, timer -->
+        <section data-rewards-panel="account" role="tabpanel" class="hidden space-y-4">
           <div class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800">
-            <div class="text-xs font-bold text-slate-300 mb-2"><i data-icon="zap"></i> Quick Sign-In with Google:</div>
+            <div class="text-xs font-bold text-slate-300 mb-2"><i data-icon="zap"></i> Sign in with Google</div>
             <div id="google-account-status" class="mb-2"></div>
-            <div id="google-signin-btn-container" class="my-2 flex justify-center">
-              <!-- Rendered by Google GSI Client -->
-            </div>
-            <p class="text-[11px] text-slate-400 mt-2">Syncs your name, profile photo, and study statistics across devices.</p>
+            <div id="google-signin-btn-container" class="my-2 flex justify-center"></div>
+            <p class="text-[11px] text-slate-400 mt-2">Syncs your name, photo, progress, points and stickers across devices.</p>
           </div>
 
-          <!-- Custom Name -->
           <div>
-            <label class="block text-xs font-bold text-slate-300 mb-1">Display Name:</label>
+            <label for="profile-name-input" class="block text-xs font-bold text-slate-300 mb-1">Name</label>
             <div class="flex gap-2">
-              <input type="text" id="profile-name-input" placeholder="Your name or nickname..." class="flex-1 px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-slate-100 focus:outline-none focus:border-indigo-500 font-semibold">
-              <button id="profile-save-name-btn" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition">
-                Save
-              </button>
+              <input type="text" id="profile-name-input" placeholder="Your name or nickname…" class="flex-1 min-w-0 px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-slate-100 focus:outline-none focus:border-indigo-500 font-semibold">
+              <button type="button" id="profile-save-name-btn" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs cursor-pointer transition">Save</button>
             </div>
           </div>
 
-          <!-- Custom Photo Upload -->
           <div>
-            <label class="block text-xs font-bold text-slate-300 mb-1">Custom Photo Upload:</label>
-            <input type="file" id="profile-photo-upload" accept="image/*" class="block w-full text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-slate-200 hover:file:bg-slate-700 cursor-pointer">
-            <p class="text-[10px] text-slate-400 mt-1">Upload JPEG, PNG or SVG photo to customize your avatar badge.</p>
+            <label for="profile-photo-upload" class="block text-xs font-bold text-slate-300 mb-1">Profile photo</label>
+            <input type="file" id="profile-photo-upload" accept="image/*" class="block w-full text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-slate-200 hover:file:bg-slate-700 file:cursor-pointer cursor-pointer">
+            <p class="text-[10px] text-slate-400 mt-1">JPEG, PNG or SVG, shown in the header.</p>
           </div>
 
-          <!-- Study Time Controller -->
-          <div class="pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
-            <span class="text-slate-400">Live Study Timer:</span>
-            <button id="profile-reset-timer-btn" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-rose-950/80 border border-slate-700 hover:border-rose-800 text-slate-300 hover:text-rose-200 text-[11px] font-semibold transition">
-              <i data-icon="rotate-ccw"></i> Reset Timer to 0:00
+          <div class="pt-3 border-t border-slate-800 flex items-center justify-between gap-3 text-xs">
+            <span class="text-slate-400">Time studied: <strong id="user-modal-total-time" class="text-slate-200 tabular-nums">0m 0s</strong></span>
+            <button type="button" id="profile-reset-timer-btn" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-rose-950/80 border border-slate-700 hover:border-rose-800 text-slate-300 hover:text-rose-200 text-[11px] font-semibold cursor-pointer transition">
+              <i data-icon="rotate-ccw"></i> Reset timer
             </button>
           </div>
-
-        </div>
-
-        <!-- Right: Live Avatar Preview -->
-        <div class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 flex flex-col items-center justify-center text-center">
-          <div class="text-xs uppercase font-bold text-indigo-400 mb-2">Live Equipped Avatar</div>
-          <div id="modal-avatar-preview" class="w-28 h-32 flex items-center justify-center">
-            <!-- Rendered SVG avatar with clothes -->
-          </div>
-          <div class="text-xs text-slate-300 font-semibold mt-2">
-            Equip clothes below to change your avatar!
-          </div>
-        </div>
-
+        </section>
       </div>
-
-      <!-- Wardrobe Items Catalog -->
-      <div>
-        <div class="flex items-center justify-between mb-3 border-t border-slate-800 pt-4">
-          <h4 class="font-extrabold text-base text-slate-100">Unlockable Wardrobe & Outfits</h4>
-          <span class="text-xs text-slate-400">Requires Readiness % Thresholds</span>
-        </div>
-
-        <div id="wardrobe-items-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          <!-- Dynamically populated by user.js with lock/unlock states -->
-        </div>
-      </div>
-
     </div>
   </div>
 
@@ -1158,7 +1154,11 @@
   <script src="js/icons.js"></script>
   <script src="js/data.js"></script>
   <script src="js/problem-directions.js"></script>
+  <script src="js/rewards-data.js"></script>
+  <script src="js/rewards-art.js"></script>
+  <script src="js/rewards.js"></script>
   <script src="js/user.js"></script>
+  <script src="js/rewards-ui.js"></script>
   <script src="js/gemini.js"></script>
   <script src="js/pomodoro.js"></script>
   <script src="js/quiz.js"></script>

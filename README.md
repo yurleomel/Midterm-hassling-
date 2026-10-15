@@ -24,7 +24,7 @@ python3 server.py
 Open **`http://localhost:8080`**.
 
 ### Tests
-Pure logic (drill queue, ticket picker, self-test grading) and the self-test bank data are covered by Node's built-in test runner — no dependencies:
+Pure logic (drill queue, ticket picker, self-test grading, rewards points/stickers/shop/merge) and the self-test bank data are covered by Node's built-in test runner — no dependencies:
 ```bash
 node --test tests/*.test.js
 ```
@@ -116,6 +116,13 @@ Tracks your real progress across 4 weighted pillars:
 * Complete reference table for discrete ($B(1,p), B(n,p), G(p), P(\lambda)$) and continuous ($U(a,b), E(\lambda), N(\mu, \sigma^2), \text{Laplace}$) distributions.
 * Includes Supports, PMF/PDF, Means, Variances, PGFs, MGFs, and key exam pitfalls.
 
+### 10. 🏅 Points, Stickers & Shop
+* **Points** come only from real learning: the first correct answer to a self-test task, passed topic tests, definitions and oral questions graded 6+, solved problems, finished Pomodoros (8 a day pay), and a small bonus for a streak of study days. Each award is paid once, so repeating something never earns more.
+* **37 stickers**: 23 for Module 2 (for example "Memoryless", "Poisson Fish", "Cov = 0, but…", "68 · 95 · 99.7") and 14 general ones. They come in four rarities, and 7 are secret. All art is tiny inline SVG.
+* **Shop**: 25 items for the layered avatar (clothes, hats, glasses, props, backgrounds). The readiness tiers are still free unlocks. You can try an item on before buying it.
+* The dashboard card "My avatar" shows the avatar, balance, streak and latest stickers. The profile modal has the tabs **Avatar · Shop · Stickers · Account** and can be opened anywhere with `window.rewards.open('shop')` or `data-rewards-open="shop"`. Toasts are small and hide themselves (they can be switched off), and nothing animates with reduced motion.
+* The state is stored as ids and numbers in the profile and merged with the cloud without counting anything twice. Details, the points table and how to add module 3 are in [`docs/gamification.md`](docs/gamification.md).
+
 ---
 
 ## 🗂️ File Structure
@@ -137,7 +144,12 @@ midterm2/
 │   ├── selftest-data.js  # Generated: 69 unique LMS self-test tasks (topic, type, difficulty)
 │   ├── selftest-bank.js  # Self-test drill: filters, random sets, grading for every Moodle format
 │   ├── icons.js          # icon('name') helper + <i data-icon> hydration (Lucide inline SVG)
+│   ├── rewards-data.js   # Rewards catalog: points rules, stickers, shop items, tier art (data only)
+│   ├── rewards-art.js    # Avatar, item and sticker inline SVG from shared shapes (DOM-free)
+│   ├── rewards.js        # Rewards logic: points, sticker rules, buy/wear, local⇄cloud merge (DOM-free)
+│   ├── rewards-ui.js     # Dashboard card, Avatar · Shop · Stickers modal, toasts, notify() hooks
 │   └── app.js            # UI controller, routing & event handling
+├── docs/gamification.md  # Rewards design: principles, points table, state, hooks, adding a module
 ├── tests/                # node --test unit tests for pure logic
 ├── vendor/
 │   └── katex/            # Offline KaTeX assets (css, js, auto-render)

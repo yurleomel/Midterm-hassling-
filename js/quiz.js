@@ -101,6 +101,7 @@ class QuizManager {
     const currentBest = this.readinessState.definitionsScores[defId] || 0;
     this.readinessState.definitionsScores[defId] = Math.max(score, currentBest);
     this.saveReadiness();
+    window.rewards?.notify('definition', { id: defId, score }); // rewards: points for a definition / oral question at 6+
   }
 
   getPassingDefinitionsCount() {
@@ -114,6 +115,7 @@ class QuizManager {
   recordProblemSolved(probId, isSolved = true) {
     this.readinessState.problemsMastered[probId] = isSolved;
     this.saveReadiness();
+    if (isSolved) window.rewards?.notify('problem', { id: probId }); // rewards: points for a solved problem
   }
 
   getSolvedProblemsCount() {
@@ -133,6 +135,7 @@ class QuizManager {
       timestamp: Date.now()
     };
     this.saveReadiness();
+    window.rewards?.notify('topicTest', { id: topicId, score, total }); // rewards: points for a passed topic test
     if (window.app?.renderTopicsSection) {
       window.app.renderTopicsSection();
     }
