@@ -348,6 +348,7 @@ class QuizManager {
         <div class="flex flex-wrap gap-2 mb-3">
           ${modeButton('mistakes', `${icon('repeat')} Мої помилки (${mistakesCount})`)}
           ${modeButton('mix', `${icon('dices')} Мікс: ${QuizManager.MIX_SIZE} випадкових з усіх тем`)}
+          ${window.SELFTEST_BANK ? `<button class="quiz-goto-selftests px-3 py-2 rounded-xl border border-violet-700/70 bg-violet-950/40 text-violet-200 hover:border-violet-500 hover:text-white text-xs font-semibold cursor-pointer transition">${icon('clipboard-check')} Self-тести з LMS (${window.SELFTEST_BANK.tasks.length} задач)</button>` : ''}
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
@@ -384,6 +385,7 @@ class QuizManager {
     mainContainer.querySelectorAll('.quiz-mode-btn').forEach(btn => {
       btn.addEventListener('click', () => this.startQuiz(btn.getAttribute('data-quiz-mode')));
     });
+    mainContainer.querySelector('.quiz-goto-selftests')?.addEventListener('click', () => window.app?.switchTab('selftests'));
 
     // Attach click listeners to topic buttons
     mainContainer.querySelectorAll('.topic-select-btn').forEach(btn => {

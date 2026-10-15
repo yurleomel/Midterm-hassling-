@@ -29,6 +29,7 @@ class AppController {
     this.setupProfileModal();
     this.setupColloquiumModes();
     window.definitionDrill?.init();
+    window.selfTestBank?.init();
 
     // Trigger initial KaTeX rendering and readiness update
     window.quizManager?.updateReadinessUI();
@@ -99,6 +100,7 @@ class AppController {
     if (tabId === 'quizzes' && (!window.quizManager?.currentQuiz || window.quizManager.currentQuiz.length === 0)) {
       window.quizManager?.startQuiz(1);
     }
+    if (tabId === 'selftests') window.selfTestBank?.show();
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
     this.renderAllMath();

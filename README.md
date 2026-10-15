@@ -24,7 +24,7 @@ python3 server.py
 Open **`http://localhost:8080`**.
 
 ### Tests
-Pure logic (drill queue, ticket picker) is covered by Node's built-in test runner — no dependencies:
+Pure logic (drill queue, ticket picker, self-test grading) and the self-test bank data are covered by Node's built-in test runner — no dependencies:
 ```bash
 node --test tests/*.test.js
 ```
@@ -83,6 +83,14 @@ Tracks your real progress across 4 weighted pillars:
   * Colloquium 2022 New Problems (Multinomial covariance $-n/36$, Poisson thinning independence, Gambler's ruin difference equations, Helicopter rescue distance, Mixed traffic light distribution).
   * Midterm 2017 Exam Paper (Problems 1 to 6 complete solutions).
 
+### 4b. 📋 LMS Self-test Bank (Topics 4–6) — tab "LMS Self-tests"
+* The tasks from the Moodle self-tests on topics 4, 5 and 6, word for word (formulas, options, correct answers), with exact duplicates and a repeated numeric variant removed: **69 unique tasks** (topic 4: 30, topic 5: 19, topic 6: 20).
+* Every task is tagged with its **topic**, one of **14 task types** (e.g. "Впізнати розподіл за описом експерименту", "Нормальний: ймовірності через Φ"; each type lists the lecture slides it relies on) and a **difficulty** (легка / середня / складна).
+* Pick a topic, a task type, a difficulty and how many tasks you want (or "only the ones I haven't solved yet") and drill a random set. All Moodle formats work: single and multiple choice (partial credit like Moodle), true/false, numeric answers (`0.5`, `0,5` and `1/2` all count), matching and gap-select.
+* After each check: the correct answer, Moodle's own hints, a short explanation and the lecture pages. The summary breaks the score down by task type and re-runs the wrong ones in one click. Also reachable from the "Topic Tests" tab.
+* Progress is stored only in this browser (`localStorage`, key `stathustle_selftest_stats`) and is not synced or counted in Readiness.
+* `js/selftest-data.js` is generated from a local extraction of the LMS review pages (kept out of the repo); edit the generator, not the file.
+
 ### 5. 🤖 Gemini AI Mentor Integration
 * Dedicated slide-over AI tutor drawer available on every page.
 * Integrated with Google Gemini 2.0 Flash / 1.5 Flash.
@@ -126,6 +134,8 @@ midterm2/
 │   ├── quiz.js           # Interactive quiz manager & readiness engine
 │   ├── definition-drill.js # Random definition drill (shuffled recall + self-grading)
 │   ├── exam-ticket.js    # Colloquium ticket: random oral question + 2 definitions + stopwatch
+│   ├── selftest-data.js  # Generated: 69 unique LMS self-test tasks (topic, type, difficulty)
+│   ├── selftest-bank.js  # Self-test drill: filters, random sets, grading for every Moodle format
 │   ├── icons.js          # icon('name') helper + <i data-icon> hydration (Lucide inline SVG)
 │   └── app.js            # UI controller, routing & event handling
 ├── tests/                # node --test unit tests for pure logic
