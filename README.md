@@ -136,8 +136,8 @@ Tracks your real progress across 4 weighted pillars:
 * Includes Supports, PMF/PDF, Means, Variances, PGFs, MGFs, and key exam pitfalls.
 
 ### 10. 🏅 Points, Stickers & Shop
-* **Points** come only from real learning: the first correct answer to a self-test task, passed topic tests, definitions and oral questions graded 6+, solved problems, finished Pomodoros (8 a day pay), and a small bonus for a streak of study days. Each award is paid once, so repeating something never earns more.
-* **37 stickers**: 23 for Module 2 (for example "Memoryless", "Poisson Fish", "Cov = 0, but…", "68 · 95 · 99.7") and 14 general ones. They come in four rarities, and 7 are secret. All art is tiny inline SVG.
+* **Points** come only from real learning: the first correct answer to a self-test task, passed topic tests, definitions and oral questions graded 6+, solved problems, saved mock midterms (40 each), finished Pomodoros (8 a day pay), and a small bonus for a streak of study days. Each award is paid once, so repeating something never earns more.
+* **38 stickers**: 24 for Module 2 (for example "Memoryless", "Poisson Fish", "Cov = 0, but…", "68 · 95 · 99.7", "Dress Rehearsal" for a finished mock midterm) and 14 general ones. They come in four rarities, and 7 are secret. All art is tiny inline SVG.
 * **Shop**: 25 items for the layered avatar (clothes, hats, glasses, props, backgrounds). The readiness tiers are still free unlocks. You can try an item on before buying it.
 * The dashboard card "My avatar" shows the avatar, balance, streak and latest stickers. The profile modal has the tabs **Avatar · Shop · Stickers · Account** and can be opened anywhere with `window.rewards.open('shop')` or `data-rewards-open="shop"`. Toasts are small and hide themselves (they can be switched off), and nothing animates with reduced motion.
 * The state is stored as ids and numbers in the profile and merged with the cloud without counting anything twice. Details, the points table and how to add module 3 are in [`docs/gamification.md`](docs/gamification.md).

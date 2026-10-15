@@ -62,23 +62,24 @@ One edge case: if the same points are spent on two offline devices, the merged b
 | Definition graded ≥6/10 | `def:<id>` | 8 |
 | Oral question graded ≥6/10 | `oral:<id>` | 12 |
 | Exam problem solved | `pr:<id>` | 15 |
+| Mock midterm finished, graded and saved | `mock:<attempt id>` | 40 |
 | Pomodoro work session | `pomo:<date>T<hhmm>` | 10, first 8 a day only |
 | Active day with a streak of k ≥ 2 days | `day:<date>` | 5·(k−1), max 20 |
 | Sticker | `stk:<id>` | common 10 · rare 25 · epic 50 · legendary 100 |
 
-These points come from the readiness state the app already keeps (`selfTestStats`, `topicTestsSolved`, `definitionsScores`, `problemsMastered`). They are idempotent because of that, and the first load also pays for earlier progress, shown in a single toast. Only real progress counts as an active day: a correct answer, a grade of 6+, a solved problem, a finished test or a finished Pomodoro. Wrong answers don't count.
+These points come from the readiness state the app already keeps (`selfTestStats`, `topicTestsSolved`, `definitionsScores`, `problemsMastered`, `mockAttempts`). They are idempotent because of that, and the first load also pays for earlier progress, shown in a single toast. Only real progress counts as an active day: a correct answer, a grade of 6+, a solved problem, a finished test, a finished Pomodoro or a saved mock midterm. Wrong answers don't count.
 
 **Balance.** A diligent week (about 40 self-tests, 6 topic tests, 15 definitions, 8 problems and 15 Pomodoros) earns about 1,100–1,300 points including stickers. Items cost 60–350, so that buys 4–6 nice items. The full catalog costs 3,860.
 
-## Stickers (37)
+## Stickers (38)
 | | common | rare | epic | legendary |
 |---|---|---|---|---|
-| Module 2 (23) | 5 | 10 | 6 | 2 |
+| Module 2 (24) | 5 | 11 | 6 | 2 |
 | General (14) | 6 | 5 | 3 | – |
 
 7 of them are secret: Night Owl, Early Bird, Return of the Jedi, Saturday? Never Heard of It, Geometrically Stubborn (solved after three misses), Bernoulli Sniper (10 solved with no misses) and Beyond 3σ (100% readiness). Time-of-day and comeback stickers need a live action. They are never awarded by the silent catch-up.
 
-Rule kinds are `st` (`n` / `ids` / `types`), `stFirst`, `stGrind`, `stt`, `tt` (`n` / `pct`), `def`, `oral`, `pr`, `pomo`, `pomoDay`, `streak`, `own`, `earned`, `stk`, `ready`, `fix`, `hour`, `weekend`, `gap`, and `all: [rules]`. They are defined in `RewardsLogic.progress()`, which also returns `{have, need}` for the progress shown in the UI.
+Rule kinds are `st` (`n` / `ids` / `types`), `stFirst`, `stGrind`, `stt`, `tt` (`n` / `pct`), `def`, `oral`, `pr`, `mock`, `pomo`, `pomoDay`, `streak`, `own`, `earned`, `stk`, `ready`, `fix`, `hour`, `weekend`, `gap`, and `all: [rules]`. They are defined in `RewardsLogic.progress()`, which also returns `{have, need}` for the progress shown in the UI.
 
 ## Shop and wardrobe
 - **5 slots**: `top` (Clothes), `hat` (Hats), `face` (Face), `prop` (Props), `bg` (Backgrounds).
@@ -94,6 +95,7 @@ Rule kinds are `st` (`n` / `ids` / `types`), `stFirst`, `stGrind`, `stt`, `tt` (
 | `QuizManager.recordProblemSolved` | `notify('problem', {id})` |
 | `QuizManager.recordTopicTestSolved` | `notify('topicTest', {id, score, total})` |
 | `PomodoroTimer.completeSession` (`js/pomodoro.js`) | `notify('pomodoro')` |
+| `MockMidterm.saveResult` (`js/mock-midterm.js`) | `notify('mock', {id, score, total})`, when a finished mock midterm is saved |
 | `UserProfileManager.recordSuccess` (`js/user.js`) | `notify('fix')`, when a mistake leaves the registry |
 | `UserProfileManager.updateUserUI` | `rewards.onProfileLoaded()` (silent catch-up after login or a cloud merge) |
 | `mergeUserProfiles` | `RewardsLogic.merge(local.rewards, cloud.rewards)` |

@@ -135,6 +135,7 @@ const RewardsLogic = {
     for (const [id, ok] of Object.entries(ctx.probs || {})) {
       if (ok) this.award(s, 'pr:' + id, P.problem, events);
     }
+    for (const id of ctx.mocks || []) this.award(s, 'mock:' + id, P.mock || 0, events); // a saved mock midterm attempt
   },
 
   // How far a sticker rule is: { have, need } (done when have >= need) — also drives "7/10" in the UI
@@ -170,6 +171,7 @@ const RewardsLogic = {
         const probs = ctx.probs || {};
         return rule.ids ? { have: count(rule.ids, id => !!probs[id]), need: rule.ids.length } : { have: count(Object.values(probs), Boolean), need: rule.n };
       }
+      case 'mock': return { have: (ctx.mocks || []).length, need: rule.n };
       case 'pomo': return { have: this.pomodoros(s).total, need: rule.n };
       case 'pomoDay': return { have: this.pomodoros(s).bestDay, need: rule.n };
       case 'streak': return { have: this.bestStreak(s.days), need: rule.n };
@@ -191,7 +193,7 @@ const RewardsLogic = {
   },
 
   // Brings the state up to date and returns what was newly earned: [{t:'pts',key,n} | {t:'stk',id} | {t:'unlock',id}]
-  // ctx: { stats, tasks, stPassed, tests, defs, defIds, probs, readiness, tiers:[{id,min}], now,
+  // ctx: { stats, tasks, stPassed, tests, defs, defIds, probs, mocks:[attempt ids], readiness, tiers:[{id,min}], now,
   //        action: { kind, productive, hour, dow } for a live action, null for a silent catch-up }
   evaluate(s, ctx, data) {
     const P = data.POINTS;

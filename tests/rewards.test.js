@@ -21,7 +21,7 @@ const tiers = [{ id: 'freshman_tee', min: 0 }, { id: 'ucu_hoodie', min: 35 }, { 
 // A learning context like the one js/rewards-ui.js builds from the readiness state
 function ctx(over = {}) {
   return {
-    stats: {}, tasks, stPassed: [], tests: {}, defs: {}, defIds: PS.DEFINITIONS_21.map(d => d.id), probs: {},
+    stats: {}, tasks, stPassed: [], tests: {}, defs: {}, defIds: PS.DEFINITIONS_21.map(d => d.id), probs: {}, mocks: [],
     readiness: 0, tiers, now: at(15), action: null, ...over
   };
 }
@@ -83,6 +83,19 @@ test('idempotent: re-evaluating or re-solving the same things never pays twice',
   // solving it again later (more attempts) and grading the definition higher changes nothing
   R.evaluate(s, ctx({ stats: { [id]: { attempts: 3, correct: 3, solved: true } }, defs: { 1: 10 }, probs: { 7: true } }), D);
   assert.equal(R.earned(s), before);
+});
+
+test('a saved mock midterm pays once per attempt and earns Dress Rehearsal', () => {
+  const s = R.empty();
+  assert.deepEqual(R.progress(D.STICKERS.find(st => st.id === 'm2_rehearsal').rule, ctx(), s), { have: 0, need: 1 });
+  const ev = R.evaluate(s, ctx({ mocks: ['mm-a'], now: at(15), action: live('mock', at(15)) }), D);
+  assert.equal(s.pts['mock:mm-a'], P.mock);
+  assert.ok(s.stk.m2_rehearsal, 'the first finished mock earns the sticker');
+  assert.ok(ev.some(e => e.t === 'stk' && e.id === 'm2_rehearsal'));
+  const before = R.earned(s);
+  assert.deepEqual(R.evaluate(s, ctx({ mocks: ['mm-a'] }), D), [], 'the same attempt never pays twice');
+  R.evaluate(s, ctx({ mocks: ['mm-a', 'mm-b'] }), D);
+  assert.equal(R.earned(s), before + P.mock, 'a second attempt pays again');
 });
 
 test('pomodoro: every session is kept, only the first N a day pay', () => {
@@ -281,7 +294,7 @@ test('merge and normalize survive missing or damaged data', () => {
 test('catalog: unique ids, known rarities, rule kinds and art', () => {
   const ids = [...D.STICKERS.map(s => s.id), ...D.SHOP.map(i => i.id), ...Object.keys(D.TIERS)];
   assert.equal(new Set(ids).size, ids.length, 'duplicate id');
-  const ruleKinds = new Set(['st', 'stFirst', 'stGrind', 'stt', 'tt', 'def', 'oral', 'pr', 'pomo', 'pomoDay', 'streak',
+  const ruleKinds = new Set(['st', 'stFirst', 'stGrind', 'stt', 'tt', 'def', 'oral', 'pr', 'mock', 'pomo', 'pomoDay', 'streak',
     'own', 'earned', 'stk', 'ready', 'fix', 'hour', 'weekend', 'gap', 'all']);
   const rules = r => (r.k === 'all' ? r.of.flatMap(rules) : [r]);
   for (const st of D.STICKERS) {
