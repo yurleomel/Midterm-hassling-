@@ -207,3 +207,15 @@ test('no explanation promises partial credit for a single-choice task', () => {
   const offenders = bank.tasks.filter(t => t.format === 'single' && /partial credit/i.test(t.explanation)).map(t => t.id);
   assert.deepEqual(offenders, []);
 });
+
+test('every task type links to colloquium definitions that exist', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const window = {};
+  new Function('window', fs.readFileSync(path.join(__dirname, '../js/data.js'), 'utf8'))(window);
+  const defIds = new Set(window.PS_DATA.DEFINITIONS_21.map(d => d.id));
+  for (const type of bank.types) {
+    assert.ok(Array.isArray(type.defs) && type.defs.length > 0, `${type.id} has definitions`);
+    type.defs.forEach(id => assert.ok(defIds.has(id), `${type.id}: definition ${id}`));
+  }
+});

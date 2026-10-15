@@ -21,6 +21,12 @@ const SELFTEST_BANK = {
    "id": "rv-definitions",
    "label": "Означення: в.в. і стандартні дискретні розподіли",
    "lecture": "L4 p.10, 23–30",
+   "defs": [
+    1,
+    4,
+    5,
+    6
+   ],
    "topics": [
     4
    ]
@@ -29,6 +35,11 @@ const SELFTEST_BANK = {
    "id": "recognize-from-experiment",
    "label": "Впізнати розподіл за описом експерименту",
    "lecture": "L4 p.25, 27, 30",
+   "defs": [
+    4,
+    5,
+    6
+   ],
    "topics": [
     4
    ]
@@ -37,6 +48,10 @@ const SELFTEST_BANK = {
    "id": "two-counts",
    "label": "Дві кількості з тих самих випробувань: біноміальні? однаковий розподіл? незалежні?",
    "lecture": "L4 p.25, 39",
+   "defs": [
+    4,
+    15
+   ],
    "topics": [
     4
    ]
@@ -45,6 +60,10 @@ const SELFTEST_BANK = {
    "id": "pmf-cdf-equality",
    "label": "pmf, cdf і рівність в.в. (правда / неправда)",
    "lecture": "L4 p.14, 16–17, 19–21",
+   "defs": [
+    2,
+    3
+   ],
    "topics": [
     4
    ]
@@ -53,6 +72,11 @@ const SELFTEST_BANK = {
    "id": "joint-conditional",
    "label": "Спільний розподіл: умовна pmf з таблиці",
    "lecture": "L4 p.37, 42",
+   "defs": [
+    15,
+    16,
+    17
+   ],
    "topics": [
     4
    ]
@@ -61,6 +85,14 @@ const SELFTEST_BANK = {
    "id": "match-formula",
    "label": "Зіставити формулу pmf / pdf з розподілом",
    "lecture": "L4 p.25–30, L6 p.17, 21–27",
+   "defs": [
+    4,
+    5,
+    6,
+    9,
+    10,
+    11
+   ],
    "topics": [
     4,
     6
@@ -70,6 +102,10 @@ const SELFTEST_BANK = {
    "id": "moments-compute",
    "label": "Моменти: E(X²), Var, E(aX+b) — обчислити або «не визначити»",
    "lecture": "L5 p.18–19, L6 p.13, 17",
+   "defs": [
+    12,
+    13
+   ],
    "topics": [
     5,
     6
@@ -79,6 +115,10 @@ const SELFTEST_BANK = {
    "id": "variance-covariance",
    "label": "Дисперсія суми та коваріація",
    "lecture": "L5 p.24–25",
+   "defs": [
+    13,
+    14
+   ],
    "topics": [
     5
    ]
@@ -87,6 +127,11 @@ const SELFTEST_BANK = {
    "id": "independence-logic",
    "label": "Що випливає (і що ні) з незалежності, Cov = 0, однакового розподілу",
    "lecture": "L5 p.22–26, 32",
+   "defs": [
+    13,
+    14,
+    19
+   ],
    "topics": [
     5
    ]
@@ -95,6 +140,10 @@ const SELFTEST_BANK = {
    "id": "pgf-factorial",
    "label": "Факторіальні моменти та p.g.f.",
    "lecture": "L5 p.18, 28",
+   "defs": [
+    20,
+    12
+   ],
    "topics": [
     5
    ]
@@ -103,6 +152,10 @@ const SELFTEST_BANK = {
    "id": "density",
    "label": "Щільність: вимоги, нормувальна константа, впізнати розподіл за формулою",
    "lecture": "L6 p.6, 8, 17–27",
+   "defs": [
+    7,
+    8
+   ],
    "topics": [
     6
    ]
@@ -111,6 +164,11 @@ const SELFTEST_BANK = {
    "id": "normal-linear",
    "label": "Нормальний: стандартизація, лінійні перетворення, суми незалежних",
    "lecture": "L6 p.24, 15, 40",
+   "defs": [
+    11,
+    18,
+    19
+   ],
    "topics": [
     6
    ]
@@ -119,6 +177,9 @@ const SELFTEST_BANK = {
    "id": "normal-phi",
    "label": "Нормальний: ймовірності через Φ",
    "lecture": "L6 p.21, 24",
+   "defs": [
+    11
+   ],
    "topics": [
     6
    ]
@@ -127,6 +188,10 @@ const SELFTEST_BANK = {
    "id": "exponential",
    "label": "Експоненційний: відсутність пам’яті, масштаб, суми",
    "lecture": "L6 p.27–28, 48",
+   "defs": [
+    10,
+    19
+   ],
    "topics": [
     6
    ]
