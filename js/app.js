@@ -71,6 +71,29 @@ class AppController {
         this.switchTab(target);
       });
     });
+
+    // Sidebar is a slide-in drawer below the lg breakpoint
+    document.getElementById('nav-open-btn')?.addEventListener('click', () => this.setNavDrawer(true));
+    document.getElementById('nav-close-btn')?.addEventListener('click', () => this.setNavDrawer(false));
+    document.getElementById('nav-backdrop')?.addEventListener('click', () => this.setNavDrawer(false));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') this.setNavDrawer(false); });
+    window.matchMedia('(min-width: 1024px)').addEventListener('change', e => { if (e.matches) this.setNavDrawer(false); });
+
+    document.getElementById('brand-home-btn')?.addEventListener('click', () => this.switchTab('dashboard'));
+    document.getElementById('header-readiness-btn')?.addEventListener('click', () => this.switchTab('dashboard'));
+  }
+
+  setNavDrawer(open) {
+    const sidebar = document.getElementById('app-sidebar');
+    if (!sidebar) return;
+    const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
+    const show = open && !isDesktop;
+    sidebar.classList.toggle('-translate-x-full', !show);
+    sidebar.classList.toggle('translate-x-0', show);
+    document.getElementById('nav-backdrop')?.classList.toggle('hidden', !show);
+    document.body.classList.toggle('nav-open', show);
+    document.getElementById('nav-open-btn')?.setAttribute('aria-expanded', String(show));
+    if (show) sidebar.querySelector('.nav-item.tab-active')?.focus({ preventScroll: true });
   }
 
   switchTab(tabId) {
@@ -78,14 +101,18 @@ class AppController {
 
     // Toggle active tab buttons
     document.querySelectorAll('[data-tab-target]').forEach(btn => {
-      if (btn.getAttribute('data-tab-target') === tabId) {
-        btn.classList.add('tab-active');
-        btn.classList.remove('tab-inactive');
-      } else {
-        btn.classList.remove('tab-active');
-        btn.classList.add('tab-inactive');
-      }
+      const active = btn.getAttribute('data-tab-target') === tabId;
+      btn.classList.toggle('tab-active', active);
+      btn.classList.toggle('tab-inactive', !active);
+      if (active) btn.setAttribute('aria-current', 'page');
+      else btn.removeAttribute('aria-current');
     });
+
+    // Section name in the top bar (the only place it shows on phones, where the sidebar is hidden)
+    const label = document.querySelector(`[data-tab-target="${tabId}"] .nav-label`)?.textContent;
+    const titleEl = document.getElementById('current-section-title');
+    if (titleEl && label) titleEl.textContent = label;
+    this.setNavDrawer(false);
 
     // Toggle active content section
     document.querySelectorAll('.tab-content-panel').forEach(panel => {
@@ -123,7 +150,9 @@ class AppController {
       return target;
     };
 
+    const DAY_MS = 86400000;
     const formatCountdown = (diffMs) => {
+      if (diffMs <= -DAY_MS) return 'Завершено';
       if (diffMs <= 0) return 'Сьогодні!';
       const totalSec = Math.floor(diffMs / 1000);
       const d = Math.floor(totalSec / 86400);
@@ -158,19 +187,28 @@ class AppController {
       const colEl = document.getElementById('colloquium-countdown-text');
       const midEl = document.getElementById('midterm-countdown-text');
 
+      // Sidebar rows: label left, time / grade right
+      const row = (iconName, iconClass, label, value, valueClass) => `
+        <span class="flex items-center gap-1.5 text-slate-300 font-medium whitespace-nowrap">${icon(iconName, iconClass)} ${label}</span>
+        <span class="font-bold tabular-nums whitespace-nowrap ${valueClass}">${value}</span>`;
+      // A day after the exam the timer has nothing left to count: invite to enter the grade instead
+      const pending = diff => (diff <= -DAY_MS ? ['Внести оцінку', 'text-slate-400 font-semibold'] : [formatCountdown(diff), '']);
+
       if (colEl) {
         if (grades.colloquium?.grade) {
-          colEl.innerHTML = `<span class="px-2 py-0.5 rounded font-extrabold bg-amber-950 text-amber-300 border border-amber-700">${icon('target')} Колоквіум: ${grades.colloquium.grade}</span>`;
+          colEl.innerHTML = row('target', 'text-amber-400', 'Колоквіум', grades.colloquium.grade, 'text-emerald-400');
         } else {
-          colEl.innerHTML = `${icon('zap', 'text-amber-400')} <span class="font-bold text-amber-400 font-mono">${formatCountdown(colDiff)}</span> to Colloquium`;
+          const [value, cls] = pending(colDiff);
+          colEl.innerHTML = row('zap', 'text-amber-400', 'Колоквіум', value, cls || 'text-amber-400');
         }
       }
 
       if (midEl) {
         if (grades.midterm?.grade) {
-          midEl.innerHTML = `<span class="px-2 py-0.5 rounded font-extrabold bg-emerald-950 text-emerald-300 border border-emerald-700">${icon('trophy')} Мідтерм 2: ${grades.midterm.grade}</span>`;
+          midEl.innerHTML = row('trophy', 'text-emerald-400', 'Мідтерм', grades.midterm.grade, 'text-emerald-400');
         } else {
-          midEl.innerHTML = `${icon('flame', 'text-rose-400')} <span class="font-bold text-rose-400 font-mono">${formatCountdown(midDiff)}</span> to Midterm 2 (Пт 08:30)`;
+          const [value, cls] = pending(midDiff);
+          midEl.innerHTML = row('flame', 'text-rose-400', 'Мідтерм', value, cls || 'text-rose-400');
         }
       }
 
@@ -1070,6 +1108,8 @@ class AppController {
       modal?.classList.remove('hidden');
       window.userProfile?.renderAvatar('modal-avatar-preview');
       window.userProfile?.renderWardrobeList();
+      // Rendered at startup while hidden (width unknown) — re-render now so it fits the card on phones
+      window.userProfile?.setupGoogleButton('google-signin-btn-container');
     });
 
     closeBtn?.addEventListener('click', () => {
@@ -1176,6 +1216,7 @@ class AppController {
       if (typeof window.renderMathInElement === 'function') {
         try {
           window.renderMathInElement(targetElem || document.body, {
+            macros: { '\\mbox': '\\text{#1}' },
             delimiters: [
               { left: "$$", right: "$$", display: true },
               { left: "$", right: "$", display: false },

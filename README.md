@@ -86,7 +86,7 @@ Tracks your real progress across 4 weighted pillars:
 ### 4b. 📋 LMS Self-test Bank (Topics 4–6) — tab "LMS Self-tests"
 * The tasks from the Moodle self-tests on topics 4, 5 and 6, word for word (formulas, options, correct answers), with exact duplicates and a repeated numeric variant removed: **69 unique tasks** (topic 4: 30, topic 5: 19, topic 6: 20).
 * Every task is tagged with its **topic**, one of **14 task types** (e.g. "Впізнати розподіл за описом експерименту", "Нормальний: ймовірності через Φ"; each type lists the lecture slides it relies on) and a **difficulty** (легка / середня / складна).
-* Pick a topic, a task type, a difficulty and how many tasks you want (or "only the ones I haven't solved yet") and drill a random set. All Moodle formats work: single and multiple choice (partial credit like Moodle), true/false, numeric answers (`0.5`, `0,5` and `1/2` all count), matching and gap-select.
+* Pick a topic, a task type, a difficulty and how many tasks you want (or "only the ones I haven't solved yet") and drill a random set. All Moodle formats work: single and multiple choice (our own partial credit: right picks minus wrong picks), true/false, numeric answers (`0.5`, `0,5` and `1/2` all count), matching and gap-select.
 * After each check: the correct answer, Moodle's own hints, a short explanation and the lecture pages. The summary breaks the score down by task type and re-runs the wrong ones in one click. Also reachable from the "Topic Tests" tab.
 * **Progress & gamification (kept small):** progress per task lives in the readiness state (`readinessState.selfTestStats`, merged task-by-task with the cloud copy). A topic whose self-test tasks are ≥80% solved adds **+1% Readiness** (3% max, shown as "LMS Self-tests" on the dashboard Mastery Meter; Exam Problems went from 57% to 54% so the total stays 100%). Wrong answers go to the dashboard mistakes panel ("Прорішати помилки з self-тестів LMS"), a correct answer clears them; time spent in the tab shows up in the focus-time analytics. The setup screen shows each topic's progress towards its +1% and a "Мої помилки" shortcut; the summary announces a newly counted topic.
 * `js/selftest-data.js` is generated from a local extraction of the LMS review pages (kept out of the repo); edit the generator, not the file.
@@ -102,6 +102,11 @@ Tracks your real progress across 4 weighted pillars:
 * 25-minute focus sessions with 5-minute short breaks and 15-minute long breaks.
 * Synthesized Web Audio chime (works 100% offline, no external audio files required).
 * Persistent session tracking across days.
+
+### 6b. 🧭 Navigation & Mobile
+* **Sidebar grouped by purpose** — Головне (Огляд) · Колоквіум 2 (Означення й усні) · Мідтерм 2 · практика (Задачі з іспитів, Тести за темами, Self-тести LMS) · Довідник (Теорія, Формули). Exam countdowns sit on top of it (click → schedule & grades); sync status, Gemini key and logout at the bottom.
+* **Slim top bar**: logo + current section, then only live widgets — Pomodoro, Readiness (click → Огляд), Gemini mentor, theme, profile.
+* **Phones**: the sidebar becomes a drawer (☰, closes on pick / backdrop / Esc), the Mastery Meter stacks, no horizontal scrolling at 390px. KaTeX's hidden MathML is kept inside `.katex` (`position: relative`), otherwise it widened pages on phones.
 
 ### 7. 🌗 Light & Dark Themes
 * Follows the system theme on first visit; the 🌙/☀️ button in the header switches and remembers the choice.

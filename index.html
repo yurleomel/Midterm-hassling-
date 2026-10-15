@@ -97,125 +97,123 @@
 </head>
 <body class="bg-slate-950 text-slate-100 antialiased min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
 
-  <!-- ================= TOP APP HEADER ================= -->
-  <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 shadow-md">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-      
-      <!-- Brand & Exam Badges -->
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center font-black text-white text-lg shadow-indigo-500/20 shadow-lg">
-          AG
-        </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="font-extrabold text-base tracking-tight text-white">UCU StatHustle</span>
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-950 text-indigo-300 border border-indigo-700">MIDTERM 2 & COL 2</span>
-          </div>
-          <div class="flex items-center gap-3 text-[11px] text-slate-400">
-            <span id="colloquium-countdown-text"><i data-icon="zap" class="text-amber-400"></i> 3 days to Colloquium</span>
-            <span>•</span>
-            <span id="midterm-countdown-text"><i data-icon="flame" class="text-rose-400"></i> 5 days to Midterm 2</span>
-          </div>
-        </div>
-      </div>
+  <!-- ================= TOP BAR: brand + current section, then only the live widgets ================= -->
+  <header class="sticky top-0 z-40 h-14 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
+    <div class="h-full px-3 sm:px-4 lg:px-6 flex items-center gap-2 sm:gap-3">
 
-      <!-- Live Readiness Pill & Pomodoro Mini-Widget -->
-      <div class="hidden lg:flex items-center gap-4">
-        
-        <!-- Overall Readiness Score Badge (Starts strictly at 0%) -->
-        <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/90 border border-slate-700 shadow-sm" title="Calculated strictly: 1% per definition scored >= 6/10, 1% per topic test solved, and rest for solving problems!">
-          <span class="text-xs text-slate-400 font-medium">Readiness:</span>
-          <span id="header-readiness-percent" class="text-xs font-black text-emerald-400">0%</span>
-          <div class="w-16 h-2 rounded-full bg-slate-700 overflow-hidden">
-            <div id="bar-readiness-header" class="h-full bg-emerald-500 transition-all duration-500" style="width: 0%"></div>
-          </div>
+      <button id="nav-open-btn" class="lg:hidden p-2 -ml-1 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer transition" aria-label="Відкрити меню" aria-controls="app-sidebar" aria-expanded="false">
+        <i data-icon="menu" class="text-lg"></i>
+      </button>
+
+      <button id="brand-home-btn" class="flex items-center gap-2 min-w-0 rounded-lg cursor-pointer" title="На головну">
+        <span class="w-8 h-8 shrink-0 rounded-lg bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center font-black text-white text-sm shadow-md shadow-indigo-500/20">AG</span>
+        <span class="hidden sm:inline font-extrabold tracking-tight text-white whitespace-nowrap">StatHustle</span>
+      </button>
+      <span class="hidden sm:inline text-slate-600">/</span>
+      <span id="current-section-title" class="text-sm font-semibold text-slate-300 truncate min-w-0">Огляд</span>
+
+      <div class="ml-auto flex items-center gap-1.5 sm:gap-2 shrink-0">
+        <!-- Pomodoro -->
+        <div class="hidden md:flex items-center gap-1.5 pl-3 pr-1 py-1 rounded-full bg-slate-800/80 border border-slate-700" title="Pomodoro: 25 хв фокусу">
+          <i data-icon="timer" class="text-slate-400"></i>
+          <span id="header-pomodoro-time" class="text-xs font-mono font-bold text-amber-300 tabular-nums">25:00</span>
+          <button id="pomodoro-toggle-btn" class="header-pomo-btn" aria-label="Почати фокус" title="Почати фокус"><i data-icon="play"></i></button>
         </div>
 
-        <!-- Pomodoro Quick Controller -->
-        <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/90 border border-slate-700">
-          <span class="text-xs text-slate-400"><i data-icon="timer"></i></span>
-          <span id="header-pomodoro-time" class="text-xs font-mono font-bold text-amber-300">25:00</span>
-          <button id="pomodoro-toggle-btn" class="px-2.5 py-0.5 rounded text-[11px] font-bold bg-indigo-600 hover:bg-indigo-500 text-white transition">
-            Focus
-          </button>
-        </div>
-
-      </div>
-
-      <!-- User Profile, Google Auth & Action Buttons -->
-      <div class="flex items-center gap-2.5">
-        
-        <!-- User Profile & Wardrobe Header Button -->
-        <button id="header-user-profile-btn" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-800/90 hover:bg-slate-750 border border-slate-700 shadow-sm transition" title="User Profile, Study Stats & Avatar Wardrobe">
-          <div class="w-7 h-7 rounded-lg overflow-hidden bg-indigo-900 border border-indigo-700 flex items-center justify-center text-xs font-bold text-white shrink-0">
-            <img id="user-header-photo" class="w-full h-full object-cover hidden" alt="Profile" />
-            <span id="user-header-default-avatar" class="mini-avatar-icon text-sm"><i data-icon="shirt"></i></span>
-          </div>
-          <div class="text-left hidden md:block">
-            <div id="user-header-name" class="text-xs font-bold text-slate-200 leading-tight truncate max-w-[110px]">Ihor (UCU)</div>
-            <div class="flex items-center gap-1.5 text-[10px] text-amber-400 font-mono leading-tight">
-              <span><i data-icon="timer"></i></span>
-              <span id="user-header-study-time">0m 0s</span>
-            </div>
-          </div>
+        <!-- Readiness (click: dashboard) -->
+        <button id="header-readiness-btn" class="flex items-center gap-2 px-2.5 py-1.5 rounded-full bg-slate-800/80 border border-slate-700 hover:border-slate-500 cursor-pointer transition" title="Готовність до іспитів — відкрити огляд">
+          <span class="hidden sm:inline text-[11px] text-slate-400 font-medium">Готовність</span>
+          <span id="header-readiness-percent" class="text-xs font-black text-emerald-400 tabular-nums">0%</span>
+          <span class="hidden sm:block w-12 h-1.5 rounded-full bg-slate-700 overflow-hidden">
+            <span id="bar-readiness-header" class="block h-full bg-emerald-500 transition-all duration-500" style="width: 0%"></span>
+          </span>
         </button>
 
-        <!-- Logout / Switch Account Button -->
-        <button onclick="window.userProfile?.logout()" class="p-2 rounded-xl bg-slate-800 hover:bg-rose-950/70 border border-slate-700 hover:border-rose-800 text-slate-300 hover:text-rose-200 text-xs transition" title="Вийти з акаунту / Змінити користувача" aria-label="Вийти з акаунту / Змінити користувача">
-          <i data-icon="log-out"></i>
+        <button id="gemini-open-drawer-btn" class="flex items-center gap-1.5 p-2 xl:px-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold whitespace-nowrap shadow-md shadow-indigo-600/20 cursor-pointer transition" aria-label="Gemini AI Mentor" title="Gemini AI Mentor">
+          <i data-icon="bot"></i><span class="hidden xl:inline">Ментор</span>
         </button>
 
-        <!-- Cloud Sync Status Pill -->
-        <div id="cloud-sync-status-indicator" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700 text-[11px] shadow-sm" title="Статус синхронізації з AWS S3">
-          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-          <span class="text-emerald-400 font-semibold">Хмара синхронізована</span>
-        </div>
-
-        <button id="gemini-open-drawer-btn" class="px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-indigo-600/20 shadow-md transition">
-          <span><i data-icon="bot"></i> Gemini AI Mentor</span>
-        </button>
-
-        <button id="open-api-key-settings" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs transition" title="Configure Gemini API Key" aria-label="Configure Gemini API Key">
-          <i data-icon="settings"></i>
-        </button>
-
-        <button id="theme-toggle-btn" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs transition" title="Toggle Theme" aria-label="Toggle Theme">
+        <button id="theme-toggle-btn" class="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer transition" title="Змінити тему" aria-label="Змінити тему">
           <i data-icon="moon"></i>
         </button>
-      </div>
 
-    </div>
-
-    <!-- Sub-Nav Tab Bar -->
-    <div class="border-t border-slate-800/80 bg-slate-900/50">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex overflow-x-auto space-x-1 py-1.5 scrollbar-none text-xs font-semibold">
-        <button data-tab-target="dashboard" class="px-4 py-2 rounded-lg tab-active transition flex items-center gap-1.5 whitespace-nowrap">
-          <span><i data-icon="layout-dashboard"></i></span> Dashboard & Schedule
-        </button>
-        <button data-tab-target="colloquium" class="px-4 py-2 rounded-lg tab-inactive transition flex items-center gap-1.5 whitespace-nowrap">
-          <span><i data-icon="target"></i></span> Colloquium Focus (21 Defs & Oral)
-        </button>
-        <button data-tab-target="problems" class="px-4 py-2 rounded-lg tab-inactive transition flex items-center gap-1.5 whitespace-nowrap">
-          <span><i data-icon="notebook-pen"></i></span> Exam Problems (Submit Answers)
-        </button>
-        <button data-tab-target="quizzes" class="px-4 py-2 rounded-lg tab-inactive transition flex items-center gap-1.5 whitespace-nowrap">
-          <span><i data-icon="brain"></i></span> Topic Tests (600 Questions Pool)
-        </button>
-        <button data-tab-target="selftests" class="px-4 py-2 rounded-lg tab-inactive transition flex items-center gap-1.5 whitespace-nowrap">
-          <span><i data-icon="clipboard-check"></i></span> LMS Self-tests (Topics 4–6)
-        </button>
-        <button data-tab-target="topics" class="px-4 py-2 rounded-lg tab-inactive transition flex items-center gap-1.5 whitespace-nowrap">
-          <span><i data-icon="book-open"></i></span> Course Topics Deep-Dive
-        </button>
-        <button data-tab-target="formulas" class="px-4 py-2 rounded-lg tab-inactive transition flex items-center gap-1.5 whitespace-nowrap">
-          <span><i data-icon="ruler"></i></span> Formula & Distribution Matrix
+        <!-- Profile & wardrobe -->
+        <button id="header-user-profile-btn" class="flex items-center gap-2 p-1 xl:pr-3 rounded-xl hover:bg-slate-800 border border-transparent hover:border-slate-700 cursor-pointer transition" title="Профіль, статистика й гардероб">
+          <span class="w-8 h-8 rounded-lg overflow-hidden bg-indigo-900 border border-indigo-700 flex items-center justify-center text-white shrink-0">
+            <img id="user-header-photo" class="w-full h-full object-cover hidden" alt="Профіль" />
+            <span id="user-header-default-avatar" class="mini-avatar-icon text-sm"><i data-icon="shirt"></i></span>
+          </span>
+          <span class="text-left hidden xl:block">
+            <span id="user-header-name" class="block text-xs font-bold text-slate-200 leading-tight truncate max-w-[120px]">Ihor (UCU)</span>
+            <span class="flex items-center gap-1 text-[10px] text-amber-400 font-mono leading-tight">
+              <i data-icon="timer"></i><span id="user-header-study-time">0m 0s</span>
+            </span>
+          </span>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- ================= MAIN CONTAINER ================= -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+  <div id="nav-backdrop" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden lg:hidden"></div>
+
+  <div class="flex flex-1 w-full">
+
+    <!-- ================= SIDEBAR: sections grouped by purpose (drawer on phones) ================= -->
+    <aside id="app-sidebar" class="fixed lg:sticky inset-y-0 left-0 lg:top-14 z-50 lg:z-20 w-72 lg:w-60 h-full lg:h-[calc(100vh-3.5rem)] shrink-0 bg-slate-900 lg:bg-slate-900/40 border-r border-slate-800 flex flex-col -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-out" aria-label="Навігація">
+
+      <div class="lg:hidden h-14 px-4 flex items-center justify-between border-b border-slate-800 shrink-0">
+        <span class="flex items-center gap-2">
+          <span class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center font-black text-white text-sm">AG</span>
+          <span class="font-extrabold tracking-tight text-white">StatHustle</span>
+        </span>
+        <button id="nav-close-btn" class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 cursor-pointer transition" aria-label="Закрити меню"><i data-icon="x" class="text-lg"></i></button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto px-3 py-4 space-y-5">
+        <!-- Exam countdowns (click: schedule & grades) -->
+        <div class="rounded-xl border border-slate-800 bg-slate-950/40 p-1.5 space-y-0.5">
+          <button id="colloquium-countdown-text" class="countdown-row"></button>
+          <button id="midterm-countdown-text" class="countdown-row"></button>
+        </div>
+
+        <nav class="space-y-5" aria-label="Розділи">
+          <div>
+            <div class="nav-group">Головне</div>
+            <button data-tab-target="dashboard" class="nav-item tab-active"><i data-icon="layout-dashboard"></i><span class="nav-label">Огляд</span></button>
+          </div>
+          <div>
+            <div class="nav-group">Колоквіум 2</div>
+            <button data-tab-target="colloquium" class="nav-item tab-inactive"><i data-icon="target"></i><span class="nav-label">Означення й усні</span><span class="nav-meta">21 · 12</span></button>
+          </div>
+          <div>
+            <div class="nav-group">Мідтерм 2 · практика</div>
+            <button data-tab-target="problems" class="nav-item tab-inactive"><i data-icon="notebook-pen"></i><span class="nav-label">Задачі з іспитів</span><span class="nav-meta">23</span></button>
+            <button data-tab-target="quizzes" class="nav-item tab-inactive"><i data-icon="brain"></i><span class="nav-label">Тести за темами</span><span class="nav-meta">600</span></button>
+            <button data-tab-target="selftests" class="nav-item tab-inactive"><i data-icon="clipboard-check"></i><span class="nav-label">Self-тести LMS</span><span class="nav-meta">69</span></button>
+          </div>
+          <div>
+            <div class="nav-group">Довідник</div>
+            <button data-tab-target="topics" class="nav-item tab-inactive"><i data-icon="book-open"></i><span class="nav-label">Теорія за темами</span><span class="nav-meta">12</span></button>
+            <button data-tab-target="formulas" class="nav-item tab-inactive"><i data-icon="ruler"></i><span class="nav-label">Формули й розподіли</span></button>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Account: sync status, Gemini key, logout -->
+      <div class="border-t border-slate-800 p-3 space-y-2 shrink-0">
+        <div id="cloud-sync-status-indicator" class="flex items-center gap-1.5 px-1 text-[11px]" title="Статус синхронізації прогресу">
+          <span class="w-2 h-2 rounded-full bg-slate-500"></span><span class="text-slate-400 font-semibold">Офлайн-режим</span>
+        </div>
+        <div class="flex gap-2">
+          <button id="open-api-key-settings" class="flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white text-xs font-semibold cursor-pointer transition" title="Налаштувати Gemini API ключ"><i data-icon="key-round"></i> Ключ Gemini</button>
+          <button onclick="window.userProfile?.logout()" class="flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-rose-950/70 border border-slate-700 hover:border-rose-800 text-slate-300 hover:text-rose-200 text-xs font-semibold cursor-pointer transition" title="Вийти з акаунту / змінити користувача"><i data-icon="log-out"></i> Вийти</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ================= MAIN CONTENT AREA ================= -->
+    <main class="flex-1 min-w-0 px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+    <div class="max-w-6xl mx-auto">
 
     <!-- ================= TAB 1: DASHBOARD & SCHEDULE ================= -->
     <section id="tab-dashboard" class="tab-content-panel">
@@ -233,7 +231,7 @@
             <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-indigo-950 text-indigo-300 border border-indigo-700">Target: 100%</span>
           </div>
 
-          <div class="flex items-center justify-around my-2">
+          <div class="flex flex-col sm:flex-row items-center sm:justify-around gap-4 sm:gap-0 my-2">
             <!-- Circular Gauge -->
             <div class="relative w-28 h-28 flex items-center justify-center shrink-0">
               <svg class="w-full h-full" viewBox="0 0 100 100">
@@ -247,7 +245,7 @@
             </div>
 
             <!-- Category Breakdown Bars -->
-            <div class="space-y-2 text-xs flex-1 ml-4">
+            <div class="space-y-2 text-xs w-full sm:w-auto sm:flex-1 sm:ml-4">
               <div>
                 <div class="flex justify-between text-slate-400 mb-0.5">
                   <span>21 Definitions (21%)</span>
@@ -808,7 +806,9 @@
       </div>
     </section>
 
-  </main>
+    </div>
+    </main>
+  </div>
 
   <!-- ================= MANDATORY WELCOME ONBOARDING & AUTH GATE MODAL ================= -->
   <div id="auth-gate-modal" class="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-2xl flex items-center justify-center p-4 hidden overflow-y-auto">
@@ -1158,14 +1158,14 @@
   <script src="js/icons.js"></script>
   <script src="js/data.js"></script>
   <script src="js/problem-directions.js"></script>
+  <script src="js/selftest-data.js"></script>
+  <script src="js/selftest-bank.js"></script>  <!-- before user.js: its cloud merge uses SelfTestLogic -->
   <script src="js/user.js"></script>
   <script src="js/gemini.js"></script>
   <script src="js/pomodoro.js"></script>
   <script src="js/quiz.js"></script>
   <script src="js/definition-drill.js"></script>
   <script src="js/exam-ticket.js"></script>
-  <script src="js/selftest-data.js"></script>
-  <script src="js/selftest-bank.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

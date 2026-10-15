@@ -677,6 +677,7 @@ class UserProfileManager {
       window.app.renderColloquiumSection();
       window.app.renderProblemsSection();
       window.app.renderTopicsSection();
+      window.selfTestBank?.renderSetup(); // drops a drill left open by the previous account
       window.app.renderAllMath();
     }
   }
@@ -813,6 +814,7 @@ class UserProfileManager {
         window.app.renderColloquiumSection();
         window.app.renderProblemsSection();
         window.app.renderTopicsSection();
+        window.selfTestBank?.renderSetup(); // drops a drill left open by the previous account
         window.app.renderAllMath();
       }
       this.showAuthGate();
@@ -990,37 +992,48 @@ class UserProfileManager {
 
     const quizMistakes = mistakes.filter(m => m.type === 'quiz').length;
     const selfTestMistakes = mistakes.filter(m => m.type === 'selftest').length;
-    container.innerHTML = (quizMistakes ? `
-      <button id="mistakes-practice-btn" class="w-full px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold cursor-pointer transition">
-        ${icon('repeat')} Прорішати помилки з тестів (${quizMistakes})
-      </button>
-    ` : '') + (selfTestMistakes ? `
-      <button id="mistakes-selftest-btn" class="w-full px-3 py-2 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold cursor-pointer transition">
-        ${icon('clipboard-check')} Прорішати помилки з self-тестів LMS (${selfTestMistakes})
-      </button>
-    ` : '') + mistakes.map(m => `
-      <div class="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between gap-3 text-xs">
-        <div class="flex-1 truncate">
-          <div class="font-bold text-slate-200 truncate">${m.title}</div>
-          <div class="text-[11px] text-slate-400">${m.topic} • Тип: <span class="text-indigo-400 font-semibold">${m.type}</span></div>
-        </div>
-        <div class="text-right shrink-0 flex items-center gap-2">
-          ${m.type === 'selftest' ? `<button class="mistake-open-selftest-btn text-[11px] font-semibold text-violet-400 hover:text-violet-300 cursor-pointer transition" data-task-id="${String(m.id).replace('st_', '')}">Прорішати ${icon('arrow-right')}</button>` : ''}
-          ${m.type === 'problem' ? `<button class="mistake-open-problem-btn text-[11px] font-semibold text-indigo-400 hover:text-indigo-300 cursor-pointer transition" data-prob-id="${String(m.id).replace('prob_', '')}">До задачі ${icon('arrow-right')}</button>` : ''}
-          <span class="px-2 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-800 text-[10px] font-bold">
-            ${m.count} ${m.count === 1 ? 'error' : 'errors'}
-          </span>
+    const TYPE_LABEL = { quiz: 'Тест за темою', selftest: 'Self-тест LMS', problem: 'Задача' };
+    const errorsLabel = n => {
+      const d = n % 10, dd = n % 100;
+      if (d === 1 && dd !== 11) return `${n} помилка`;
+      if (d >= 2 && d <= 4 && (dd < 12 || dd > 14)) return `${n} помилки`;
+      return `${n} помилок`;
+    };
+    const practiceBtn = (id, iconName, label, count) => `
+      <button id="${id}" class="flex-1 min-w-[9rem] flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold cursor-pointer transition">
+        ${icon(iconName)} ${label} (${count})
+      </button>`;
+
+    // Every row opens the exact item; the buttons above re-run all mistakes of one kind
+    container.innerHTML = (quizMistakes || selfTestMistakes ? `
+      <div class="space-y-1.5">
+        <div class="text-[11px] font-semibold text-slate-400">Прорішати помилки:</div>
+        <div class="flex flex-wrap gap-2">
+          ${quizMistakes ? practiceBtn('mistakes-practice-btn', 'repeat', 'Тести', quizMistakes) : ''}
+          ${selfTestMistakes ? practiceBtn('mistakes-selftest-btn', 'clipboard-check', 'Self-тести LMS', selfTestMistakes) : ''}
         </div>
       </div>
+    ` : '') + mistakes.map(m => `
+      <button class="mistake-row w-full text-left p-3 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-indigo-500/70 hover:bg-slate-900 cursor-pointer transition flex items-center gap-3 text-xs" data-type="${m.type}" data-id="${String(m.id)}">
+        <span class="flex-1 min-w-0">
+          <span class="block font-semibold text-slate-200 line-clamp-2">${m.title}</span>
+          <span class="block mt-0.5 text-[11px] text-slate-400 truncate">${m.topic} · ${TYPE_LABEL[m.type] || m.type}</span>
+        </span>
+        <span class="shrink-0 px-2 py-0.5 rounded-full bg-rose-950 text-rose-300 border border-rose-800 text-[10px] font-bold whitespace-nowrap">${errorsLabel(m.count)}</span>
+        <span class="shrink-0 text-indigo-400">${icon('chevron-right')}</span>
+      </button>
     `).join('');
 
-    container.querySelectorAll('.mistake-open-problem-btn').forEach(btn => {
-      btn.addEventListener('click', () => window.app?.openProblem(btn.getAttribute('data-prob-id')));
-    });
     container.querySelector('#mistakes-practice-btn')?.addEventListener('click', () => window.app?.openMistakesPractice());
     container.querySelector('#mistakes-selftest-btn')?.addEventListener('click', () => window.selfTestBank?.startMistakes());
-    container.querySelectorAll('.mistake-open-selftest-btn').forEach(btn => {
-      btn.addEventListener('click', () => window.selfTestBank?.startTask(btn.getAttribute('data-task-id')));
+    container.querySelectorAll('.mistake-row').forEach(row => {
+      row.addEventListener('click', () => {
+        const id = row.getAttribute('data-id');
+        const type = row.getAttribute('data-type');
+        if (type === 'problem') window.app?.openProblem(id.replace('prob_', ''));
+        else if (type === 'selftest') window.selfTestBank?.startTask(id.replace('st_', ''));
+        else window.app?.openMistakesPractice();
+      });
     });
     window.app?.renderAllMath(container);
   }
@@ -1257,7 +1270,8 @@ class UserProfileManager {
               size: 'large',
               text: 'continue_with',
               shape: 'rectangular',
-              width: 320
+              // Fit the container on phones (Google accepts 200–400px); a fixed 320 overflowed the profile card
+              width: Math.max(200, Math.min(320, gBtnContainer.clientWidth || 320))
             });
           }
         } catch (e) {

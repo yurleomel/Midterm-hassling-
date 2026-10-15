@@ -149,8 +149,11 @@ class PomodoroTimer {
     this.onTick();
     const btn = document.getElementById('pomodoro-toggle-btn');
     if (btn) {
-      btn.innerHTML = this.isRunning ? `${icon('pause')} Pause` : `${icon('play')} Focus`;
-      btn.className = this.isRunning ? 'btn btn-warning' : 'btn btn-primary';
+      const label = this.isRunning ? 'Пауза' : 'Почати фокус';
+      btn.innerHTML = icon(this.isRunning ? 'pause' : 'play');
+      btn.classList.toggle('is-running', this.isRunning);
+      btn.title = label;
+      btn.setAttribute('aria-label', label);
     }
 
     const mainBtn = document.getElementById('main-pomodoro-toggle');
