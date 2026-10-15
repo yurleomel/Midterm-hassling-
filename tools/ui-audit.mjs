@@ -140,6 +140,10 @@ async function launchChrome() {
     '--headless=new', '--remote-debugging-port=0', `--user-data-dir=${profile}`,
     '--no-first-run', '--no-default-browser-check', '--disable-extensions', '--disable-background-networking',
     '--disable-component-update', '--disable-sync', '--disable-default-apps', '--mute-audio',
+    // never throttle or park the audited tab (long runs used to stall once Chrome treated it as hidden)
+    '--disable-background-timer-throttling', '--disable-backgrounding-occluded-windows', '--disable-renderer-backgrounding',
+    '--disable-hang-monitor', '--disable-features=IntensiveWakeUpThrottling,CalculateNativeWinOcclusion',
+    '--use-mock-keychain', '--password-store=basic',
     '--hide-scrollbars', '--force-color-profile=srgb', 'about:blank'
   ], { stdio: 'ignore' });
   const portFile = path.join(profile, 'DevToolsActivePort');
@@ -175,15 +179,32 @@ class CDP {
         if (msg.error) p.reject(new Error(`${p.method}: ${msg.error.message}`));
         else p.resolve(msg.result);
       } else {
+        // A crashed or closed tab never answers: fail its pending calls instead of hanging
+        if (msg.method === 'Target.detachedFromTarget') this.failSession(msg.params.sessionId, 'tab closed or crashed');
+        if (msg.method === 'Inspector.targetCrashed') this.failSession(msg.sessionId, 'renderer crashed');
         for (const fn of this.listeners) fn(msg);
       }
     });
   }
 
-  send(method, params = {}, sessionId) {
+  failSession(sessionId, reason) {
+    for (const [id, p] of this.pending) {
+      if (p.sessionId === sessionId) { this.pending.delete(id); p.reject(new Error(`${p.method}: ${reason}`)); }
+    }
+  }
+
+  send(method, params = {}, sessionId, timeout = 120000) {
     const id = ++this.nextId;
     return new Promise((resolve, reject) => {
-      this.pending.set(id, { resolve, reject, method });
+      const timer = setTimeout(() => {
+        this.pending.delete(id);
+        reject(new Error(`${method}: no reply in ${timeout / 1000}s`));
+      }, timeout);
+      this.pending.set(id, {
+        method, sessionId,
+        resolve: v => { clearTimeout(timer); resolve(v); },
+        reject: e => { clearTimeout(timer); reject(e); }
+      });
       this.ws.send(JSON.stringify(sessionId ? { id, method, params, sessionId } : { id, method, params }));
     });
   }
@@ -228,7 +249,10 @@ class Page {
   }
 
   async init(theme) {
+    await this.send('Page.bringToFront');
+    await this.send('Emulation.setFocusEmulationEnabled', { enabled: true });
     await this.send('Fetch.enable', { patterns: [{ urlPattern: '*', requestStage: 'Request' }] });
+    await this.send('Inspector.enable');
     await this.send('Page.enable');
     await this.send('Runtime.enable');
     await this.send('DOM.enable');
@@ -253,7 +277,7 @@ class Page {
       });
     });
     await this.send('Page.navigate', { url });
-    await loaded;
+    await Promise.race([loaded, sleep(60000).then(() => { throw new Error(`page did not load: ${url}`); })]);
   }
 
   async eval(expression) {
@@ -274,8 +298,14 @@ class Page {
   }
 
   // Let Tailwind's CDN compiler pick up classes added by a re-render, then let layout settle
+  // (two frames; the timer is a fallback in case the tab is not being painted)
   settle() {
-    return this.eval('new Promise(r => requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(r, 150))))');
+    return this.eval(`new Promise(r => {
+      let done = false;
+      const finish = () => { if (!done) { done = true; setTimeout(r, 150); } };
+      requestAnimationFrame(() => requestAnimationFrame(finish));
+      setTimeout(finish, 1000);
+    })`);
   }
 
   async screenshot(file, mode, rootSelector) {
@@ -600,13 +630,19 @@ function pageAuditLib() {
       out.push({ ...base, kind: 'text-contrast', text: snippet('placeholder: ' + el.placeholder), fg: hex(fg), bg: hex(inside.bg), ratio: +ratio.toFixed(2), need: 4.5, disabled, field: 'placeholder' });
     }
     if (!disabled) {
-      const bw = parseFloat(s.borderTopWidth);
-      const border = bw > 0 ? over(parseColor(s.borderTopColor), outside.bg) : null;
-      const byBorder = border ? contrast(border, outside.bg) : 0;
-      const byFill = contrast(inside.bg, outside.bg);
+      // A field inside a bordered group (stepper: − [n] +) is outlined by the group's border
+      const ownOutline = parseFloat(s.borderTopWidth) > 0 && parseFloat(s.borderBottomWidth) > 0;
+      const group = ownOutline ? null : groupOf(el);
+      const box = group || el;
+      const bs = group ? getComputedStyle(group) : s;
+      const around = group ? surfaceOf(group.parentElement) : outside;
+      const bw = parseFloat(bs.borderTopWidth);
+      const border = bw > 0 ? over(parseColor(bs.borderTopColor), around.bg) : null;
+      const byBorder = border ? contrast(border, around.bg) : 0;
+      const byFill = contrast(inside.bg, around.bg);
       const ratio = Math.max(byBorder, byFill);
       out.push({ ...base, kind: 'field-boundary', text: el.placeholder || el.name || el.id || el.tagName.toLowerCase(),
-        fg: hex(border || inside.bg), bg: hex(outside.bg), ratio: +ratio.toFixed(2), need: 3 });
+        fg: hex(border || inside.bg), bg: hex(around.bg), ratio: +ratio.toFixed(2), need: 3, note: box !== el ? 'outlined by its group' : '' });
     }
     return out;
   }
@@ -677,9 +713,29 @@ function pageAuditLib() {
     }
     return null;
   }
+  // The bordered wrapper a control is a segment of (touches its edges on ≥2 sides), if any
+  function groupOf(el) {
+    const p = el.parentElement;
+    if (!p) return null;
+    const ps = getComputedStyle(p);
+    if (!(parseFloat(ps.borderTopWidth) > 0 && parseFloat(ps.borderBottomWidth) > 0) || parseColor(ps.borderTopColor)[3] === 0) return null;
+    const r = el.getBoundingClientRect();
+    const q = p.getBoundingClientRect();
+    const inner = { left: q.left + parseFloat(ps.borderLeftWidth), right: q.right - parseFloat(ps.borderRightWidth),
+      top: q.top + parseFloat(ps.borderTopWidth), bottom: q.bottom - parseFloat(ps.borderBottomWidth) };
+    const touching = ['left', 'right', 'top', 'bottom'].filter(side => Math.abs(r[side] - inner[side]) <= 2).length;
+    return touching >= 2 ? p : null;
+  }
+
   function shapeCheck(el) {
     const s = getComputedStyle(el);
     if (parseColor(s.backgroundColor)[3] <= 0.05) return null; // outline/ghost buttons are judged elsewhere
+    const group = groupOf(el);
+    if (group) {
+      // a segment (− / + of a stepper) takes its shape from the group's border
+      const out = surfaceOf(group.parentElement).bg;
+      if (contrast(over(parseColor(getComputedStyle(group).borderTopColor), out), out) >= SHAPE_MIN) return null;
+    }
     const around = surfaceOf(el.parentElement).bg;
     const fill = surfaceOf(el).bg;
     let ratio = contrast(fill, around);
@@ -964,6 +1020,11 @@ const STATES = [
     run: js(`(() => { const qm = window.quizManager; qm.score = Math.max(qm.score, Math.ceil(qm.currentQuiz.length * 0.8));
       qm.currentIndex = qm.currentQuiz.length; qm.renderCurrentQuestion(); })()`) },
   { name: 'selftests', vp: DESKTOP, roots: ['#tab-selftests'], shot: 'full', run: tab('selftests') },
+  { name: 'selftest-type-modal', vp: DESKTOP, roots: ['#st-type-modal'], shot: 'viewport',
+    run: js(`document.querySelector('#selftest-container .st-type').click()`) },
+  { name: 'selftest-type-revealed', vp: DESKTOP, roots: ['#st-type-modal'], shot: 'viewport',
+    run: js(`document.querySelector('#st-type-modal [data-ex="1"]')?.click(); document.querySelector('#st-type-modal .st-reveal').click()`),
+    after: js(`window.selfTestBank.closeTypeInfo()`) },
   { name: 'selftest-picked', vp: DESKTOP, roots: ['#tab-selftests'], shot: 'full',
     run: js(`${ST}
       window.app.switchTab('selftests');
@@ -1011,13 +1072,26 @@ const STATES = [
   { name: 'api-key-cleared', vp: DESKTOP, roots: ['#gemini-settings-modal'], shot: 'viewport',
     run: js(`document.getElementById('settings-clear-key-btn').click()`),
     after: js(`document.getElementById('close-gemini-settings-btn').click(); document.getElementById('gemini-close-drawer-btn').click()`) },
-  { name: 'profile-modal', vp: DESKTOP, roots: ['#user-profile-modal'], shot: 'viewport',
-    run: js(`document.getElementById('header-user-profile-btn').click()`),
-    after: js(`document.getElementById('close-profile-modal-btn').click()`) },
+  // Profile & rewards modal (js/rewards-ui.js): every tab, a shop item tried on, a sticker opened
+  { name: 'rewards-avatar', vp: DESKTOP, roots: ['#user-profile-modal'], shot: 'viewport',
+    run: js(`window.rewards.open('avatar')`) },
+  { name: 'rewards-shop', vp: DESKTOP, roots: ['#user-profile-modal'], shot: 'viewport',
+    run: js(`window.rewards.setTab('shop'); document.querySelector('#user-profile-modal [data-rw-pick]:not([data-rw-pick=""])')?.click()`) },
+  { name: 'rewards-stickers', vp: DESKTOP, roots: ['#user-profile-modal'], shot: 'viewport',
+    run: js(`window.rewards.setTab('stickers'); document.querySelector('#user-profile-modal [data-rw-sticker]')?.click()`) },
+  { name: 'rewards-account', vp: DESKTOP, roots: ['#user-profile-modal'], shot: 'viewport',
+    run: js(`window.rewards.setTab('account')`),
+    after: js(`window.rewards.close()`) },
+  { name: 'rewards-toast', vp: DESKTOP, roots: ['.rw-toasts'], shot: 'viewport',
+    run: js(`window.rewards.toast({ art: '', title: '+20 points', sub: 'Self-test 4 · first try', go: 'shop', ms: 600000 })`),
+    after: js(`document.querySelectorAll('.rw-toast').forEach(t => t.remove())`) },
   ...SECTIONS.map(name => ({
     name: `phone-${name}`, vp: PHONE, roots: ['header', SECTION_ROOT(name)], shot: 'full',
     run: js(`window.app.switchTab(${JSON.stringify(name)}); window.scrollTo(0, 0)`)
   })),
+  { name: 'phone-rewards', vp: PHONE, roots: ['#user-profile-modal'], shot: 'viewport',
+    run: js(`window.rewards.open('shop')`),
+    after: js(`window.rewards.close()`) },
   { name: 'phone-drawer', vp: PHONE, roots: ['#app-sidebar'], shot: 'viewport',
     run: js(`window.scrollTo(0, 0); document.getElementById('nav-open-btn').click()`),
     after: js(`document.getElementById('nav-close-btn').click()`) }
@@ -1059,6 +1133,7 @@ async function auditTheme({ cdp, baseUrl, theme, opts, network }) {
         await page.eval(state.run);
       } catch (err) {
         states.push({ name: state.name, error: `setup failed: ${err.message}` });
+        if (/crashed|closed|no reply/.test(err.message)) break;
         continue;
       }
       await page.settle();
@@ -1067,66 +1142,72 @@ async function auditTheme({ cdp, baseUrl, theme, opts, network }) {
         continue;
       }
 
-      const errorsBefore = page.errors.length;
-      const res = await page.eval(`window.__uiAudit.audit(${JSON.stringify(state.roots)})`);
-      const where = { theme, state: state.name, width: vp.width };
-      const add = (category, item, extra = {}) => findings.push({ category, ...where, ...item, ...extra });
+      try {
+        const errorsBefore = page.errors.length;
+        const res = await page.eval(`window.__uiAudit.audit(${JSON.stringify(state.roots)})`);
+        const where = { theme, state: state.name, width: vp.width };
+        const add = (category, item, extra = {}) => findings.push({ category, ...where, ...item, ...extra });
 
-      for (const t of res.texts) if (t.ratio < t.need) add('text-contrast', t, { variant: t.disabled ? 'disabled' : 'normal' });
-      for (const f of res.fields) if (f.ratio < f.need) add(f.kind, f, { variant: f.field || 'boundary' });
-      for (const ic of res.icons) if (ic.ratio < ic.need) add('icon-contrast', ic, { variant: 'normal' });
-      for (const sp of res.spacing) add('spacing', sp);
-      for (const mm of res.mismatch) add('size-mismatch', mm);
-      for (const af of res.affordance) add('affordance', af);
-      if (res.overflow) add('page-overflow', { sig: `page@${vp.width}`, path: 'html', text: res.overflow.offenders.join(' ; '), detail: `page is ${res.overflow.width}px wide in a ${vp.width}px viewport` });
-      for (const tr of res.truncated) truncated.push({ ...where, ...tr });
+        for (const t of res.texts) if (t.ratio < t.need) add('text-contrast', t, { variant: t.disabled ? 'disabled' : 'normal' });
+        for (const f of res.fields) if (f.ratio < f.need) add(f.kind, f, { variant: f.field || 'boundary' });
+        for (const ic of res.icons) if (ic.ratio < ic.need) add('icon-contrast', ic, { variant: 'normal' });
+        for (const sp of res.spacing) add('spacing', sp);
+        for (const mm of res.mismatch) add('size-mismatch', mm);
+        for (const af of res.affordance) add('affordance', af);
+        if (res.overflow) add('page-overflow', { sig: `page@${vp.width}`, path: 'html', text: res.overflow.offenders.join(' ; '), detail: `page is ${res.overflow.width}px wide in a ${vp.width}px viewport` });
+        for (const tr of res.truncated) truncated.push({ ...where, ...tr });
 
-      // cursor + hover + focus per control (one representative per class signature). Drop focus first:
-      // an auto-focused field would otherwise already show its focus style in the "before" snapshot.
-      await page.eval('document.activeElement && document.activeElement !== document.body && document.activeElement.blur()');
-      const doc = await page.send('DOM.getDocument', { depth: 0 });
-      for (const it of res.interactive) {
-        if (it.disabled) continue;
-        if (!it.field && it.cursor !== 'pointer') add('cursor', it, { detail: `cursor: ${it.cursor}` });
-        if (checkedSigs.has(it.sig)) continue;
-        checkedSigs.add(it.sig);
-        let nodeId;
-        try {
-          ({ nodeId } = await page.send('DOM.querySelector', { nodeId: doc.root.nodeId, selector: `[data-ua-id="${it.id}"]` }));
-        } catch { nodeId = 0; }
-        if (!nodeId) continue;
-        const before = await page.eval(`window.__uiAudit.snapshot(${JSON.stringify(it.id)})`);
-        if (!before) continue;
-        if (it.hoverable) {
-          await page.send('CSS.forcePseudoState', { nodeId, forcedPseudoClasses: ['hover'] });
-          const hovered = await page.eval(`window.__uiAudit.snapshot(${JSON.stringify(it.id)})`);
-          await page.send('CSS.forcePseudoState', { nodeId, forcedPseudoClasses: [] });
-          if (hovered) {
-            if (hovered.fp.join('\n') === before.fp.join('\n')) add('hover', it, { detail: 'no visible change on hover' });
-            for (const t of hovered.texts) add('text-contrast', t, { variant: 'hover' });
-            if (hovered.icon && hovered.icon.ratio < hovered.icon.need) add('icon-contrast', hovered.icon, { variant: 'hover' });
+        // cursor + hover + focus per control (one representative per class signature). Drop focus first:
+        // an auto-focused field would otherwise already show its focus style in the "before" snapshot.
+        await page.eval('document.activeElement && document.activeElement !== document.body && document.activeElement.blur()');
+        const doc = await page.send('DOM.getDocument', { depth: 0 });
+        for (const it of res.interactive) {
+          if (it.disabled) continue;
+          if (!it.field && it.cursor !== 'pointer') add('cursor', it, { detail: `cursor: ${it.cursor}` });
+          if (checkedSigs.has(it.sig)) continue;
+          checkedSigs.add(it.sig);
+          let nodeId;
+          try {
+            ({ nodeId } = await page.send('DOM.querySelector', { nodeId: doc.root.nodeId, selector: `[data-ua-id="${it.id}"]` }));
+          } catch { nodeId = 0; }
+          if (!nodeId) continue;
+          const before = await page.eval(`window.__uiAudit.snapshot(${JSON.stringify(it.id)})`);
+          if (!before) continue;
+          if (it.hoverable) {
+            await page.send('CSS.forcePseudoState', { nodeId, forcedPseudoClasses: ['hover'] });
+            const hovered = await page.eval(`window.__uiAudit.snapshot(${JSON.stringify(it.id)})`);
+            await page.send('CSS.forcePseudoState', { nodeId, forcedPseudoClasses: [] });
+            if (hovered) {
+              if (hovered.fp.join('\n') === before.fp.join('\n')) add('hover', it, { detail: 'no visible change on hover' });
+              for (const t of hovered.texts) add('text-contrast', t, { variant: 'hover' });
+              if (hovered.icon && hovered.icon.ratio < hovered.icon.need) add('icon-contrast', hovered.icon, { variant: 'hover' });
+            }
+          }
+          if (it.focusable) {
+            await page.send('CSS.forcePseudoState', { nodeId, forcedPseudoClasses: ['focus', 'focus-visible'] });
+            const focused = await page.eval(`window.__uiAudit.snapshot(${JSON.stringify(it.id)})`);
+            await page.send('CSS.forcePseudoState', { nodeId, forcedPseudoClasses: [] });
+            if (focused) {
+              const verdict = focusVerdict(before, focused);
+              if (verdict) add('focus', it, { detail: verdict });
+            }
           }
         }
-        if (it.focusable) {
-          await page.send('CSS.forcePseudoState', { nodeId, forcedPseudoClasses: ['focus', 'focus-visible'] });
-          const focused = await page.eval(`window.__uiAudit.snapshot(${JSON.stringify(it.id)})`);
-          await page.send('CSS.forcePseudoState', { nodeId, forcedPseudoClasses: [] });
-          if (focused) {
-            const verdict = focusVerdict(before, focused);
-            if (verdict) add('focus', it, { detail: verdict });
-          }
-        }
+
+        const shot = opts.shots ? path.join(shotDir, `${String(index).padStart(2, '0')}-${state.name}.jpg`) : null;
+        if (shot) await page.screenshot(shot, state.shot, state.shotRoot || state.roots[0]);
+        states.push({
+          name: state.name, width: vp.width, missingRoots: res.missing, texts: res.texts.length,
+          interactive: res.interactive.length, fields: res.fields.length, shot: shot && path.relative(opts.out, shot),
+          pageErrors: page.errors.slice(errorsBefore)
+        });
+        if (state.after) await page.eval(state.after).catch(() => {});
+        await page.settle();
+      } catch (err) {
+        // A crashed tab cannot be audited further in this theme; anything else is recorded and the run goes on
+        states.push({ name: state.name, error: err.message });
+        if (/crashed|closed|no reply/.test(err.message)) break;
       }
-
-      const shot = opts.shots ? path.join(shotDir, `${String(index).padStart(2, '0')}-${state.name}.jpg`) : null;
-      if (shot) await page.screenshot(shot, state.shot, state.shotRoot || state.roots[0]);
-      states.push({
-        name: state.name, width: vp.width, missingRoots: res.missing, texts: res.texts.length,
-        interactive: res.interactive.length, fields: res.fields.length, shot: shot && path.relative(opts.out, shot),
-        pageErrors: page.errors.slice(errorsBefore)
-      });
-      if (state.after) await page.eval(state.after).catch(() => {});
-      await page.settle();
     }
   } finally {
     page.off();

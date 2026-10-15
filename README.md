@@ -35,7 +35,7 @@ node tools/ui-audit.mjs                  # both themes, every section and key st
 node tools/ui-audit.mjs --themes light --only quiz,selftest   # quick partial run
 ```
 * It serves a temporary copy of the site with the cloud-sync URL (`CLOUD_SYNC_ENDPOINT` in `js/user.js`) rewritten to an unroutable local port, runs its own headless Chrome with a fresh profile, lets only local + CDN GET requests out, and fails if anything ever tries to reach `amazonaws`. It never touches the real backend.
-* Logs in as guest and walks every sidebar section plus the key states (flashcard, definition drill, exam ticket, hints, quiz feedback, self-test checks of every task format, Gemini drawer/key modal, mistakes panel, profile modal, phone drawer).
+* Logs in as guest and walks every sidebar section plus the key states (flashcard, definition drill, exam ticket, hints, filtered problems, quiz feedback, self-test type window and checks of every task format, running Pomodoro, Gemini drawer/key modal, mistakes panel, every tab of the profile & rewards modal and a reward toast, phone drawer).
 * Checks every visible text node against its composited background (WCAG AA 4.5:1, 3:1 for large text and for unavailable `disabled` + `cursor-not-allowed` controls, also while hovered), icon-only buttons and form-field outlines (3:1), `cursor: pointer`, a visible hover change, a visible focus indicator, labels touching/spilling out of buttons, mismatched button heights in a row and horizontal scrolling.
 * Writes `ui-audit-out/report.txt`, `report.json` and screenshots (`ui-audit-out/shots/<theme>/`). Exit code 1 when something is not covered by `tools/ui-audit-allowlist.json` — keep that list short, every entry needs a `reason`.
 
