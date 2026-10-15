@@ -16,7 +16,6 @@ const MIDTERM_PAPERS = {
     "points": 5,
     "title": "Multiple choice questions",
     "kind": "choice",
-    "bankId": 37,
     "items": [
      {
       "id": "1.1",
