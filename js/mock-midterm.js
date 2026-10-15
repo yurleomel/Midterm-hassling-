@@ -744,6 +744,7 @@ class MockMidterm {
     this.persist();
     this.stopTicker();
     this.setNavClock(null);
+    window.formulaSheet?.close?.(); // the exam's sheet does not close itself
     this.confirm = null;
     this.warning = null;
     this.notice = null;
@@ -753,6 +754,7 @@ class MockMidterm {
   }
 
   discard() {
+    if (this.session?.phase === 'exam') window.formulaSheet?.close?.();
     this.session = null;
     this.persist();
     this.stopTicker();
@@ -855,7 +857,8 @@ class MockMidterm {
       paper: () => { this.pick.paper = d.value; this.render(); },
       duration: () => { this.pick.duration = Number(d.value); this.render(); },
       start: () => this.start(),
-      sheet: () => window.formulaSheet?.open?.({ mode: d.mode }),
+      // During the exam the sheet is locked to its unlabelled view, as handed out; before and after it opens as asked
+      sheet: () => window.formulaSheet?.open?.(d.mode === 'exam' ? { mode: 'exam', locked: true, opener: el } : { mode: d.mode }),
       attempt: () => this.openAttempt(d.id),
       'open-paper': () => this.openPaper(d.id),
       home: () => { this.notice = null; this.goStart(); },
