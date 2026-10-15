@@ -110,6 +110,35 @@ const SelfTestLogic = {
     };
   },
 
+  // A topic's self-tests count towards Readiness once this share of its tasks has been solved
+  TOPIC_PASS_SHARE: 0.8,
+
+  // [{ topic, total, solved, need, passed }] — `need` = solved tasks required for the topic to count
+  topicProgress(tasks, topics, stats = {}) {
+    return topics.map(({ id }) => {
+      const own = tasks.filter(t => t.topic === id);
+      const solved = own.filter(t => stats[t.id]?.solved).length;
+      const need = Math.ceil(own.length * this.TOPIC_PASS_SHARE);
+      return { topic: id, total: own.length, solved, need, passed: own.length > 0 && solved >= need };
+    });
+  },
+
+  // Local vs cloud progress: keep the best of both per task (used by the profile merge)
+  mergeStats(a = {}, b = {}) {
+    const out = { ...a };
+    for (const [id, s] of Object.entries(b || {})) {
+      const p = out[id];
+      out[id] = !p ? { ...s } : {
+        attempts: Math.max(p.attempts || 0, s.attempts || 0),
+        correct: Math.max(p.correct || 0, s.correct || 0),
+        solved: !!(p.solved || s.solved),
+        lastCorrect: (s.lastAt || 0) > (p.lastAt || 0) ? s.lastCorrect : p.lastCorrect,
+        lastAt: Math.max(p.lastAt || 0, s.lastAt || 0)
+      };
+    }
+    return out;
+  },
+
   summarize(results) {
     const byType = {};
     results.forEach(r => {
@@ -127,17 +156,69 @@ class SelfTestBank {
     this.typeById = new Map(this.bank.types.map(t => [t.id, t]));
     this.filters = { topic: 'all', type: 'all', difficulty: 'all', onlyUnsolved: false };
     this.count = 10;
-    this.session = null;   // { items: [{ task, order }], index, results, response, checked }
-    this.stats = this.loadStats();
+    this.session = null;   // { items: [{ task, order }], index, results, response, checked, passedBefore }
+    this.fallbackStats = {};
   }
 
-  // --- persistence (this browser only) ---
-  loadStats() {
-    try { return JSON.parse(localStorage.getItem(SelfTestBank.STORAGE_KEY) || '{}') || {}; } catch (e) { return {}; }
+  // --- persistence: part of the readiness state, so it follows the account like the rest of the progress ---
+  get stats() {
+    const rs = window.quizManager?.readinessState;
+    if (!rs) return this.fallbackStats;
+    if (!rs.selfTestStats) rs.selfTestStats = {};
+    return rs.selfTestStats;
+  }
+
+  set stats(next) {
+    const rs = window.quizManager?.readinessState;
+    if (rs) rs.selfTestStats = next;
+    else this.fallbackStats = next;
   }
 
   saveStats() {
-    try { localStorage.setItem(SelfTestBank.STORAGE_KEY, JSON.stringify(this.stats)); } catch (e) {}
+    window.quizManager?.saveReadiness();
+  }
+
+  // The first version kept progress in a browser-only key; fold it into the readiness state once
+  migrateLegacyStats() {
+    try {
+      const legacy = JSON.parse(localStorage.getItem(SelfTestBank.LEGACY_KEY) || 'null');
+      if (!legacy || !window.quizManager?.readinessState) return;
+      this.stats = SelfTestLogic.mergeStats(this.stats, legacy);
+      localStorage.removeItem(SelfTestBank.LEGACY_KEY);
+      this.saveStats();
+    } catch (e) {}
+  }
+
+  topicProgress() {
+    return SelfTestLogic.topicProgress(this.bank.tasks, this.bank.topics, this.stats);
+  }
+
+  passedTopics() {
+    return this.topicProgress().filter(p => p.passed).map(p => p.topic);
+  }
+
+  // Self-test tasks currently in the dashboard's mistakes registry, most-missed first
+  mistakeTasks() {
+    const history = window.userProfile?.profile?.mistakesHistory || {};
+    const byId = new Map(this.bank.tasks.map(t => [SelfTestBank.MISTAKE_PREFIX + t.id, t]));
+    return Object.values(history)
+      .filter(m => m.type === 'selftest' && byId.has(m.id))
+      .sort((a, b) => b.count - a.count)
+      .map(m => byId.get(m.id));
+  }
+
+  // Entry points used by the dashboard's mistakes panel
+  startMistakes() {
+    const tasks = this.mistakeTasks();
+    window.app?.switchTab('selftests');
+    if (tasks.length) this.start(tasks);
+    else this.renderSetup();
+  }
+
+  startTask(taskId) {
+    const task = this.bank.tasks.find(t => t.id === taskId);
+    window.app?.switchTab('selftests');
+    if (task) this.start([task]);
   }
 
   get container() {
@@ -145,6 +226,7 @@ class SelfTestBank {
   }
 
   init() {
+    this.migrateLegacyStats();
     this.renderSetup();
   }
 
@@ -235,15 +317,42 @@ class SelfTestBank {
         this.chip('difficulty', d, l, f.difficulty === d, ` <span class="text-slate-500">${diffCounts[d] || 0}</span>`)));
 
     const solvedAll = this.solvedOf(all);
+    const mistakes = this.mistakeTasks();
+    const progressRows = this.topicProgress().map(p => {
+      const pct = Math.round((p.solved / Math.max(1, p.total)) * 100);
+      const mark = Math.round((p.need / Math.max(1, p.total)) * 100);
+      return `
+        <div class="space-y-1">
+          <div class="flex justify-between gap-2 text-[11px]">
+            <span class="font-semibold text-slate-300">Тема ${p.topic}</span>
+            <span class="${p.passed ? 'text-emerald-400 font-bold' : 'text-slate-400'}">${p.passed
+              ? `${icon('check')} +1% до готовності`
+              : `${p.solved}/${p.total} · ще ${p.need - p.solved} до +1%`}</span>
+          </div>
+          <div class="relative w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
+            <div class="h-full rounded-full transition-all duration-300 ${p.passed ? 'bg-emerald-500' : 'bg-violet-500'}" style="width: ${pct}%"></div>
+            <div class="absolute top-0 h-full w-0.5 bg-slate-400/70" style="left: ${mark}%" title="${p.need} з ${p.total}"></div>
+          </div>
+        </div>`;
+    }).join('');
+
     host.innerHTML = `
       <div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-xl">
-        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-5">
+        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-4">
           <div>
             <span class="text-xs font-bold uppercase tracking-wider text-indigo-400">Moodle self-tests · теми 4–6</span>
             <h3 class="text-lg font-bold text-slate-100">Банк задач із self-тестів LMS</h3>
             <p class="text-xs text-slate-400 mt-1">${all.length} унікальних задач дослівно з платформи, без дублікатів. Обери тему, тип задач, складність і кількість.</p>
           </div>
           <div class="text-xs text-slate-400 shrink-0">Розв'язано правильно: <strong class="text-emerald-400">${solvedAll}</strong> / ${all.length}</div>
+        </div>
+
+        <div class="mb-5 p-3 rounded-xl bg-slate-950/60 border border-slate-800">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+            <span class="text-[11px] text-slate-400">Розв'яжи ${Math.round(SelfTestLogic.TOPIC_PASS_SHARE * 100)}% задач теми — і вона додасть <strong class="text-slate-200">+1%</strong> до Readiness.</span>
+            ${mistakes.length ? `<button id="st-mistakes" class="shrink-0 px-3 py-1.5 rounded-lg bg-rose-950/60 border border-rose-800 text-rose-200 hover:border-rose-600 hover:text-white text-xs font-semibold cursor-pointer transition">${icon('repeat')} Мої помилки (${mistakes.length})</button>` : ''}
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">${progressRows}</div>
         </div>
 
         <div class="space-y-4">
@@ -308,6 +417,7 @@ class SelfTestBank {
       this.count = n;
       this.start(SelfTestLogic.pick(pool, n));
     });
+    host.querySelector('#st-mistakes')?.addEventListener('click', () => this.startMistakes());
     host.querySelector('#st-reset')?.addEventListener('click', () => {
       this.filters = { topic: 'all', type: 'all', difficulty: 'all', onlyUnsolved: false };
       this.renderSetup();
@@ -320,7 +430,8 @@ class SelfTestBank {
     this.session = {
       items: tasks.map(task => ({ task, order: SelfTestLogic.optionOrder(task) })),
       index: 0,
-      results: []
+      results: [],
+      passedBefore: this.passedTopics()
     };
     this.renderTask();
   }
@@ -492,6 +603,10 @@ class SelfTestBank {
     s.results.push({ task, correct: res.correct, score: res.score });
     this.stats = SelfTestLogic.recordResult(this.stats, task.id, res.correct);
     this.saveStats();
+    // Same mistakes registry as the topic tests: a wrong answer shows up on the dashboard, a right one clears it
+    const mistakeId = SelfTestBank.MISTAKE_PREFIX + task.id;
+    if (res.correct) window.userProfile?.recordSuccess(mistakeId);
+    else window.userProfile?.recordMistake(mistakeId, task.question, `Self-test · Тема ${task.topic}`, 'selftest');
 
     // Lock and colour the inputs
     host.querySelectorAll('.st-option').forEach(b => {
@@ -565,11 +680,16 @@ class SelfTestBank {
     const sum = SelfTestLogic.summarize(s.results);
     const pct = Math.round((sum.correct / Math.max(1, sum.total)) * 100);
     const wrong = s.results.filter(r => !r.correct).map(r => r.task);
+    const newlyPassed = this.passedTopics().filter(t => !s.passedBefore.includes(t));
 
     host.innerHTML = `
       <div class="p-8 rounded-2xl shadow-2xl border border-slate-700 bg-slate-900 text-center">
-        <div class="text-5xl mb-3">${pct >= 70 ? icon('party-popper', 'text-amber-400') : icon('book-open', 'text-indigo-400')}</div>
+        <div class="text-5xl mb-3">${pct >= 70 || newlyPassed.length ? icon('party-popper', 'text-amber-400') : icon('book-open', 'text-indigo-400')}</div>
         <h2 class="text-2xl font-black text-slate-100 mb-4">Набір завершено</h2>
+        ${newlyPassed.length ? `
+          <div class="max-w-xl mx-auto mb-5 p-3 rounded-xl bg-emerald-950/60 border border-emerald-700 text-emerald-200 text-sm font-semibold">
+            ${icon('trophy', 'text-amber-400')} ${newlyPassed.map(t => `Тема ${t}`).join(', ')}: self-тести зараховано — <strong>+${newlyPassed.length}% до готовності</strong>
+          </div>` : ''}
         <div class="inline-block px-8 py-4 rounded-2xl bg-indigo-950/70 border border-indigo-700 mb-6">
           <div class="text-4xl font-black text-indigo-400">${sum.correct} / ${sum.total}</div>
           <div class="text-xs uppercase font-extrabold text-slate-300 mt-1">${pct}%</div>
@@ -598,7 +718,8 @@ class SelfTestBank {
   }
 }
 
-SelfTestBank.STORAGE_KEY = 'stathustle_selftest_stats';
+SelfTestBank.LEGACY_KEY = 'stathustle_selftest_stats'; // browser-only progress of the first version
+SelfTestBank.MISTAKE_PREFIX = 'st_';                    // id prefix in the shared mistakes registry
 
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { SelfTestLogic };

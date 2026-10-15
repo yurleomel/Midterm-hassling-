@@ -260,7 +260,8 @@ class UserProfileManager {
         problems: 0,
         quizzes: 0,
         topics: 0,
-        formulas: 0
+        formulas: 0,
+        selftests: 0
       },
       examSchedule: {
         colloquiumDate: '2026-10-14T09:00',
@@ -386,7 +387,7 @@ class UserProfileManager {
 
     // Tab analytics: take max for each tab
     merged.timePerTab = {};
-    const tabs = ['dashboard', 'colloquium', 'problems', 'quizzes', 'topics', 'formulas'];
+    const tabs = ['dashboard', 'colloquium', 'problems', 'quizzes', 'topics', 'formulas', 'selftests'];
     for (const t of tabs) {
       merged.timePerTab[t] = Math.max((local.timePerTab?.[t] || 0), (cloud.timePerTab?.[t] || 0));
     }
@@ -444,6 +445,11 @@ class UserProfileManager {
         if (done) merged.readinessState.daysCompleted[dNum] = true;
       }
     }
+
+    // LMS self-test progress: best of both per task
+    merged.readinessState.selfTestStats = typeof SelfTestLogic !== 'undefined'
+      ? SelfTestLogic.mergeStats(lR.selfTestStats, cR.selfTestStats)
+      : Object.assign({}, lR.selfTestStats || {}, cR.selfTestStats || {});
 
     // Preserve Gemini API Key if available in either
     merged.geminiApiKey = local.geminiApiKey || cloud.geminiApiKey || '';
@@ -822,7 +828,7 @@ class UserProfileManager {
         const activeTab = window.app?.currentTab || 'dashboard';
 
         if (!this.profile.timePerTab) {
-          this.profile.timePerTab = { dashboard: 0, colloquium: 0, problems: 0, quizzes: 0, topics: 0, formulas: 0 };
+          this.profile.timePerTab = { dashboard: 0, colloquium: 0, problems: 0, quizzes: 0, topics: 0, formulas: 0, selftests: 0 };
         }
 
         this.profile.timePerTab[activeTab] = (this.profile.timePerTab[activeTab] || 0) + 1;
@@ -939,7 +945,8 @@ class UserProfileManager {
       { key: 'problems', label: 'Problems Bank', icon: 'notebook-pen' },
       { key: 'quizzes', label: '600 Practice Quizzes', icon: 'brain' },
       { key: 'topics', label: '12 Theory Topics', icon: 'book-open' },
-      { key: 'formulas', label: 'Formulas & Distributions', icon: 'ruler' }
+      { key: 'formulas', label: 'Formulas & Distributions', icon: 'ruler' },
+      { key: 'selftests', label: 'LMS Self-tests', icon: 'clipboard-check' }
     ];
 
     const total = Math.max(this.profile.totalSeconds || 1, 1);
@@ -982,9 +989,14 @@ class UserProfileManager {
     }
 
     const quizMistakes = mistakes.filter(m => m.type === 'quiz').length;
+    const selfTestMistakes = mistakes.filter(m => m.type === 'selftest').length;
     container.innerHTML = (quizMistakes ? `
       <button id="mistakes-practice-btn" class="w-full px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold cursor-pointer transition">
         ${icon('repeat')} Прорішати помилки з тестів (${quizMistakes})
+      </button>
+    ` : '') + (selfTestMistakes ? `
+      <button id="mistakes-selftest-btn" class="w-full px-3 py-2 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold cursor-pointer transition">
+        ${icon('clipboard-check')} Прорішати помилки з self-тестів LMS (${selfTestMistakes})
       </button>
     ` : '') + mistakes.map(m => `
       <div class="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between gap-3 text-xs">
@@ -993,6 +1005,7 @@ class UserProfileManager {
           <div class="text-[11px] text-slate-400">${m.topic} • Тип: <span class="text-indigo-400 font-semibold">${m.type}</span></div>
         </div>
         <div class="text-right shrink-0 flex items-center gap-2">
+          ${m.type === 'selftest' ? `<button class="mistake-open-selftest-btn text-[11px] font-semibold text-violet-400 hover:text-violet-300 cursor-pointer transition" data-task-id="${String(m.id).replace('st_', '')}">Прорішати ${icon('arrow-right')}</button>` : ''}
           ${m.type === 'problem' ? `<button class="mistake-open-problem-btn text-[11px] font-semibold text-indigo-400 hover:text-indigo-300 cursor-pointer transition" data-prob-id="${String(m.id).replace('prob_', '')}">До задачі ${icon('arrow-right')}</button>` : ''}
           <span class="px-2 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-800 text-[10px] font-bold">
             ${m.count} ${m.count === 1 ? 'error' : 'errors'}
@@ -1005,6 +1018,10 @@ class UserProfileManager {
       btn.addEventListener('click', () => window.app?.openProblem(btn.getAttribute('data-prob-id')));
     });
     container.querySelector('#mistakes-practice-btn')?.addEventListener('click', () => window.app?.openMistakesPractice());
+    container.querySelector('#mistakes-selftest-btn')?.addEventListener('click', () => window.selfTestBank?.startMistakes());
+    container.querySelectorAll('.mistake-open-selftest-btn').forEach(btn => {
+      btn.addEventListener('click', () => window.selfTestBank?.startTask(btn.getAttribute('data-task-id')));
+    });
     window.app?.renderAllMath(container);
   }
 
@@ -1567,7 +1584,7 @@ class UserProfileManager {
     if (!this.profile) return;
     this.profile.totalSeconds = 0;
     this.profile.studySeconds = 0;
-    this.profile.timePerTab = { dashboard: 0, colloquium: 0, problems: 0, quizzes: 0, topics: 0, formulas: 0 };
+    this.profile.timePerTab = { dashboard: 0, colloquium: 0, problems: 0, quizzes: 0, topics: 0, formulas: 0, selftests: 0 };
     this.saveProfile();
     this.renderStudyTimeElements();
     this.renderTabTimeAnalytics();

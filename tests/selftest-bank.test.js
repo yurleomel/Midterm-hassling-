@@ -159,3 +159,32 @@ test('summarize groups results by task type', () => {
     byType: { 'recognize-from-experiment': { total: 2, correct: 1 }, 'variance-covariance': { total: 1, correct: 1 } }
   });
 });
+
+// --- progress & gamification ---
+
+test('a topic counts towards readiness once 80% of its tasks are solved', () => {
+  const t5 = bank.tasks.filter(t => t.topic === 5);
+  const need = Math.ceil(t5.length * L.TOPIC_PASS_SHARE);
+  const statsFor = n => Object.fromEntries(t5.slice(0, n).map(t => [t.id, { solved: true }]));
+  const row = stats => L.topicProgress(bank.tasks, bank.topics, stats).find(p => p.topic === 5);
+  assert.equal(row(statsFor(need - 1)).passed, false);
+  assert.deepEqual(row(statsFor(need)), { topic: 5, total: t5.length, solved: need, need, passed: true });
+  assert.deepEqual(L.topicProgress(bank.tasks, bank.topics, {}).map(p => p.passed), [false, false, false]);
+  assert.equal(L.topicProgress([], [{ id: 7 }], {})[0].passed, false, 'an empty topic never counts');
+});
+
+test('wrong answers alone never make a topic count', () => {
+  const stats = Object.fromEntries(bank.tasks.map(t => [t.id, { attempts: 3, correct: 0, solved: false }]));
+  assert.ok(L.topicProgress(bank.tasks, bank.topics, stats).every(p => !p.passed && p.solved === 0));
+});
+
+test('mergeStats keeps the best of local and cloud progress per task', () => {
+  const local = { a: { attempts: 2, correct: 0, solved: false, lastCorrect: false, lastAt: 5 }, b: { attempts: 1, correct: 1, solved: true, lastCorrect: true, lastAt: 1 } };
+  const cloud = { a: { attempts: 1, correct: 1, solved: true, lastCorrect: true, lastAt: 9 }, c: { attempts: 1, correct: 0, solved: false, lastCorrect: false, lastAt: 2 } };
+  const m = L.mergeStats(local, cloud);
+  assert.deepEqual(m.a, { attempts: 2, correct: 1, solved: true, lastCorrect: true, lastAt: 9 });
+  assert.deepEqual(m.b, local.b);
+  assert.deepEqual(m.c, cloud.c);
+  assert.deepEqual(L.mergeStats(undefined, undefined), {});
+  assert.equal(local.a.solved, false, 'inputs are not mutated');
+});

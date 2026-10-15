@@ -25,6 +25,7 @@ class QuizManager {
       questionsAnswered: {},   // qId: { correct: bool }
       problemsMastered: {},    // probId: bool -> remaining % for solving problems
       daysCompleted: {},       // dayNumber: bool -> bonus % per day
+      selfTestStats: {},       // LMS self-test taskId: { attempts, correct, solved, ... } -> 1% per topic 80% solved
       overallPercent: 0
     };
   }
@@ -57,6 +58,7 @@ class QuizManager {
       if (!this.readinessState.questionsAnswered) this.readinessState.questionsAnswered = {};
       if (!this.readinessState.problemsMastered) this.readinessState.problemsMastered = {};
       if (!this.readinessState.daysCompleted) this.readinessState.daysCompleted = {};
+      if (!this.readinessState.selfTestStats) this.readinessState.selfTestStats = {};
     } else {
       this.readinessState = defaultState;
     }
@@ -182,13 +184,19 @@ class QuizManager {
     const completedDaysCount = Object.values(this.readinessState.daysCompleted).filter(Boolean).length;
     const dayPercentContribution = completedDaysCount * 2;
 
-    // Exam Problems: Rest of the percentage (57% max across 23 problems ~ 2.48% each)
+    // LMS self-tests: 1% per topic (4, 5, 6) once 80% of its self-test tasks are solved -> 3% max
+    const selfTestTopics = this.getSelfTestTopicProgress();
+    const totalSelfTestTopics = selfTestTopics.length;
+    const passedSelfTestTopics = selfTestTopics.filter(p => p.passed).length;
+    const selfTestPercentContribution = passedSelfTestTopics * QuizManager.SELFTEST_TOPIC_PERCENT;
+
+    // Exam Problems: Rest of the percentage (54% max across 23 problems ~ 2.35% each)
     const totalProblems = window.PS_DATA?.PROBLEMS_BANK?.length || 23;
     const solvedProblems = this.getSolvedProblemsCount();
-    const probPercentContribution = Math.min(Math.round((solvedProblems / totalProblems) * 57), 57);
+    const probPercentContribution = Math.min(Math.round((solvedProblems / totalProblems) * QuizManager.PROBLEMS_PERCENT), QuizManager.PROBLEMS_PERCENT);
 
     // Sum all components (Baseline is 0%)
-    let overall = defPercentContribution + testPercentContribution + dayPercentContribution + probPercentContribution;
+    let overall = defPercentContribution + testPercentContribution + dayPercentContribution + probPercentContribution + selfTestPercentContribution;
     overall = Math.min(Math.max(overall, 0), 100);
 
     this.readinessState.overallPercent = overall;
@@ -205,13 +213,23 @@ class QuizManager {
       totalProblems,
       probPercent: Math.round((solvedProblems / totalProblems) * 100),
       completedDaysCount,
+      passedSelfTestTopics,
+      totalSelfTestTopics,
       breakdown: {
         fromDefs: defPercentContribution,
         fromTests: testPercentContribution,
         fromDays: dayPercentContribution,
-        fromProblems: probPercentContribution
+        fromProblems: probPercentContribution,
+        fromSelfTests: selfTestPercentContribution
       }
     };
+  }
+
+  // Per-topic progress of the LMS self-test bank (empty when the bank is not loaded)
+  getSelfTestTopicProgress() {
+    const bank = window.SELFTEST_BANK;
+    if (!bank || typeof SelfTestLogic === 'undefined') return [];
+    return SelfTestLogic.topicProgress(bank.tasks, bank.topics, this.readinessState.selfTestStats || {});
   }
 
   updateReadinessUI() {
@@ -250,6 +268,11 @@ class QuizManager {
     if (bProb) bProb.style.width = `${(metrics.solvedProblems / metrics.totalProblems) * 100}%`;
     const tProb = document.getElementById('text-readiness-probs');
     if (tProb) tProb.textContent = `${metrics.solvedProblems}/23 (${metrics.breakdown.fromProblems}%)`;
+
+    const bSelf = document.getElementById('bar-readiness-selftests');
+    if (bSelf) bSelf.style.width = `${(metrics.passedSelfTestTopics / Math.max(1, metrics.totalSelfTestTopics)) * 100}%`;
+    const tSelf = document.getElementById('text-readiness-selftests');
+    if (tSelf) tSelf.textContent = `${metrics.passedSelfTestTopics}/${metrics.totalSelfTestTopics} Topics (${metrics.breakdown.fromSelfTests}%)`;
 
     const bDays = document.getElementById('bar-readiness-oral');
     if (bDays) bDays.style.width = `${(metrics.completedDaysCount / 5) * 100}%`;
@@ -733,5 +756,8 @@ class QuizManager {
 }
 
 QuizManager.MIX_SIZE = 20; // questions in a random mixed quiz
+// Readiness weights: 21 (definitions) + 12 (topic tests) + 10 (days) + 54 (problems) + 3 (self-tests) = 100
+QuizManager.PROBLEMS_PERCENT = 54;
+QuizManager.SELFTEST_TOPIC_PERCENT = 1;
 
 window.quizManager = new QuizManager();
