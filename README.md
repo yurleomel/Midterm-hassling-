@@ -24,7 +24,7 @@ python3 server.py
 Open **`http://localhost:8080`**.
 
 ### Tests
-Pure logic (drill queue, ticket picker, self-test grading, rewards points/stickers/shop/merge, formula sheet shuffling and grading) and the self-test bank and formula sheet data are covered by Node's built-in test runner — no dependencies:
+Pure logic (drill queue, ticket picker, self-test grading, mock midterm assembly/grading/timer, rewards points/stickers/shop/merge, formula sheet shuffling and grading) and the self-test bank and formula sheet data are covered by Node's built-in test runner — no dependencies:
 ```bash
 node --test tests/*.test.js
 ```
@@ -35,7 +35,7 @@ node tools/ui-audit.mjs                  # both themes, every section and key st
 node tools/ui-audit.mjs --themes light --only quiz,selftest   # quick partial run
 ```
 * It serves a temporary copy of the site with the cloud-sync URL (`CLOUD_SYNC_ENDPOINT` in `js/user.js`) rewritten to an unroutable local port, runs its own headless Chrome with a fresh profile, lets only local + CDN GET requests out, and fails if anything ever tries to reach `amazonaws`. It never touches the real backend.
-* Logs in as guest and walks every sidebar section plus the key states (flashcard, definition drill, exam ticket, hints, filtered problems, quiz feedback, self-test type window and checks of every task format, running Pomodoro, Gemini drawer/key modal, mistakes panel, every tab of the profile & rewards modal and a reward toast, the exam formula sheet card and dialog: study, as handed out without headers, rows drill checked, cell drill, phone drill; phone drawer).
+* Logs in as guest and walks every sidebar section plus the key states (flashcard, definition drill, exam ticket, hints, filtered problems, quiz feedback, self-test type window and checks of every task format, running Pomodoro, Gemini drawer/key modal, mistakes panel, every tab of the profile & rewards modal and a reward toast, the exam formula sheet card and dialog: study, as handed out without headers, rows drill checked, cell drill, phone drill; the mock midterm from start to exam, grading, history, saved attempt and paper review, the phone exam; phone drawer).
 * Checks every visible text node against its composited background (WCAG AA 4.5:1, 3:1 for large text and for unavailable `disabled` + `cursor-not-allowed` controls, also while hovered), icon-only buttons and form-field outlines (3:1), `cursor: pointer`, a visible hover change, a visible focus indicator, filled buttons that blend into the surface behind them, labels touching/spilling out of buttons, mismatched button heights in a row and horizontal scrolling.
 * Writes `ui-audit-out/report.txt`, `report.json` and screenshots (`ui-audit-out/shots/<theme>/`). Exit code 1 when something is not covered by `tools/ui-audit-allowlist.json` — keep that list short, every entry needs a `reason`.
 
@@ -101,6 +101,14 @@ Tracks your real progress across 4 weighted pillars:
 * **Progress & gamification (kept small):** progress per task lives in the readiness state (`readinessState.selfTestStats`, merged task-by-task with the cloud copy). A topic whose self-test tasks are ≥80% solved adds **+1% Readiness** (3% max, shown as "LMS Self-tests" on the dashboard Mastery Meter; Exam Problems went from 57% to 54% so the total stays 100%). Wrong answers go to the dashboard mistakes panel ("Прорішати помилки з self-тестів LMS"), a correct answer clears them; time spent in the tab shows up in the focus-time analytics. The setup screen shows each topic's progress towards its +1% and a "Мої помилки" shortcut; the summary announces a newly counted topic.
 * `js/selftest-data.js` is generated from a local extraction of the LMS review pages (kept out of the repo); edit the generator, not the file.
 
+### 4c. 📝 Mock Midterm — tab "Mock midterm"
+* A timed run of Midterm 2 (module 2, topics 4–6) in the format of the 2017 practice paper: 6 problems, 50 points, closed book. Problem 1 (5 pts, multiple choice with "(d) your variant", and true/false) is answered in the app, problem 2 (5 pts, complete five definitions) can be typed or written on paper, problems 3–6 (10 pts each) are solved on paper.
+* Two papers: the **2017 paper** word for word (`js/midterm-papers.js`) and a **new mock** put together on the spot from a seed (so it rebuilds exactly): 5 LMS self-test tasks of 5 types (one true/false at least, topics 4, 5 and 6 covered), 5 of the 21 definitions, and one exam problem per block (normal & transformations · discrete laws & generating functions · exponential & continuous, mixtures · joint distributions & conditioning). The 2017 problems stay out of the new mock.
+* 60 / 80 / 90 / 120 minutes (80 is a UCU class slot). The sticky timer counts from the start time, warns at 10 and at 1 minute and hands the paper in at 0; the exam in progress is kept in `localStorage`, so a refresh or a closed tab loses nothing, and the time left also shows next to "Mock midterm" in the sidebar. "Formula sheet (as at the exam)" opens the unlabelled sheet, locked so the names are not one click away, and it closes when the exam ends.
+* Grading: problem 1 is graded for you; problem 2 puts the lecturer's own words (lecture and slide, from the Get ready quotes; a labelled colloquium card where the lectures have no definition quote) next to your answer; problems 3–6 show our worked solution per part, graded in half points. Weak spots (under 50%) link to the theory. "Save result" writes the attempt to `readinessState.mockAttempts` with your answers and grades, so it reopens read-only (`#/mock/<attempt id>`); the history marks the best score, the study-plan task "Full Timed Midterm 2 Simulation" ticks off, and it pays 40 points plus the "Dress Rehearsal" sticker.
+* The 2017 paper also opens without a timer, solutions hidden until asked: `#/mock/2017` or `window.mockMidterm.openPaper('2017', { problem: 4 })`.
+* `MockMidtermLogic` (assembly, grading, totals, timer) is DOM-free and tested in `tests/mock-midterm.test.js`; `tests/fixtures/midterm-paper-2017.js` is the 2017 paper in the data schema for the tests and the UI audit until the data file is filled.
+
 ### 5. 🤖 Gemini AI Mentor Integration
 * Dedicated slide-over AI tutor drawer available on every page.
 * Integrated with Google Gemini 2.0 Flash / 1.5 Flash.
@@ -146,8 +154,8 @@ At Midterm 2 you get the printed table of distributions (binomial, Poisson, geom
 * Data: `js/formula-sheet-data.js`, a verbatim transcription: change formulas only there. TeX such as `0<p<1` is escaped inside math before it reaches the page, otherwise the browser reads `<p` as a tag. Logic (shuffle, grading, cell picker) is DOM-free in `FormulaSheetLogic`, tested in `tests/formula-sheet.test.js`.
 
 ### 10. 🏅 Points, Stickers & Shop
-* **Points** come only from real learning: the first correct answer to a self-test task, passed topic tests, definitions and oral questions graded 6+, solved problems, finished Pomodoros (8 a day pay), and a small bonus for a streak of study days. Each award is paid once, so repeating something never earns more.
-* **37 stickers**: 23 for Module 2 (for example "Memoryless", "Poisson Fish", "Cov = 0, but…", "68 · 95 · 99.7") and 14 general ones. They come in four rarities, and 7 are secret. All art is tiny inline SVG.
+* **Points** come only from real learning: the first correct answer to a self-test task, passed topic tests, definitions and oral questions graded 6+, solved problems, saved mock midterms (40 each), finished Pomodoros (8 a day pay), and a small bonus for a streak of study days. Each award is paid once, so repeating something never earns more.
+* **38 stickers**: 24 for Module 2 (for example "Memoryless", "Poisson Fish", "Cov = 0, but…", "68 · 95 · 99.7", "Dress Rehearsal" for a finished mock midterm) and 14 general ones. They come in four rarities, and 7 are secret. All art is tiny inline SVG.
 * **Shop**: 25 items for the layered avatar (clothes, hats, glasses, props, backgrounds). The readiness tiers are still free unlocks. You can try an item on before buying it.
 * The dashboard card "My avatar" shows the avatar, balance, streak and latest stickers. The profile modal has the tabs **Avatar · Shop · Stickers · Account** and can be opened anywhere with `window.rewards.open('shop')` or `data-rewards-open="shop"`. Toasts are small and hide themselves (they can be switched off), and nothing animates with reduced motion.
 * The state is stored as ids and numbers in the profile and merged with the cloud without counting anything twice. Details, the points table and how to add module 3 are in [`docs/gamification.md`](docs/gamification.md).
@@ -172,6 +180,7 @@ midterm2/
 │   ├── exam-ticket.js    # Colloquium ticket: random oral question + 2 definitions + stopwatch
 │   ├── selftest-data.js  # Generated: 69 unique LMS self-test tasks (topic, type, difficulty)
 │   ├── selftest-bank.js  # Self-test drill: filters, random sets, grading for every Moodle format
+│   ├── mock-midterm.js   # Mock midterm: paper assembly, timed exam, self-grading, attempts (MockMidtermLogic is DOM-free)
 │   ├── icons.js          # icon('name') helper + <i data-icon> hydration (Lucide inline SVG)
 │   ├── rewards-data.js   # Rewards catalog: points rules, stickers, shop items, tier art (data only)
 │   ├── rewards-art.js    # Avatar, item and sticker inline SVG from shared shapes (DOM-free)

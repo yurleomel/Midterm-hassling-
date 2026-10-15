@@ -58,6 +58,7 @@ class RewardsUI {
       stats: rs.selfTestStats || {}, tasks: bank?.tasks || [], stPassed,
       tests: rs.topicTestsSolved || {}, defs: rs.definitionsScores || {},
       defIds: (window.PS_DATA?.DEFINITIONS_21 || []).map(d => d.id), probs: rs.problemsMastered || {},
+      mocks: Object.values(rs.mockAttempts || {}).filter(a => a && Number.isFinite(a.finishedAt)).map(a => a.id),
       readiness: rs.overallPercent || 0,
       tiers: this.items.filter(i => i.tier && i.min > 0).map(i => ({ id: i.id, min: i.min })),
       now: Date.now(), action
@@ -66,11 +67,12 @@ class RewardsUI {
 
   // --- hooks ---
   // kind: 'selftest' {id, correct} | 'definition' {id, score} | 'problem' {id} | 'topicTest' {id, score, total}
-  //       | 'pomodoro' | 'fix' (a mistake left the registry). Only real progress counts as a study day.
+  //       | 'pomodoro' | 'fix' (a mistake left the registry) | 'mock' {id, score, total} (a mock midterm saved).
+  //       Only real progress counts as a study day.
   notify(kind, detail = {}) {
     if (!window.userProfile?.isLoggedIn) return;
     const productive = { selftest: detail.correct === true, definition: detail.score >= 6 }[kind]
-      ?? ['problem', 'topicTest', 'pomodoro', 'fix'].includes(kind);
+      ?? ['problem', 'topicTest', 'pomodoro', 'fix', 'mock'].includes(kind);
     const now = new Date();
     const action = { kind, productive, hour: now.getHours(), dow: now.getDay() };
     const events = RewardsLogic.evaluate(this.state, this.context(action), this.data);
@@ -513,7 +515,7 @@ class RewardsUI {
     const base = {
       st: `Self-test ${id}`, stt: `Topic ${id} self-tests counted`, tt: topic() || `Topic test ${id}`,
       tt80: 'Topic test at 80%+', tt100: 'Topic test at 100%', def: `Definition: ${def() || id}`, oral: `Oral question ${id}`,
-      pr: prob() || `Problem ${id}`, pomo: 'Pomodoro finished', day: 'Study streak'
+      pr: prob() || `Problem ${id}`, pomo: 'Pomodoro finished', day: 'Study streak', mock: 'Mock midterm finished'
     }[type] || 'Progress';
     const extra = [];
     if (keys.some(k => k.startsWith('st1:'))) extra.push('first try');

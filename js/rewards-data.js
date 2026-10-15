@@ -21,6 +21,7 @@ const REWARDS_DATA = {
     definition: 8,       // a definition graded >=6/10
     oral: 12,            // an oral question graded >=6/10
     problem: 15,         // an exam problem solved
+    mock: 40,            // a mock midterm finished, graded and saved (once per attempt)
     pomodoro: 10,        // a finished 25-min focus session...
     pomodoroDailyCap: 8, // ...paid at most this many times a day
     streakStep: 5,       // active day with a streak of k>=2 days: +5*(k-1)...
@@ -55,6 +56,7 @@ const REWARDS_DATA = {
     { id: 'm2_discrete', m: 'm2', r: 'rare', n: 'Discretely Happy', d: 'Topic 4 self-tests counted. Happiness: countable, but there.', a: 'T:Σ', h: '#0284c7', rule: { k: 'stt', topic: 4 } },
     { id: 'm2_expect', m: 'm2', r: 'rare', n: 'Expectations Met', d: 'Topic 5 self-tests counted. E[effort] paid off.', a: 'T:E', h: '#d97706', rule: { k: 'stt', topic: 5 } },
     { id: 'm2_continuous', m: 'm2', r: 'rare', n: 'Continuous Progress', d: 'Topic 6 self-tests counted. Progress is continuous — even differentiable.', a: 'T:∫', h: '#7c3aed', rule: { k: 'stt', topic: 6 } },
+    { id: 'm2_rehearsal', m: 'm2', r: 'rare', n: 'Dress Rehearsal', d: 'A full mock midterm: timed, handed in and graded. Friday is only the premiere.', a: 'clock', h: '#7c3aed', l: '50', rule: { k: 'mock', n: 1 } },
     { id: 'm2_hh', m: 'm2', r: 'rare', n: 'Waiting for HH', d: 'The two-heads-in-a-row problem is solved. The coin is in shock.', a: 'coin', h: '#ca8a04', l: 'HH', rule: { k: 'pr', ids: [12] } },
     { id: 'm2_ruin', m: 'm2', r: 'epic', n: 'Not Ruined', d: 'Gambler’s ruin: the gambler — yes. You — no.', a: 'coins', h: '#059669', rule: { k: 'pr', ids: [28] } },
     { id: 'm2_thinning', m: 'm2', r: 'epic', n: 'The Thinner', d: 'Split a Poisson stream into two independent ones. The canteen queue is next.', a: 'fish', h: '#0891b2', l: '×2', rule: { k: 'pr', ids: [6, 26] } },
