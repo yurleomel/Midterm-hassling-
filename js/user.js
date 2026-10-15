@@ -1194,7 +1194,7 @@ class UserProfileManager {
               <span class="truncate">Synced: <strong>${this.profile.email}</strong></span>
             </div>
             <div class="flex items-center gap-2 shrink-0 ml-2">
-              <button id="auth-manual-sync-btn" class="px-2 py-1 rounded bg-indigo-900/60 hover:bg-indigo-800 text-[10px] text-indigo-200 font-bold border border-indigo-700 cursor-pointer transition">${icon('refresh-cw')} Sync</button>
+              <button id="auth-manual-sync-btn" class="px-2 py-1 rounded bg-indigo-900/60 hover:bg-indigo-900 text-[10px] text-indigo-200 font-bold border border-indigo-700 cursor-pointer transition">${icon('refresh-cw')} Sync</button>
               <button id="auth-logout-btn-modal" class="text-[11px] text-rose-400 hover:text-rose-300 font-bold underline cursor-pointer">Log out</button>
             </div>
           </div>

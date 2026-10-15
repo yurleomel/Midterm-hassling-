@@ -367,7 +367,7 @@ class SelfTestBank {
     // 3 · difficulty (segmented) + only unsolved
     const diffCounts = SelfTestLogic.countBy(inType, 'difficulty');
     const diffSeg = [['all', 'Any', inType.length], ['easy', 'Easy', diffCounts.easy || 0], ['medium', 'Medium', diffCounts.medium || 0], ['hard', 'Hard', diffCounts.hard || 0]]
-      .map(([d, l, n]) => `<button class="st-diff px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition ${f.difficulty === d ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:bg-slate-800'}" data-diff="${d}" aria-pressed="${f.difficulty === d}">${l} <span class="${f.difficulty === d ? 'opacity-70' : 'text-slate-500'}">${n}</span></button>`)
+      .map(([d, l, n]) => `<button class="st-diff px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition ${f.difficulty === d ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:bg-slate-800'}" data-diff="${d}" aria-pressed="${f.difficulty === d}">${l} <span class="${f.difficulty === d ? 'opacity-80' : 'text-slate-500'}">${n}</span></button>`)
       .join('');
 
     host.innerHTML = `
@@ -408,7 +408,7 @@ class SelfTestBank {
           ${pool.length ? `
             <div class="flex flex-wrap items-center gap-2 text-xs text-slate-300">
               <span class="font-semibold">How many</span>
-              <div class="inline-flex items-center rounded-lg border border-slate-700 overflow-hidden">
+              <div class="inline-flex items-center rounded-lg border border-slate-500 overflow-hidden">
                 <button class="st-step-btn px-2.5 py-1.5 bg-slate-950/50 hover:bg-slate-800 text-slate-300 cursor-pointer transition" data-delta="-1" aria-label="Fewer">${icon('minus')}</button>
                 <input id="st-count" type="number" inputmode="numeric" min="1" max="${pool.length}" value="${count}" aria-label="Number of tasks" class="w-14 py-1.5 text-center bg-slate-950 border-x border-slate-700 text-slate-100 text-base sm:text-sm">
                 <button class="st-step-btn px-2.5 py-1.5 bg-slate-950/50 hover:bg-slate-800 text-slate-300 cursor-pointer transition" data-delta="1" aria-label="More">${icon('plus')}</button>
@@ -469,7 +469,7 @@ class SelfTestBank {
     const tasks = this.bank.tasks.filter(t => t.type === typeId);
     this.typeInfo = { type, tasks, index: 0, revealed: false, opener };
     const solved = this.solvedOf(tasks);
-    const navBtn = (step, label, name) => `<button class="p-1.5 rounded-lg text-slate-300 hover:bg-slate-800 cursor-pointer transition disabled:opacity-30 disabled:cursor-not-allowed" data-ex="${step}" aria-label="${label}">${icon(name)}</button>`;
+    const navBtn = (step, label, name) => `<button class="p-1.5 rounded-lg text-slate-300 hover:bg-slate-800 cursor-pointer transition disabled:opacity-60 disabled:cursor-not-allowed" data-ex="${step}" aria-label="${label}">${icon(name)}</button>`;
 
     const modal = document.createElement('div');
     modal.id = 'st-type-modal';
