@@ -416,7 +416,7 @@ class AppController {
 
   // --- ROUTING: the address mirrors the section (and item), so back/forward, refresh and links work ---
   // #/dashboard · #/colloquium[/def/3] · #/problems[/7] · #/quizzes[/5] · #/selftests[/ST4-02] · #/topics[/topic-12] · #/formulas
-  // #/getready[/c-moments] · #/mock[/2017]
+  // #/getready[/c-moments] · #/mock[/2017] · #/formulas/sheet[-exam|-drill] (the exam formula sheet dialog)
   setRoute(route, { replace = false } = {}) {
     const hash = `#/${route}`;
     if (location.hash === hash) return;
@@ -434,6 +434,7 @@ class AppController {
     else if (tab === 'selftests' && a) window.selfTestBank?.startTask(a, opts);
     else if (tab === 'getready' && a) window.getReady?.openItem(a, opts);
     else if (tab === 'mock' && a) window.mockMidterm?.openPaper(a, opts);
+    else if (tab === 'formulas' && a) window.formulaSheet?.openRoute(a, opts);
     else this.switchTab(tab, opts);
     return true;
   }
@@ -980,6 +981,7 @@ class AppController {
   }
 
   renderFormulasSection() {
+    window.formulaSheet?.init(); // the exam formula sheet card on top of the tab
     const tbody = document.getElementById('distributions-table-body');
     if (!tbody || !window.PS_DATA?.DISTRIBUTIONS_DATA) return;
 
