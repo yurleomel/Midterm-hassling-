@@ -1476,6 +1476,7 @@ class UserProfileManager {
     };
     renderExam('colloquium', schedule.colloquiumDate, 'circle-check');
     renderExam('midterm', schedule.midtermDate, 'trophy');
+    window.examFocus?.render(); // the dashboard's exam in focus shows the date or the grade
   }
 
   initExamScheduleControls() {

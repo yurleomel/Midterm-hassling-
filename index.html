@@ -178,23 +178,19 @@
 
         <nav class="space-y-5" aria-label="Sections">
           <div>
-            <div class="nav-group">Start</div>
             <button data-tab-target="dashboard" class="nav-item tab-active"><i data-icon="layout-dashboard"></i><span class="nav-label">Overview</span></button>
           </div>
           <div>
-            <div class="nav-group">Colloquium 2</div>
+            <div class="nav-group">Module 2 · Random variables</div>
+            <div class="nav-subgroup">Colloquium 2</div>
             <button data-tab-target="colloquium" class="nav-item tab-inactive"><i data-icon="target"></i><span class="nav-label">Definitions &amp; oral</span><span class="nav-meta">21 · 12</span></button>
-          </div>
-          <div>
-            <div class="nav-group">Midterm 2</div>
+            <div class="nav-subgroup">Midterm 2</div>
             <button data-tab-target="getready" class="nav-item tab-inactive"><i data-icon="list-checks"></i><span class="nav-label">Get ready</span><span class="nav-meta" id="getready-nav-meta">28</span></button>
-          <button data-tab-target="mock" class="nav-item tab-inactive"><i data-icon="file-text"></i><span class="nav-label">Mock midterm</span></button>
-          <button data-tab-target="problems" class="nav-item tab-inactive"><i data-icon="notebook-pen"></i><span class="nav-label">Exam problems</span><span class="nav-meta">23</span></button>
+            <button data-tab-target="mock" class="nav-item tab-inactive"><i data-icon="file-text"></i><span class="nav-label">Mock midterm</span></button>
+            <button data-tab-target="problems" class="nav-item tab-inactive"><i data-icon="notebook-pen"></i><span class="nav-label">Exam problems</span><span class="nav-meta">23</span></button>
             <button data-tab-target="quizzes" class="nav-item tab-inactive"><i data-icon="brain"></i><span class="nav-label">Topic tests</span><span class="nav-meta">600</span></button>
             <button data-tab-target="selftests" class="nav-item tab-inactive"><i data-icon="clipboard-check"></i><span class="nav-label">LMS self-tests</span><span class="nav-meta">69</span></button>
-          </div>
-          <div>
-            <div class="nav-group">Reference</div>
+            <div class="nav-subgroup">Reference</div>
             <button data-tab-target="topics" class="nav-item tab-inactive"><i data-icon="book-open"></i><span class="nav-label">Theory by topic</span><span class="nav-meta">12</span></button>
             <button data-tab-target="formulas" class="nav-item tab-inactive"><i data-icon="ruler"></i><span class="nav-label">Formulas &amp; distributions</span></button>
           </div>
@@ -223,86 +219,31 @@
       <!-- Top Hero Grid: Readiness Gauge + Avatar Wardrobe & Real Study Stats + Pomodoro -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         
-        <!-- Card 1: Strict Readiness Mastery Gauge -->
-        <div class="p-6 rounded-2xl border border-slate-800 bg-slate-900/80 shadow-xl flex flex-col justify-between">
-          <div class="flex justify-between items-start mb-3">
-            <div>
-              <span class="text-xs uppercase font-extrabold tracking-wider text-indigo-400">Exam Readiness</span>
-              <h2 class="text-xl font-bold text-slate-100">Mastery Meter</h2>
+        <!-- Card 1: readiness for the exam in focus (js/exams.js); the switch picks the exam of the module -->
+        <div id="exam-focus-card" class="p-6 rounded-2xl border border-slate-800 bg-slate-900/80 shadow-xl flex flex-col gap-4">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div class="min-w-0">
+              <span id="exam-focus-module" class="text-xs uppercase font-extrabold tracking-wider text-indigo-400">Module 2 · Random variables</span>
+              <h2 id="exam-focus-title" class="text-xl font-bold text-slate-100">Readiness</h2>
             </div>
-            <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-indigo-950 text-indigo-300 border border-indigo-700">Target: 100%</span>
+            <div id="exam-focus-switch" class="inline-flex flex-wrap gap-1 p-1 rounded-xl bg-slate-950/60 border border-slate-800 text-xs font-semibold" aria-label="Exam in focus"></div>
           </div>
 
-          <div class="flex flex-col sm:flex-row items-center sm:justify-around gap-4 sm:gap-0 my-2">
-            <!-- Circular Gauge -->
+          <div class="flex flex-col sm:flex-row items-center gap-4">
             <div class="relative w-28 h-28 flex items-center justify-center shrink-0">
               <svg class="w-full h-full" viewBox="0 0 100 100">
                 <circle class="text-slate-800 stroke-current" stroke-width="10" cx="50" cy="50" r="40" fill="transparent"></circle>
                 <circle id="readiness-progress-circle" class="text-indigo-500 stroke-current progress-ring-circle" stroke-width="10" stroke-linecap="round" cx="50" cy="50" r="40" fill="transparent" stroke-dasharray="251.2" stroke-dashoffset="251.2"></circle>
               </svg>
               <div class="absolute inset-0 flex flex-col items-center justify-center">
-                <span id="dashboard-readiness-val" class="text-2xl font-black text-slate-100">0%</span>
+                <span id="dashboard-readiness-val" class="text-2xl font-black text-slate-100 tabular-nums">0%</span>
                 <span class="text-[10px] text-slate-400 uppercase font-semibold">Ready</span>
               </div>
             </div>
-
-            <!-- Category Breakdown Bars -->
-            <div class="space-y-2 text-xs w-full sm:w-auto sm:flex-1 sm:ml-4">
-              <div>
-                <div class="flex justify-between text-slate-400 mb-0.5">
-                  <span>21 Definitions (21%)</span>
-                  <span id="text-readiness-defs" class="font-bold text-slate-200">0/21 (0%)</span>
-                </div>
-                <div class="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
-                  <div id="bar-readiness-defs" class="h-full bg-amber-400 rounded-full" style="width: 0%"></div>
-                </div>
-              </div>
-
-              <div>
-                <div class="flex justify-between text-slate-400 mb-0.5">
-                  <span>12 Topic Tests (12%)</span>
-                  <span id="text-readiness-quiz" class="font-bold text-slate-200">0/12 (0%)</span>
-                </div>
-                <div class="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
-                  <div id="bar-readiness-quiz" class="h-full bg-indigo-500 rounded-full" style="width: 0%"></div>
-                </div>
-              </div>
-
-              <div>
-                <div class="flex justify-between text-slate-400 mb-0.5">
-                  <span>Exam Problems (54%)</span>
-                  <span id="text-readiness-probs" class="font-bold text-slate-200">0/23 (0%)</span>
-                </div>
-                <div class="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
-                  <div id="bar-readiness-probs" class="h-full bg-emerald-400 rounded-full" style="width: 0%"></div>
-                </div>
-              </div>
-
-              <div>
-                <div class="flex justify-between text-slate-400 mb-0.5">
-                  <span>LMS Self-tests (3%)</span>
-                  <span id="text-readiness-selftests" class="font-bold text-slate-200">0/3 Topics (0%)</span>
-                </div>
-                <div class="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
-                  <div id="bar-readiness-selftests" class="h-full bg-violet-500 rounded-full" style="width: 0%"></div>
-                </div>
-              </div>
-
-              <div>
-                <div class="flex justify-between text-slate-400 mb-0.5">
-                  <span>Day Milestones (10%)</span>
-                  <span id="text-readiness-oral" class="font-bold text-slate-200">0/5 Days (0%)</span>
-                </div>
-                <div class="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
-                  <div id="bar-readiness-oral" class="h-full bg-rose-400 rounded-full" style="width: 0%"></div>
-                </div>
-              </div>
-            </div>
+            <div id="exam-focus-parts" class="space-y-1 text-xs w-full sm:flex-1"></div>
           </div>
 
-          <div class="text-[11px] text-slate-400 mt-2 text-center bg-slate-950/60 p-2 rounded-lg border border-slate-800">
-            <i data-icon="scale"></i> <strong>Strict Rule:</strong> 1% per definition scored ≥6/10, 1% per topic test, 1% per LMS self-test topic (80% solved), & remainder for submitted problem answers!
-          </div>
+          <div id="exam-focus-footer" class="flex items-center justify-between gap-3 pt-3 border-t border-slate-800 text-xs"></div>
         </div>
 
         <!-- Card 2: Rewards — avatar, points balance, latest stickers. Filled by js/rewards-ui.js -->
@@ -1080,6 +1021,7 @@
   <script src="js/gemini.js"></script>
   <script src="js/pomodoro.js"></script>
   <script src="js/study-plan.js"></script>
+  <script src="js/exams.js"></script>
   <script src="js/quiz.js"></script>
   <script src="js/definition-drill.js"></script>
   <script src="js/exam-ticket.js"></script>

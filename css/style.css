@@ -387,6 +387,12 @@ html.light button:is(.bg-slate-800, .btn-secondary):not([class*="border"]):not(:
   text-transform: uppercase;
   color: #94a3b8; /* slate-400: 10px caps need 4.5:1 */
 }
+.nav-subgroup {
+  padding: 0.5rem 0.625rem 0.125rem;
+  font-size: 11px;
+  font-weight: 600;
+  color: #94a3b8;
+}
 .nav-item {
   display: flex;
   align-items: center;
@@ -455,6 +461,7 @@ html.light button:is(.bg-slate-800, .btn-secondary):not([class*="border"]):not(:
 .header-pomo-btn.is-running:hover { background: #b45309; } /* amber-700: the white icon stays ≥3:1 */
 
 html.light .nav-group { color: #64748b; }
+html.light .nav-subgroup { color: #475569; }
 html.light .nav-item .nav-meta { color: #475569; }
 html.light .nav-item.tab-inactive { color: #475569; }
 html.light .nav-item.tab-inactive:hover { color: #0f172a; background-color: rgba(15, 23, 42, 0.05); }

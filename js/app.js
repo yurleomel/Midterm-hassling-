@@ -132,6 +132,7 @@ class AppController {
       window.quizManager?.startQuiz(1);
     }
     if (tabId === 'selftests') window.selfTestBank?.show();
+    if (tabId === 'dashboard') window.examFocus?.render();
     if (tabId === 'getready') window.getReady?.show();
     if (tabId === 'mock') window.mockMidterm?.show();
 

@@ -230,51 +230,9 @@ class QuizManager {
   }
 
   updateReadinessUI() {
-    const metrics = this.calculateOverallReadiness();
-
-    // Top Header status pill
-    const pill = document.getElementById('header-readiness-percent');
-    if (pill) pill.textContent = `${metrics.overall}%`;
-
-    const barHeader = document.getElementById('bar-readiness-header');
-    if (barHeader) barHeader.style.width = `${metrics.overall}%`;
-
-    // Dashboard main badge & ring
-    const mainBadge = document.getElementById('dashboard-readiness-val');
-    if (mainBadge) mainBadge.textContent = `${metrics.overall}%`;
-
-    const circleSvg = document.getElementById('readiness-progress-circle');
-    if (circleSvg) {
-      const circumference = 2 * Math.PI * 40; // r=40
-      const offset = circumference - (metrics.overall / 100) * circumference;
-      circleSvg.style.strokeDashoffset = offset;
-    }
-
-    // Breakdown bars
-    const bDef = document.getElementById('bar-readiness-defs');
-    if (bDef) bDef.style.width = `${(metrics.passedDefs / metrics.totalDefs) * 100}%`;
-    const tDef = document.getElementById('text-readiness-defs');
-    if (tDef) tDef.textContent = `${metrics.passedDefs}/21 (${metrics.breakdown.fromDefs}%)`;
-
-    const bForm = document.getElementById('bar-readiness-quiz');
-    if (bForm) bForm.style.width = `${(metrics.solvedTests / metrics.totalTopicTests) * 100}%`;
-    const tForm = document.getElementById('text-readiness-quiz');
-    if (tForm) tForm.textContent = `${metrics.solvedTests}/12 (${metrics.breakdown.fromTests}%)`;
-
-    const bProb = document.getElementById('bar-readiness-probs');
-    if (bProb) bProb.style.width = `${(metrics.solvedProblems / metrics.totalProblems) * 100}%`;
-    const tProb = document.getElementById('text-readiness-probs');
-    if (tProb) tProb.textContent = `${metrics.solvedProblems}/23 (${metrics.breakdown.fromProblems}%)`;
-
-    const bSelf = document.getElementById('bar-readiness-selftests');
-    if (bSelf) bSelf.style.width = `${(metrics.passedSelfTestTopics / Math.max(1, metrics.totalSelfTestTopics)) * 100}%`;
-    const tSelf = document.getElementById('text-readiness-selftests');
-    if (tSelf) tSelf.textContent = `${metrics.passedSelfTestTopics}/${metrics.totalSelfTestTopics} Topics (${metrics.breakdown.fromSelfTests}%)`;
-
-    const bDays = document.getElementById('bar-readiness-oral');
-    if (bDays) bDays.style.width = `${(metrics.completedDaysCount / 5) * 100}%`;
-    const tDays = document.getElementById('text-readiness-oral');
-    if (tDays) tDays.textContent = `${metrics.completedDaysCount}/5 Days (${metrics.breakdown.fromDays}%)`;
+    this.calculateOverallReadiness(); // overall progress still drives the readiness unlocks of the wardrobe
+    // Top-bar pill and dashboard card show the exam in focus (js/exams.js)
+    window.examFocus?.render();
 
     // Refresh Dashboard study schedule if app is initialized
     if (window.app?.renderDashboard) {
